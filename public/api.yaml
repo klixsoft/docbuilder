@@ -8,9 +8,9 @@ info:
     program facilitation, and more. Your healthcare needs, just a click away!
 
 servers:
-  - url: https://mediisha.app/api/v1
+  - url: https://mediisha.app
     description: Production Server
-  - url: https://dev.mediisha.app/api/v1
+  - url: https://dev.mediisha.app
     description: Development Server
 
 paths:
@@ -27,7 +27,7 @@ paths:
   /api/v1/ambulance/{id}/:
     get:
       operationId: v1_ambulance_retrieve_2
-      summary: Retrieve Ambulance Details
+      summary: Ambulance Details
       description: Retrieve detailed information about a specific ambulance using its unique ID.
       parameters:
         - in: path
@@ -37,7 +37,6 @@ paths:
           description: A unique integer value identifying this ambulance.
           required: true
       tags:
-        - v1
         - ambulance
       security:
         - jwtAuth: []
@@ -51,9 +50,10 @@ paths:
   /api/v1/ambulance/map/:
     get:
       operationId: v1_ambulance_map_retrieve
-      description: Return all available ambulances.
+      summary: Available Ambulances
+      description: Retrieve a list of available ambulances along with their current locations on the map.
       tags:
-        - v1
+        - ambulance
       security:
         - jwtAuth: []
       responses:

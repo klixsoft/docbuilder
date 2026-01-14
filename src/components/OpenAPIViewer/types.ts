@@ -1,12 +1,17 @@
 export interface OpenAPIViewerProps {
     source: string;
-    branding?: BrandingConfig;
+    authentication?: ProtectionGateProps
 }
 
-export interface BrandingConfig {
-    logo?: string;
-    title?: string;
-    primaryColor?: string;
+interface AuthField {
+    type: string;
+    label: string;
+    placeholder: string;
+}
+
+export interface ProtectionGateProps {
+    fields: AuthField[];
+    onAuthenticated?: () => void;
 }
 
 export interface OpenAPISpec {
@@ -143,7 +148,7 @@ export interface ComponentsObject {
     examples?: Record<string, ExampleObject | ReferenceObject>;
     requestBodies?: Record<string, RequestBodyObject | ReferenceObject>;
     headers?: Record<string, HeaderObject | ReferenceObject>;
-    securitySchemes?: Record<string, SecuritySchemeObject | ReferenceObject>;
+    securitySchemes?: Record<string, SecuritySchemeObject>;
     links?: Record<string, LinkObject | ReferenceObject>;
     callbacks?: Record<string, CallbackObject | ReferenceObject>;
 }
