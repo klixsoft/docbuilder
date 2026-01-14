@@ -1,0 +1,7066 @@
+openapi: 3.0.3
+info:
+  title: Mediisha API
+  version: 2.0.9
+  description:
+    Mediisha is a comprehensive digital health platform that offers mental
+    health consultations, health information management solutions, health insurance
+    program facilitation, and more. Your healthcare needs, just a click away!
+
+servers:
+  - url: https://mediisha.app/api/v1
+    description: Production Server
+  - url: https://dev.mediisha.app/api/v1
+    description: Development Server
+
+paths:
+  /api/v1/ambulance/:
+    get:
+      operationId: v1_ambulance_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/ambulance/{id}/:
+    get:
+      operationId: v1_ambulance_retrieve_2
+      summary: Retrieve Ambulance Details
+      description: Retrieve detailed information about a specific ambulance using its unique ID.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this ambulance.
+          required: true
+      tags:
+        - v1
+        - ambulance
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AmbulanceCard"
+          description: ""
+  /api/v1/ambulance/map/:
+    get:
+      operationId: v1_ambulance_map_retrieve
+      description: Return all available ambulances.
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/app/settings/{path}/:
+    get:
+      operationId: v1_app_settings_retrieve
+      parameters:
+        - in: path
+          name: path
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/app/slider/:
+    get:
+      operationId: v1_app_slider_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedSliderList"
+          description: ""
+  /api/v1/articles/:
+    get:
+      operationId: v1_articles_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedPostCardList"
+          description: ""
+    post:
+      operationId: v1_articles_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCard"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PostCard"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PostCard"
+        required: true
+      security:
+        - {}
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostCard"
+          description: ""
+  /api/v1/articles/{id}/:
+    get:
+      operationId: v1_articles_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Article.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+          description: ""
+    put:
+      operationId: v1_articles_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Article.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Post"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Post"
+        required: true
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+          description: ""
+    patch:
+      operationId: v1_articles_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Article.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedPost"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedPost"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedPost"
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+          description: ""
+    delete:
+      operationId: v1_articles_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Article.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "204":
+          description: No response body
+  /api/v1/articles/{id}/bookmark/:
+    get:
+      operationId: v1_articles_bookmark_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_articles_bookmark_create_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "201":
+          description: No response body
+  /api/v1/articles/bookmark/:
+    get:
+      operationId: v1_articles_bookmark_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedPostCardList"
+          description: ""
+    post:
+      operationId: v1_articles_bookmark_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostCard"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PostCard"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PostCard"
+        required: true
+      security:
+        - jwtAuth: []
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostCard"
+          description: ""
+  /api/v1/blood-banks/:
+    get:
+      operationId: v1_blood_banks_retrieve
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/blood-banks/{id}/:
+    get:
+      operationId: v1_blood_banks_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this blood bank.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BloodBank"
+          description: ""
+  /api/v1/blood/requests/:
+    get:
+      operationId: v1_blood_requests_retrieve
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_blood_requests_create
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/blood/requests/{bloodtype}/donars/:
+    get:
+      operationId: v1_blood_requests_donars_list
+      parameters:
+        - in: path
+          name: bloodtype
+          schema:
+            type: string
+          required: true
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedBloodDonarsList"
+          description: ""
+  /api/v1/blood/requests/{id}/:
+    get:
+      operationId: v1_blood_requests_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_blood_requests_create_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/blood/requests/{id}/acceptances/:
+    get:
+      operationId: v1_blood_requests_acceptances_list
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedBloodRequestAcceptanceList"
+          description: ""
+  /api/v1/blood/requests/accept/invitation/:
+    post:
+      operationId: v1_blood_requests_accept_invitation_create
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/blood/requests/summary/:
+    get:
+      operationId: v1_blood_requests_summary_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/booking/slot/:
+    post:
+      operationId: v1_booking_slot_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookedConsultationStatus"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/BookedConsultationStatus"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/BookedConsultationStatus"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookedConsultationStatus"
+          description: ""
+  /api/v1/cancer/:
+    get:
+      operationId: v1_cancer_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/cancer/requests/:
+    get:
+      operationId: v1_cancer_requests_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedCancerReviewRequestList"
+          description: ""
+    post:
+      operationId: v1_cancer_requests_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequestCreate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequestCreate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequestCreate"
+        required: true
+      security:
+        - jwtAuth: []
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancerReviewRequestCreate"
+          description: ""
+  /api/v1/cancer/requests/{id}/:
+    get:
+      operationId: v1_cancer_requests_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Cancer Request.
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancerReviewRequest"
+          description: ""
+    put:
+      operationId: v1_cancer_requests_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Cancer Request.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+        required: true
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancerReviewRequest"
+          description: ""
+    patch:
+      operationId: v1_cancer_requests_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Cancer Request.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedCancerReviewRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedCancerReviewRequest"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedCancerReviewRequest"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancerReviewRequest"
+          description: ""
+    delete:
+      operationId: v1_cancer_requests_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Cancer Request.
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/v1/cancer/requests/{id}/presigned-url/:
+    get:
+      operationId: v1_cancer_requests_presigned_url_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Cancer Request.
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancerReviewRequest"
+          description: ""
+  /api/v1/cancer/requests/{id}/submit/:
+    post:
+      operationId: v1_cancer_requests_submit_create
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Cancer Request.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+        required: true
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancerReviewRequest"
+          description: ""
+  /api/v1/cancer/requests/{id}/upload/:
+    post:
+      operationId: v1_cancer_requests_upload_create
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Cancer Request.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/CancerReviewRequest"
+        required: true
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CancerReviewRequest"
+          description: ""
+  /api/v1/categories/{post_type}/:
+    get:
+      operationId: v1_categories_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - in: path
+          name: post_type
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedCategoryList"
+          description: ""
+  /api/v1/categories/{post_type}/children/{parent_id}/:
+    get:
+      operationId: v1_categories_children_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - in: path
+          name: parent_id
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: post_type
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedCategoryList"
+          description: ""
+  /api/v1/categories/{post_type}/hierarchy/:
+    get:
+      operationId: v1_categories_hierarchy_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - in: path
+          name: post_type
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedRecursiveCategoryList"
+          description: ""
+  /api/v1/checkout/:
+    post:
+      operationId: v1_checkout_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookedConsultation"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/BookedConsultation"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/BookedConsultation"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookedConsultation"
+          description: ""
+  /api/v1/consultation/{consultation_id}/images/:
+    get:
+      operationId: v1_consultation_images_retrieve
+      description: List all consultation images for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_consultation_images_create
+      description: Add a new consultation image for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    delete:
+      operationId: v1_consultation_images_destroy
+      description: Delete a consultation image for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/consultation/{consultation_id}/images/{id}/:
+    get:
+      operationId: v1_consultation_images_retrieve_2
+      description: List all consultation images for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_consultation_images_create_2
+      description: Add a new consultation image for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    delete:
+      operationId: v1_consultation_images_destroy_2
+      description: Delete a consultation image for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/consultation/{consultation_id}/images/upload/:
+    get:
+      operationId: v1_consultation_images_upload_retrieve
+      description: List all consultation images for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_consultation_images_upload_create
+      description: Add a new consultation image for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    delete:
+      operationId: v1_consultation_images_upload_destroy
+      description: Delete a consultation image for a specific consultation.
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/consultation/{slotid}/symptoms/:
+    get:
+      operationId: v1_consultation_symptoms_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+        - in: path
+          name: slotid
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedSymptomList"
+          description: ""
+  /api/v1/consultation/report/{consultation_id}/:
+    get:
+      operationId: v1_consultation_report_retrieve
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_consultation_report_create
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/consultation/report/medication/fields/:
+    get:
+      operationId: v1_consultation_report_medication_fields_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/contact/:
+    post:
+      operationId: v1_contact_create
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/districts/:
+    get:
+      operationId: v1_districts_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/doctor/slots/{id}/:
+    get:
+      operationId: v1_doctor_slots_list
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          description: A UUID string identifying this Consultation Slot.
+          required: true
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedConsultationSlotList"
+          description: ""
+  /api/v1/doctor/slots/completed/:
+    get:
+      operationId: v1_doctor_slots_completed_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/forget-password/:
+    post:
+      operationId: v1_forget_password_create
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/forget-password/verify/:
+    post:
+      operationId: v1_forget_password_verify_create
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/generate/signature/:
+    post:
+      operationId: v1_generate_signature_create
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/health-library/:
+    get:
+      operationId: v1_health_library_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedHealthLibraryCardList"
+          description: ""
+    post:
+      operationId: v1_health_library_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HealthLibraryCard"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/HealthLibraryCard"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/HealthLibraryCard"
+        required: true
+      security:
+        - {}
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthLibraryCard"
+          description: ""
+  /api/v1/health-library/{id}/:
+    get:
+      operationId: v1_health_library_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Health Library.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthLibrary"
+          description: ""
+    put:
+      operationId: v1_health_library_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Health Library.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HealthLibrary"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/HealthLibrary"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/HealthLibrary"
+        required: true
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthLibrary"
+          description: ""
+    patch:
+      operationId: v1_health_library_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Health Library.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedHealthLibrary"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedHealthLibrary"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedHealthLibrary"
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthLibrary"
+          description: ""
+    delete:
+      operationId: v1_health_library_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Health Library.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "204":
+          description: No response body
+  /api/v1/homepage/:
+    get:
+      operationId: v1_homepage_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/hospitals/:
+    get:
+      operationId: v1_hospitals_retrieve
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/hospitals/{id}/:
+    get:
+      operationId: v1_hospitals_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Hospital.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Hospital"
+          description: ""
+  /api/v1/hospitals/{id}/doctors/:
+    get:
+      operationId: v1_hospitals_doctors_list
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDoctorSmallCardList"
+          description: ""
+  /api/v1/hospitals/geojson/:
+    get:
+      operationId: v1_hospitals_geojson_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedHospitalBranchCardList"
+          description: ""
+  /api/v1/hospitals/specializations/:
+    get:
+      operationId: v1_hospitals_specializations_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedSpecializationList"
+          description: ""
+    post:
+      operationId: v1_hospitals_specializations_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Specialization"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Specialization"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Specialization"
+        required: true
+      security:
+        - {}
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Specialization"
+          description: ""
+  /api/v1/instant-consultation/:
+    post:
+      operationId: v1_instant_consultation_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InstantConsultation"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/InstantConsultation"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/InstantConsultation"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstantConsultation"
+          description: ""
+  /api/v1/instant-consultation/detail/{consultation_id}/:
+    get:
+      operationId: v1_instant_consultation_detail_retrieve
+      parameters:
+        - in: path
+          name: consultation_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InstantConsultationDetail"
+          description: ""
+  /api/v1/instant-consultation/signature/:
+    post:
+      operationId: v1_instant_consultation_signature_create
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/instant-consultation/symptoms/:
+    get:
+      operationId: v1_instant_consultation_symptoms_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/lab/:
+    get:
+      operationId: v1_lab_retrieve
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/lab/{id}/:
+    get:
+      operationId: v1_lab_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Lab.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Lab"
+          description: ""
+  /api/v1/lab/packages/:
+    get:
+      operationId: v1_lab_packages_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedLabTestCardPackageList"
+          description: ""
+  /api/v1/lab/packages/{id}/:
+    get:
+      operationId: v1_lab_packages_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Lab Package.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LabTestPackage"
+          description: ""
+  /api/v1/login/:
+    post:
+      operationId: v1_login_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Login"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Login"
+        required: true
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Login"
+          description: ""
+  /api/v1/logout/:
+    post:
+      operationId: v1_logout_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/medicine-remainders/:
+    get:
+      operationId: v1_medicine_remainders_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_medicine_remainders_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/medicine-remainders/{id}/:
+    get:
+      operationId: v1_medicine_remainders_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+    delete:
+      operationId: v1_medicine_remainders_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/v1/medicine-remainders/sync/:
+    post:
+      operationId: v1_medicine_remainders_sync_create
+      description: "Sync reminders: update existing ones or create new ones."
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/medicines/:
+    get:
+      operationId: v1_medicines_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedMedicineList"
+          description: ""
+  /api/v1/medicines/company/:
+    get:
+      operationId: v1_medicines_company_retrieve
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/medicines/company/{id}/:
+    get:
+      operationId: v1_medicines_company_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Pharmacy.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pharmacy"
+          description: ""
+  /api/v1/notices/:
+    get:
+      operationId: v1_notices_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedNoticeList"
+          description: ""
+  /api/v1/notices/{id}/:
+    get:
+      operationId: v1_notices_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Notice.
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notice"
+          description: ""
+  /api/v1/notices/{id}/read/:
+    put:
+      operationId: v1_notices_read_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Notification.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Notification"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Notification"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Notification"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+          description: ""
+    patch:
+      operationId: v1_notices_read_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Notification.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedNotification"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedNotification"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedNotification"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+          description: ""
+  /api/v1/notification/settings/:
+    get:
+      operationId: v1_notification_settings_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_notification_settings_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/notifications/:
+    get:
+      operationId: v1_notifications_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedNotificationList"
+          description: ""
+  /api/v1/notifications/{id}/:
+    get:
+      operationId: v1_notifications_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Notice.
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+          description: ""
+  /api/v1/order/{id}/:
+    get:
+      operationId: v1_order_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Booked Consultation.
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookedConsultation"
+          description: ""
+    post:
+      operationId: v1_order_create
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this Booked Consultation.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookedConsultation"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/BookedConsultation"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/BookedConsultation"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookedConsultation"
+          description: ""
+  /api/v1/order/coupon/{id}/:
+    post:
+      operationId: v1_order_coupon_create
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/parent/assistant-voices/:
+    get:
+      operationId: v1_parent_assistant_voices_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedAssistantVoiceList"
+          description: ""
+    post:
+      operationId: v1_parent_assistant_voices_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssistantVoice"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AssistantVoice"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/AssistantVoice"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantVoice"
+          description: ""
+  /api/v1/parent/assistant-voices/{id}/:
+    get:
+      operationId: v1_parent_assistant_voices_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantVoice"
+          description: ""
+    put:
+      operationId: v1_parent_assistant_voices_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssistantVoice"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AssistantVoice"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/AssistantVoice"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantVoice"
+          description: ""
+    patch:
+      operationId: v1_parent_assistant_voices_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedAssistantVoice"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedAssistantVoice"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedAssistantVoice"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AssistantVoice"
+          description: ""
+    delete:
+      operationId: v1_parent_assistant_voices_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/parent/phonebook/:
+    get:
+      operationId: v1_parent_phonebook_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUserPhoneBookList"
+          description: ""
+    post:
+      operationId: v1_parent_phonebook_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPhoneBook"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UserPhoneBook"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserPhoneBook"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPhoneBook"
+          description: ""
+  /api/v1/parent/phonebook/{id}/:
+    get:
+      operationId: v1_parent_phonebook_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPhoneBook"
+          description: ""
+    put:
+      operationId: v1_parent_phonebook_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPhoneBook"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UserPhoneBook"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserPhoneBook"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPhoneBook"
+          description: ""
+    patch:
+      operationId: v1_parent_phonebook_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUserPhoneBook"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUserPhoneBook"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUserPhoneBook"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserPhoneBook"
+          description: ""
+    delete:
+      operationId: v1_parent_phonebook_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/payments/consultations/:
+    get:
+      operationId: v1_payments_consultations_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/pharmacy/:
+    get:
+      operationId: v1_pharmacy_retrieve
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/pharmacy/{id}/:
+    get:
+      operationId: v1_pharmacy_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this Pharmacy.
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Pharmacy"
+          description: ""
+  /api/v1/promotional/hospital/discount/:
+    get:
+      operationId: v1_promotional_hospital_discount_list
+      parameters:
+        - name: ordering
+          required: false
+          in: query
+          description: Which field to use when ordering the results.
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+        - name: page_size
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedHospitalDiscountList"
+          description: ""
+    post:
+      operationId: v1_promotional_hospital_discount_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HospitalDiscount"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/HospitalDiscount"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/HospitalDiscount"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HospitalDiscount"
+          description: ""
+  /api/v1/promotional/hospital/discount/{id}/:
+    get:
+      operationId: v1_promotional_hospital_discount_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this hospital discount.
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HospitalDiscount"
+          description: ""
+    put:
+      operationId: v1_promotional_hospital_discount_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this hospital discount.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HospitalDiscount"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/HospitalDiscount"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/HospitalDiscount"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HospitalDiscount"
+          description: ""
+    patch:
+      operationId: v1_promotional_hospital_discount_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this hospital discount.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedHospitalDiscount"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedHospitalDiscount"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedHospitalDiscount"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HospitalDiscount"
+          description: ""
+    delete:
+      operationId: v1_promotional_hospital_discount_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          description: A unique value identifying this hospital discount.
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/promotional/vouchers/claim/:
+    post:
+      operationId: v1_promotional_vouchers_claim_create
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/quiz/check/answer/:
+    get:
+      operationId: v1_quiz_check_answer_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_quiz_check_answer_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/quiz/clients/:
+    get:
+      operationId: v1_quiz_clients_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/quiz/clients/{id}/today-quiz/:
+    get:
+      operationId: v1_quiz_clients_today_quiz_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/quiz/clients/check/answer/:
+    post:
+      operationId: v1_quiz_clients_check_answer_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/quiz/leaderboard/:
+    get:
+      operationId: v1_quiz_leaderboard_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedLeaderboardUserList"
+          description: ""
+    post:
+      operationId: v1_quiz_leaderboard_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeaderboardUser"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/LeaderboardUser"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/LeaderboardUser"
+      security:
+        - jwtAuth: []
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardUser"
+          description: ""
+  /api/v1/quiz/leaderboard/{id}/:
+    get:
+      operationId: v1_quiz_leaderboard_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardUser"
+          description: ""
+    put:
+      operationId: v1_quiz_leaderboard_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LeaderboardUser"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/LeaderboardUser"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/LeaderboardUser"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardUser"
+          description: ""
+    patch:
+      operationId: v1_quiz_leaderboard_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedLeaderboardUser"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedLeaderboardUser"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedLeaderboardUser"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LeaderboardUser"
+          description: ""
+    delete:
+      operationId: v1_quiz_leaderboard_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          description: A unique integer value identifying this user.
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "204":
+          description: No response body
+  /api/v1/register/phone/:
+    post:
+      operationId: v1_register_phone_create
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/request/account/deletion/:
+    post:
+      operationId: v1_request_account_deletion_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/resend/otp/:
+    post:
+      operationId: v1_resend_otp_create
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/schedules/:
+    get:
+      operationId: v1_schedules_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/search/:
+    get:
+      operationId: v1_search_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/search/{search_type}/:
+    get:
+      operationId: v1_search_retrieve_2
+      parameters:
+        - in: path
+          name: search_type
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/send-verification-code/:
+    post:
+      operationId: v1_send_verification_code_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/slot/{id}/:
+    get:
+      operationId: v1_slot_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsultationSlotDisplay"
+          description: ""
+    post:
+      operationId: v1_slot_create
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlotDisplay"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlotDisplay"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlotDisplay"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsultationSlotDisplay"
+          description: ""
+    put:
+      operationId: v1_slot_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlotDisplay"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlotDisplay"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlotDisplay"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsultationSlotDisplay"
+          description: ""
+    patch:
+      operationId: v1_slot_partial_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedConsultationSlotDisplay"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedConsultationSlotDisplay"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedConsultationSlotDisplay"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsultationSlotDisplay"
+          description: ""
+    delete:
+      operationId: v1_slot_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/slot/signature/:
+    post:
+      operationId: v1_slot_signature_create
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/slot/update/:
+    get:
+      operationId: v1_slot_update_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_slot_update_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/slots/:
+    get:
+      operationId: v1_slots_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedConsultationSlotList"
+          description: ""
+    post:
+      operationId: v1_slots_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlot"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlot"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ConsultationSlot"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConsultationSlot"
+          description: ""
+  /api/v1/slots/user/booked/:
+    get:
+      operationId: v1_slots_user_booked_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/slots/users/:
+    get:
+      operationId: v1_slots_users_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/sos/:
+    get:
+      operationId: v1_sos_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    post:
+      operationId: v1_sos_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/sos/{id}/notify/:
+    get:
+      operationId: v1_sos_notify_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/sos/{id}/:
+    get:
+      operationId: v1_sos_retrieve_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    put:
+      operationId: v1_sos_update
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    delete:
+      operationId: v1_sos_destroy
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/sos/notify/:
+    get:
+      operationId: v1_sos_notify_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+  /api/v1/subscriber/:
+    post:
+      operationId: v1_subscriber_create
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/update-password/{token}/:
+    post:
+      operationId: v1_update_password_create
+      parameters:
+        - in: path
+          name: token
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+        required: true
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePassword"
+          description: ""
+    put:
+      operationId: v1_update_password_update
+      parameters:
+        - in: path
+          name: token
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+        required: true
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePassword"
+          description: ""
+    patch:
+      operationId: v1_update_password_partial_update
+      parameters:
+        - in: path
+          name: token
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUpdatePassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUpdatePassword"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUpdatePassword"
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePassword"
+          description: ""
+  /api/v1/update/password/:
+    post:
+      operationId: v1_update_password_create_2
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePassword"
+          description: ""
+    put:
+      operationId: v1_update_password_update_2
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UpdatePassword"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePassword"
+          description: ""
+    patch:
+      operationId: v1_update_password_partial_update_2
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUpdatePassword"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUpdatePassword"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUpdatePassword"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePassword"
+          description: ""
+  /api/v1/update/user/:
+    post:
+      operationId: v1_update_user_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUpdate"
+          description: ""
+    put:
+      operationId: v1_update_user_update
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserUpdate"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUpdate"
+          description: ""
+    patch:
+      operationId: v1_update_user_partial_update
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedUserUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedUserUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedUserUpdate"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUpdate"
+          description: ""
+  /api/v1/update/user/password/:
+    post:
+      operationId: v1_update_user_password_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    put:
+      operationId: v1_update_user_password_update
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+    patch:
+      operationId: v1_update_user_password_partial_update
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/update/user/profile/:
+    post:
+      operationId: v1_update_user_profile_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileImage"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ProfileImage"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ProfileImage"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileImage"
+          description: ""
+    put:
+      operationId: v1_update_user_profile_update
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileImage"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/ProfileImage"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ProfileImage"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileImage"
+          description: ""
+    patch:
+      operationId: v1_update_user_profile_partial_update
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedProfileImage"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedProfileImage"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedProfileImage"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProfileImage"
+          description: ""
+  /api/v1/user/:
+    get:
+      operationId: v1_user_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+          description: ""
+  /api/v1/user/doctor/:
+    get:
+      operationId: v1_user_doctor_list
+      description: Handles the retrieval of doctor details using a GET request.
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedDoctorList"
+          description: ""
+    post:
+      operationId: v1_user_doctor_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+          description: ""
+  /api/v1/user/doctor/{id}/:
+    get:
+      operationId: v1_user_doctor_retrieve
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/user/doctor/filters/:
+    get:
+      operationId: v1_user_doctor_filters_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/user/doctor/list/overview/:
+    get:
+      operationId: v1_user_doctor_list_overview_retrieve
+      tags:
+        - v1
+      security:
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/user/doctor/login/:
+    post:
+      operationId: v1_user_doctor_login_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Login"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Login"
+        required: true
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Login"
+          description: ""
+  /api/v1/user/doctor/overview/:
+    get:
+      operationId: v1_user_doctor_overview_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/user/doctor/update/:
+    post:
+      operationId: v1_user_doctor_update_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+          description: ""
+    put:
+      operationId: v1_user_doctor_update_update
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+          description: ""
+    patch:
+      operationId: v1_user_doctor_update_partial_update
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedDoctor"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedDoctor"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedDoctor"
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+          description: ""
+  /api/v1/user/doctor/update/{id}/:
+    post:
+      operationId: v1_user_doctor_update_create_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+          description: ""
+    put:
+      operationId: v1_user_doctor_update_update_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/Doctor"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+          description: ""
+    patch:
+      operationId: v1_user_doctor_update_partial_update_2
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedDoctor"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedDoctor"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedDoctor"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Doctor"
+          description: ""
+  /api/v1/user/doctors/:
+    get:
+      operationId: v1_user_doctors_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/user/doctors/available/today/:
+    get:
+      operationId: v1_user_doctors_available_today_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/user/document/{fileid}/delete/:
+    delete:
+      operationId: v1_user_document_delete_destroy
+      parameters:
+        - in: path
+          name: fileid
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      responses:
+        "204":
+          description: No response body
+  /api/v1/user/folders/:
+    get:
+      operationId: v1_user_folders_list
+      parameters:
+        - name: page
+          required: false
+          in: query
+          description: A page number within the paginated result set.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUserFolderList"
+          description: ""
+    post:
+      operationId: v1_user_folders_create
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserFolder"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/UserFolder"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserFolder"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserFolder"
+          description: ""
+  /api/v1/user/folders/{folder_id}/files/:
+    get:
+      operationId: v1_user_folders_files_list
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+        - name: page
+          required: false
+          in: query
+          description: Number of results to return per page.
+          schema:
+            type: integer
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedUserDocumentsRetrieveList"
+          description: ""
+  /api/v1/user/folders/{folder_id}/rename/:
+    post:
+      operationId: v1_user_folders_rename_create
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FolderUpdate"
+          description: ""
+    put:
+      operationId: v1_user_folders_rename_update
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FolderUpdate"
+          description: ""
+    patch:
+      operationId: v1_user_folders_rename_partial_update
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedFolderUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedFolderUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedFolderUpdate"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FolderUpdate"
+          description: ""
+  /api/v1/user/folders/{folder_id}/update/:
+    post:
+      operationId: v1_user_folders_update_create
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FolderUpdate"
+          description: ""
+    put:
+      operationId: v1_user_folders_update_update
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/FolderUpdate"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FolderUpdate"
+          description: ""
+    patch:
+      operationId: v1_user_folders_update_partial_update
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatchedFolderUpdate"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/PatchedFolderUpdate"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/PatchedFolderUpdate"
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FolderUpdate"
+          description: ""
+  /api/v1/user/folders/{folder_id}/upload/:
+    post:
+      operationId: v1_user_folders_upload_create
+      parameters:
+        - in: path
+          name: folder_id
+          schema:
+            type: string
+          required: true
+      tags:
+        - v1
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/UserDocuments"
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserDocuments"
+          description: ""
+  /api/v1/user/health/profile/:
+    get:
+      operationId: v1_user_health_profile_retrieve
+      tags:
+        - v1
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthProfile"
+          description: ""
+  /api/v1/user/token/refresh/:
+    post:
+      operationId: v1_user_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TokenRefresh"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TokenRefresh"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/TokenRefresh"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenRefresh"
+          description: ""
+  /api/v1/user/token/verify/:
+    post:
+      operationId: v1_user_token_verify_create
+      description: |-
+        Takes a token and indicates if it is valid.  This view provides no
+        information about a token's fitness for a particular use.
+      tags:
+        - v1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TokenVerify"
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/TokenVerify"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/TokenVerify"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenVerify"
+          description: ""
+  /api/v1/verify-email/:
+    post:
+      operationId: v1_verify_email_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/verify/account/deletion/:
+    post:
+      operationId: v1_verify_account_deletion_create
+      tags:
+        - v1
+      responses:
+        "200":
+          description: No response body
+  /api/v1/verify/phone/{userid}/:
+    post:
+      operationId: v1_verify_phone_create
+      parameters:
+        - in: path
+          name: userid
+          schema:
+            type: integer
+          required: true
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+        - {}
+      responses:
+        "200":
+          description: No response body
+  /api/v1/videos/:
+    get:
+      operationId: v1_videos_retrieve
+      tags:
+        - v1
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: No response body
+components:
+  schemas:
+    AmbulanceCard:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+        contact_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        contact_number:
+          type: string
+          readOnly: true
+        district:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/DistrictEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+      required:
+        - contact_number
+        - id
+        - title
+    ArticleTypeEnum:
+      enum:
+        - image
+        - video
+        - audio
+        - file
+      type: string
+      description: |-
+        * `image` - Image
+        * `video` - Video
+        * `audio` - Audio
+        * `file` - File
+    AssistantVoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        file_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        voice:
+          type: string
+          format: uri
+          nullable: true
+        active:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - date_created
+        - id
+    BlankEnum:
+      enum:
+        - ""
+    BloodBank:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 1000
+        description:
+          type: string
+          nullable: true
+        logo:
+          type: string
+          nullable: true
+        website:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        address:
+          type: string
+          readOnly: true
+        distance:
+          type: string
+          readOnly: true
+        cordinates:
+          type: string
+          readOnly: true
+        gallery:
+          type: string
+          readOnly: true
+        branches:
+          type: string
+          readOnly: true
+        google_map_link:
+          type: string
+          readOnly: true
+        blood_availability:
+          type: string
+          readOnly: true
+        featured:
+          type: boolean
+        sponsored:
+          type: boolean
+      required:
+        - address
+        - blood_availability
+        - branches
+        - cordinates
+        - distance
+        - gallery
+        - google_map_link
+        - id
+        - name
+    BloodDonars:
+      type: object
+      properties:
+        profile:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        age:
+          type: string
+          readOnly: true
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 15
+        email:
+          type: string
+          format: email
+          nullable: true
+          title: Email address
+          maxLength: 254
+        distance:
+          type: string
+          readOnly: true
+        gender:
+          type: string
+          readOnly: true
+        address:
+          type: string
+          readOnly: true
+        is_verified:
+          type: boolean
+          title: Verified
+      required:
+        - address
+        - age
+        - distance
+        - gender
+        - name
+        - profile
+    BloodGroupEnum:
+      enum:
+        - A+
+        - A-
+        - B+
+        - B-
+        - AB+
+        - AB-
+        - O+
+        - O-
+      type: string
+      description: |-
+        * `A+` - A+
+        * `A-` - A-
+        * `B+` - B+
+        * `B-` - B-
+        * `AB+` - AB+
+        * `AB-` - AB-
+        * `O+` - O+
+        * `O-` - O-
+    BloodRequestAcceptance:
+      type: object
+      properties:
+        profile:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        age:
+          type: string
+          readOnly: true
+        phone_number:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          readOnly: true
+        distance:
+          type: string
+          readOnly: true
+        gender:
+          type: string
+          readOnly: true
+        address:
+          type: string
+          readOnly: true
+        is_verified:
+          type: string
+          readOnly: true
+      required:
+        - address
+        - age
+        - distance
+        - email
+        - gender
+        - is_verified
+        - name
+        - phone_number
+        - profile
+    BookedConsultation:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        slot:
+          type: string
+          format: uuid
+        user:
+          type: integer
+          readOnly: true
+        share_document:
+          type: string
+          format: uri
+          nullable: true
+        query:
+          type: string
+          nullable: true
+        share_history:
+          type: boolean
+        payment:
+          type: string
+          maxLength: 100
+        doctor:
+          type: string
+          readOnly: true
+        status:
+          allOf:
+            - $ref: "#/components/schemas/StatusC33Enum"
+          readOnly: true
+        start_time:
+          type: string
+          readOnly: true
+        end_time:
+          type: string
+          readOnly: true
+        coupon:
+          type: string
+          readOnly: true
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        final_amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+        symptoms:
+          type: array
+          items:
+            type: string
+          writeOnly: true
+        patient_symptoms:
+          type: string
+          readOnly: true
+      required:
+        - coupon
+        - doctor
+        - end_time
+        - id
+        - patient_symptoms
+        - slot
+        - start_time
+        - status
+        - user
+    BookedConsultationStatus:
+      type: object
+      properties:
+        slot:
+          type: string
+          format: uuid
+        status:
+          $ref: "#/components/schemas/StatusC33Enum"
+      required:
+        - slot
+    CancerDocument:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        filename:
+          type: string
+          maxLength: 255
+        url:
+          type: string
+          format: uri
+          maxLength: 200
+      required:
+        - filename
+        - id
+        - url
+    CancerReviewRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone_number:
+          type: string
+          maxLength: 15
+        additional_number:
+          type: string
+          nullable: true
+          maxLength: 15
+        requested_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: "#/components/schemas/CancerReviewRequestStatusEnum"
+        feedback:
+          type: string
+          nullable: true
+        handle_by:
+          type: integer
+          nullable: true
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/CancerDocument"
+          readOnly: true
+      required:
+        - documents
+        - id
+        - phone_number
+        - requested_at
+    CancerReviewRequestCreate:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone_number:
+          type: string
+          maxLength: 15
+        additional_number:
+          type: string
+          nullable: true
+          maxLength: 15
+      required:
+        - id
+        - phone_number
+    CancerReviewRequestStatusEnum:
+      enum:
+        - draft
+        - pending
+        - closed
+      type: string
+      description: |-
+        * `draft` - Draft
+        * `pending` - Pending
+        * `closed` - Closed
+    Category:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+          nullable: true
+          maxLength: 200
+      required:
+        - id
+        - title
+    ConsultationSlot:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          $ref: "#/components/schemas/StatusDd9Enum"
+      required:
+        - id
+        - start_time
+    ConsultationSlotDisplay:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        event_id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        is_booked:
+          type: string
+          readOnly: true
+        order:
+          type: string
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        date:
+          type: string
+          readOnly: true
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          $ref: "#/components/schemas/StatusDd9Enum"
+        report_generated:
+          type: string
+          readOnly: true
+        doctor_start_datetime:
+          type: string
+          format: date-time
+          nullable: true
+        doctor_end_datetime:
+          type: string
+          format: date-time
+          nullable: true
+        rx:
+          type: string
+          nullable: true
+      required:
+        - date
+        - event_id
+        - id
+        - is_booked
+        - order
+        - report_generated
+        - start_time
+        - title
+        - user_name
+    DistrictEnum:
+      enum:
+        - achham
+        - arghakhanchi
+        - baglung
+        - baitadi
+        - bajhang
+        - bajura
+        - banke
+        - bara
+        - bardiya
+        - bhaktapur
+        - bhojpur
+        - chitwan
+        - dadeldhura
+        - dailekh
+        - dang deukhuri
+        - darchula
+        - dhading
+        - dhankuta
+        - dhanusa
+        - dholkha
+        - dolpa
+        - doti
+        - gorkha
+        - gulmi
+        - humla
+        - ilam
+        - jajarkot
+        - jhapa
+        - jumla
+        - kailali
+        - kalikot
+        - kanchanpur
+        - kapilvastu
+        - kaski
+        - kathmandu
+        - kavrepalanchok
+        - khotang
+        - lalitpur
+        - lamjung
+        - mahottari
+        - makwanpur
+        - manang
+        - morang
+        - mugu
+        - mustang
+        - myagdi
+        - nawalparasi-east
+        - nawalparasi-west
+        - nuwakot
+        - okhaldhunga
+        - palpa
+        - panchthar
+        - parbat
+        - parsa
+        - pyuthan
+        - ramechhap
+        - rasuwa
+        - rautahat
+        - rolpa
+        - rukum-east
+        - rukum-west
+        - rupandehi
+        - salyan
+        - sankhuwasabha
+        - saptari
+        - sarlahi
+        - sindhuli
+        - sindhupalchok
+        - siraha
+        - solukhumbu
+        - sunsari
+        - surkhet
+        - syangja
+        - tanahu
+        - taplejung
+        - terhathum
+        - udayapur
+      type: string
+      description: |-
+        * `achham` - Achham
+        * `arghakhanchi` - Arghakhanchi
+        * `baglung` - Baglung
+        * `baitadi` - Baitadi
+        * `bajhang` - Bajhang
+        * `bajura` - Bajura
+        * `banke` - Banke
+        * `bara` - Bara
+        * `bardiya` - Bardiya
+        * `bhaktapur` - Bhaktapur
+        * `bhojpur` - Bhojpur
+        * `chitwan` - Chitwan
+        * `dadeldhura` - Dadeldhura
+        * `dailekh` - Dailekh
+        * `dang deukhuri` - Dang Deukhuri
+        * `darchula` - Darchula
+        * `dhading` - Dhading
+        * `dhankuta` - Dhankuta
+        * `dhanusa` - Dhanusa
+        * `dholkha` - Dholkha
+        * `dolpa` - Dolpa
+        * `doti` - Doti
+        * `gorkha` - Gorkha
+        * `gulmi` - Gulmi
+        * `humla` - Humla
+        * `ilam` - Ilam
+        * `jajarkot` - Jajarkot
+        * `jhapa` - Jhapa
+        * `jumla` - Jumla
+        * `kailali` - Kailali
+        * `kalikot` - Kalikot
+        * `kanchanpur` - Kanchanpur
+        * `kapilvastu` - Kapilvastu
+        * `kaski` - Kaski
+        * `kathmandu` - Kathmandu
+        * `kavrepalanchok` - Kavrepalanchok
+        * `khotang` - Khotang
+        * `lalitpur` - Lalitpur
+        * `lamjung` - Lamjung
+        * `mahottari` - Mahottari
+        * `makwanpur` - Makwanpur
+        * `manang` - Manang
+        * `morang` - Morang
+        * `mugu` - Mugu
+        * `mustang` - Mustang
+        * `myagdi` - Myagdi
+        * `nawalparasi-east` - Nawalparasi East
+        * `nawalparasi-west` - Nawalparasi West
+        * `nuwakot` - Nuwakot
+        * `okhaldhunga` - Okhaldhunga
+        * `palpa` - Palpa
+        * `panchthar` - Panchthar
+        * `parbat` - Parbat
+        * `parsa` - Parsa
+        * `pyuthan` - Pyuthan
+        * `ramechhap` - Ramechhap
+        * `rasuwa` - Rasuwa
+        * `rautahat` - Rautahat
+        * `rolpa` - Rolpa
+        * `rukum-east` - Rukum East
+        * `rukum-west` - Rukum West
+        * `rupandehi` - Rupandehi
+        * `salyan` - Salyan
+        * `sankhuwasabha` - Sankhuwasabha
+        * `saptari` - Saptari
+        * `sarlahi` - Sarlahi
+        * `sindhuli` - Sindhuli
+        * `sindhupalchok` - Sindhupalchok
+        * `siraha` - Siraha
+        * `solukhumbu` - Solukhumbu
+        * `sunsari` - Sunsari
+        * `surkhet` - Surkhet
+        * `syangja` - Syangja
+        * `tanahu` - Tanahu
+        * `taplejung` - Taplejung
+        * `terhathum` - Terhathum
+        * `udayapur` - Udayapur
+    Doctor:
+      type: object
+      properties:
+        prefix:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/PrefixEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        first_name:
+          type: string
+          maxLength: 30
+        middle_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          nullable: true
+          title: Email address
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 15
+        nmc_number:
+          type: string
+        blood_group:
+          oneOf:
+            - $ref: "#/components/schemas/BloodGroupEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        user_profile:
+          type: string
+          format: uri
+          nullable: true
+        signature:
+          type: string
+          format: uri
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/GenderEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        extra_specialization:
+          type: string
+        specialization_certificate:
+          type: string
+          format: uri
+        pan_number:
+          type: string
+        pan_document:
+          type: string
+          format: uri
+        missing_fields:
+          type: string
+    DoctorSmallCard:
+      type: object
+      properties:
+        prefix:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/PrefixEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        name:
+          type: string
+          readOnly: true
+        name_with_prefix:
+          type: string
+          readOnly: true
+        profile_image:
+          type: string
+          readOnly: true
+        hospitals:
+          type: string
+          readOnly: true
+        specialization:
+          type: string
+          readOnly: true
+      required:
+        - hospitals
+        - name
+        - name_with_prefix
+        - profile_image
+        - specialization
+    FolderUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        is_shared:
+          type: boolean
+    GenderEnum:
+      enum:
+        - M
+        - F
+        - O
+      type: string
+      description: |-
+        * `M` - Male
+        * `F` - Female
+        * `O` - Other
+    HealthLibrary:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          nullable: true
+          description: Leave it blank to generate automatically
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        post_type:
+          oneOf:
+            - $ref: "#/components/schemas/PostTypeEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        short_description:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+        category:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+          readOnly: true
+        featured_image:
+          type: string
+          readOnly: true
+        is_featured:
+          type: boolean
+        bookmarked:
+          type: string
+          readOnly: true
+        reading_time:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        user:
+          allOf:
+            - $ref: "#/components/schemas/UserPost"
+          readOnly: true
+        views:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        article_type:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/ArticleTypeEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        attachment:
+          type: string
+          readOnly: true
+        published_date:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_date:
+          type: string
+          format: date-time
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+        - attachment
+        - bookmarked
+        - category
+        - featured_image
+        - id
+        - published_date
+        - short_description
+        - title
+        - updated_date
+        - url
+        - user
+    HealthLibraryCard:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          nullable: true
+          description: Leave it blank to generate automatically
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        featured_image:
+          type: string
+          readOnly: true
+        bookmarked:
+          type: string
+          readOnly: true
+        short_description:
+          type: string
+          readOnly: true
+        is_featured:
+          type: boolean
+        user:
+          allOf:
+            - $ref: "#/components/schemas/UserPost"
+          readOnly: true
+        published_date:
+          type: string
+          format: date-time
+          readOnly: true
+        article_type:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/ArticleTypeEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        attachment:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        category:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+          readOnly: true
+      required:
+        - attachment
+        - bookmarked
+        - category
+        - featured_image
+        - id
+        - published_date
+        - short_description
+        - title
+        - url
+        - user
+    HealthProfile:
+      type: object
+      properties:
+        blood_group:
+          oneOf:
+            - $ref: "#/components/schemas/BloodGroupEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        age:
+          type: string
+          readOnly: true
+        height:
+          type: string
+          readOnly: true
+        body_weight:
+          type: string
+          readOnly: true
+        body_weight_pound:
+          type: number
+          format: double
+          nullable: true
+          title: Body weight (pound)
+        bmi:
+          type: string
+          readOnly: true
+        bmi_per:
+          type: string
+          readOnly: true
+        body_weight_status:
+          type: string
+          readOnly: true
+        height_feet:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (feet)
+        height_inches:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (inches)
+      required:
+        - age
+        - bmi
+        - bmi_per
+        - body_weight
+        - body_weight_status
+        - height
+    Hospital:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 1000
+        description:
+          type: string
+          nullable: true
+        logo:
+          type: string
+          nullable: true
+        website:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        beds:
+          type: string
+          readOnly: true
+        address:
+          type: string
+          readOnly: true
+        distance:
+          type: string
+          readOnly: true
+        cordinates:
+          type: string
+          readOnly: true
+        specializations:
+          type: array
+          items:
+            $ref: "#/components/schemas/Specialization"
+        gallery:
+          type: string
+          readOnly: true
+        branches:
+          type: string
+          readOnly: true
+        google_map_link:
+          type: string
+          readOnly: true
+      required:
+        - address
+        - beds
+        - branches
+        - cordinates
+        - distance
+        - gallery
+        - google_map_link
+        - id
+        - name
+        - specializations
+    HospitalBranchCard:
+      type: object
+      properties:
+        type:
+          type: string
+          readOnly: true
+        geometry:
+          type: string
+          readOnly: true
+        properties:
+          type: string
+          readOnly: true
+      required:
+        - geometry
+        - properties
+        - type
+    HospitalDiscount:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        hospital:
+          type: integer
+        hospital_info:
+          type: string
+          readOnly: true
+        assigned_by:
+          type: integer
+        assigned_by_info:
+          type: string
+          readOnly: true
+        user:
+          type: integer
+        patient_info:
+          type: string
+          readOnly: true
+        amount:
+          type: number
+          format: double
+        discount:
+          type: number
+          format: double
+        published_date:
+          type: string
+          readOnly: true
+      required:
+        - amount
+        - assigned_by_info
+        - discount
+        - hospital_info
+        - id
+        - patient_info
+        - published_date
+        - user
+    InstantConsultation:
+      type: object
+      properties:
+        for_you:
+          type: boolean
+        user:
+          type: integer
+          nullable: true
+        personal_information:
+          type: integer
+        symptoms:
+          type: array
+          items:
+            type: integer
+        other_symptoms:
+          type: string
+          nullable: true
+        medical_issues:
+          type: array
+          items:
+            type: integer
+        other_medical_issues:
+          type: string
+          nullable: true
+        allergies:
+          type: array
+          items:
+            type: integer
+        other_allergies:
+          type: string
+          nullable: true
+        share_medical_history:
+          type: boolean
+    InstantConsultationDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        for_you:
+          type: boolean
+        user:
+          type: integer
+          nullable: true
+        personal_information:
+          type: string
+          readOnly: true
+        symptoms:
+          type: array
+          items:
+            $ref: "#/components/schemas/Symptom"
+        other_symptoms:
+          type: string
+          nullable: true
+        medical_issues:
+          type: array
+          items:
+            $ref: "#/components/schemas/Symptom"
+        other_medical_issues:
+          type: string
+          nullable: true
+        allergies:
+          type: array
+          items:
+            $ref: "#/components/schemas/Symptom"
+        other_allergies:
+          type: string
+          nullable: true
+        share_medical_history:
+          type: boolean
+      required:
+        - allergies
+        - id
+        - medical_issues
+        - personal_information
+        - symptoms
+    Lab:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 1000
+        description:
+          type: string
+          nullable: true
+        logo:
+          type: string
+          nullable: true
+        website:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        address:
+          type: string
+          readOnly: true
+        distance:
+          type: string
+          readOnly: true
+        cordinates:
+          type: string
+          readOnly: true
+        gallery:
+          type: string
+          readOnly: true
+        branches:
+          type: string
+          readOnly: true
+        google_map_link:
+          type: string
+          readOnly: true
+      required:
+        - address
+        - branches
+        - cordinates
+        - distance
+        - gallery
+        - google_map_link
+        - id
+        - name
+    LabTest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+        - slug
+    LabTestCardPackage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        image:
+          type: string
+          nullable: true
+        card_image:
+          type: string
+          nullable: true
+        regular_price:
+          type: number
+          format: double
+        sale_price:
+          type: number
+          format: double
+          nullable: true
+        tests:
+          type: string
+          readOnly: true
+        more_tests:
+          type: string
+          readOnly: true
+      required:
+        - id
+        - more_tests
+        - name
+        - slug
+        - tests
+    LabTestPackage:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        image:
+          type: string
+          nullable: true
+        card_image:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        regular_price:
+          type: number
+          format: double
+        sale_price:
+          type: number
+          format: double
+          nullable: true
+        tests:
+          type: array
+          items:
+            $ref: "#/components/schemas/LabTest"
+          readOnly: true
+      required:
+        - id
+        - name
+        - slug
+        - tests
+    LeaderboardUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        image:
+          type: string
+          readOnly: true
+        points:
+          type: integer
+          readOnly: true
+      required:
+        - full_name
+        - id
+        - image
+        - points
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        fcm_token:
+          type: string
+        loginType:
+          type: string
+      required:
+        - password
+        - username
+    Medicine:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+        slug:
+          type: string
+          nullable: true
+          description: This will be auto generated if leave empty
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        short_description:
+          type: string
+          nullable: true
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        medicine_form:
+          type: string
+          nullable: true
+        pharmacy:
+          type: integer
+          nullable: true
+        category:
+          type: array
+          items:
+            type: string
+        specialization:
+          type: array
+          items:
+            type: integer
+      required:
+        - category
+        - id
+        - name
+    Notice:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        background:
+          type: string
+          maxLength: 7
+        foreground:
+          type: string
+          maxLength: 7
+        icon:
+          type: string
+          nullable: true
+      required:
+        - background
+        - description
+        - foreground
+        - id
+        - title
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        body:
+          type: string
+        image:
+          type: string
+          nullable: true
+        url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        notification_type:
+          $ref: "#/components/schemas/NotificationTypeEnum"
+        sent_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+        - body
+        - id
+        - notification_type
+        - sent_at
+        - title
+    NotificationTypeEnum:
+      enum:
+        - promo_codes
+        - care_packages_discounts
+        - hospitals_discounts
+        - pharmacy_discounts
+        - custom
+      type: string
+      description: |-
+        * `promo_codes` - Promo Codes
+        * `care_packages_discounts` - Discount on Care Packages
+        * `hospitals_discounts` - Discount in Hospitals
+        * `pharmacy_discounts` - Discount on Pharmaccies
+        * `custom` - Custom Notification
+    NullEnum:
+      enum:
+        - null
+    PaginatedAssistantVoiceList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssistantVoice"
+    PaginatedBloodDonarsList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/BloodDonars"
+    PaginatedBloodRequestAcceptanceList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/BloodRequestAcceptance"
+    PaginatedCancerReviewRequestList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/CancerReviewRequest"
+    PaginatedCategoryList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+    PaginatedConsultationSlotList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConsultationSlot"
+    PaginatedDoctorList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Doctor"
+    PaginatedDoctorSmallCardList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/DoctorSmallCard"
+    PaginatedHealthLibraryCardList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/HealthLibraryCard"
+    PaginatedHospitalBranchCardList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/HospitalBranchCard"
+    PaginatedHospitalDiscountList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/HospitalDiscount"
+    PaginatedLabTestCardPackageList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/LabTestCardPackage"
+    PaginatedLeaderboardUserList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaderboardUser"
+    PaginatedMedicineList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Medicine"
+    PaginatedNoticeList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notice"
+    PaginatedNotificationList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Notification"
+    PaginatedPostCardList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostCard"
+    PaginatedRecursiveCategoryList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecursiveCategory"
+    PaginatedSliderList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Slider"
+    PaginatedSpecializationList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Specialization"
+    PaginatedSymptomList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/Symptom"
+    PaginatedUserDocumentsRetrieveList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserDocumentsRetrieve"
+    PaginatedUserFolderList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserFolder"
+    PaginatedUserPhoneBookList:
+      type: object
+      required:
+        - count
+        - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserPhoneBook"
+    PatchedAssistantVoice:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        file_name:
+          type: string
+          nullable: true
+          maxLength: 255
+        voice:
+          type: string
+          format: uri
+          nullable: true
+        active:
+          type: boolean
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedCancerReviewRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone_number:
+          type: string
+          maxLength: 15
+        additional_number:
+          type: string
+          nullable: true
+          maxLength: 15
+        requested_at:
+          type: string
+          format: date-time
+          readOnly: true
+        status:
+          $ref: "#/components/schemas/CancerReviewRequestStatusEnum"
+        feedback:
+          type: string
+          nullable: true
+        handle_by:
+          type: integer
+          nullable: true
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/CancerDocument"
+          readOnly: true
+    PatchedConsultationSlotDisplay:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        event_id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          readOnly: true
+        is_booked:
+          type: string
+          readOnly: true
+        order:
+          type: string
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        date:
+          type: string
+          readOnly: true
+        start_time:
+          type: string
+          format: date-time
+        end_time:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          $ref: "#/components/schemas/StatusDd9Enum"
+        report_generated:
+          type: string
+          readOnly: true
+        doctor_start_datetime:
+          type: string
+          format: date-time
+          nullable: true
+        doctor_end_datetime:
+          type: string
+          format: date-time
+          nullable: true
+        rx:
+          type: string
+          nullable: true
+    PatchedDoctor:
+      type: object
+      properties:
+        prefix:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/PrefixEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        first_name:
+          type: string
+          maxLength: 30
+        middle_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        email:
+          type: string
+          format: email
+          nullable: true
+          title: Email address
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 15
+        nmc_number:
+          type: string
+        blood_group:
+          oneOf:
+            - $ref: "#/components/schemas/BloodGroupEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        user_profile:
+          type: string
+          format: uri
+          nullable: true
+        signature:
+          type: string
+          format: uri
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/GenderEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        extra_specialization:
+          type: string
+        specialization_certificate:
+          type: string
+          format: uri
+        pan_number:
+          type: string
+        pan_document:
+          type: string
+          format: uri
+        missing_fields:
+          type: string
+    PatchedFolderUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        is_shared:
+          type: boolean
+    PatchedHealthLibrary:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          nullable: true
+          description: Leave it blank to generate automatically
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        post_type:
+          oneOf:
+            - $ref: "#/components/schemas/PostTypeEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        short_description:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+        category:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+          readOnly: true
+        featured_image:
+          type: string
+          readOnly: true
+        is_featured:
+          type: boolean
+        bookmarked:
+          type: string
+          readOnly: true
+        reading_time:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        user:
+          allOf:
+            - $ref: "#/components/schemas/UserPost"
+          readOnly: true
+        views:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        article_type:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/ArticleTypeEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        attachment:
+          type: string
+          readOnly: true
+        published_date:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_date:
+          type: string
+          format: date-time
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+    PatchedHospitalDiscount:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        hospital:
+          type: integer
+        hospital_info:
+          type: string
+          readOnly: true
+        assigned_by:
+          type: integer
+        assigned_by_info:
+          type: string
+          readOnly: true
+        user:
+          type: integer
+        patient_info:
+          type: string
+          readOnly: true
+        amount:
+          type: number
+          format: double
+        discount:
+          type: number
+          format: double
+        published_date:
+          type: string
+          readOnly: true
+    PatchedLeaderboardUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        image:
+          type: string
+          readOnly: true
+        points:
+          type: integer
+          readOnly: true
+    PatchedNotification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        body:
+          type: string
+        image:
+          type: string
+          nullable: true
+        url:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        notification_type:
+          $ref: "#/components/schemas/NotificationTypeEnum"
+        sent_at:
+          type: string
+          format: date-time
+          readOnly: true
+    PatchedPost:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          nullable: true
+          description: Leave it blank to generate automatically
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        short_description:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+        category:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+          readOnly: true
+        featured_image:
+          type: string
+          readOnly: true
+        is_featured:
+          type: boolean
+        bookmarked:
+          type: string
+          readOnly: true
+        reading_time:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        user:
+          allOf:
+            - $ref: "#/components/schemas/UserPost"
+          readOnly: true
+        views:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        published_date:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_date:
+          type: string
+          format: date-time
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+    PatchedProfileImage:
+      type: object
+      properties:
+        user_profile:
+          type: string
+          format: uri
+    PatchedUpdatePassword:
+      type: object
+      properties:
+        new_password:
+          type: string
+        confirm_password:
+          type: string
+    PatchedUserPhoneBook:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        relation:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone_number:
+          type: string
+          maxLength: 15
+        image:
+          type: string
+          format: uri
+          nullable: true
+    PatchedUserUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        middle_name:
+          type: string
+        last_name:
+          type: string
+        blood_group:
+          oneOf:
+            - $ref: "#/components/schemas/BloodGroupEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        date_of_birth:
+          type: string
+          format: date
+        gender:
+          $ref: "#/components/schemas/GenderEnum"
+        email:
+          type: string
+          format: email
+        height:
+          type: string
+        body_weight:
+          type: number
+          format: double
+        phone_number:
+          type: string
+        user_profile:
+          type: string
+          format: uri
+        address:
+          type: string
+        body_weight_pound:
+          type: number
+          format: double
+        fcm_token:
+          type: string
+          nullable: true
+        height_feet:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (feet)
+        height_inches:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (inches)
+    Pharmacy:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 1000
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        description:
+          type: string
+          nullable: true
+        logo:
+          type: string
+          nullable: true
+        website:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+        address:
+          type: string
+          readOnly: true
+        distance:
+          type: string
+          readOnly: true
+        branches:
+          type: string
+          readOnly: true
+        google_map_link:
+          type: string
+          readOnly: true
+      required:
+        - address
+        - branches
+        - distance
+        - google_map_link
+        - name
+        - slug
+    Post:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          nullable: true
+          description: Leave it blank to generate automatically
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        short_description:
+          type: string
+          readOnly: true
+        description:
+          type: string
+          nullable: true
+        category:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+          readOnly: true
+        featured_image:
+          type: string
+          readOnly: true
+        is_featured:
+          type: boolean
+        bookmarked:
+          type: string
+          readOnly: true
+        reading_time:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        user:
+          allOf:
+            - $ref: "#/components/schemas/UserPost"
+          readOnly: true
+        views:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+        published_date:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_date:
+          type: string
+          format: date-time
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+      required:
+        - bookmarked
+        - category
+        - featured_image
+        - id
+        - published_date
+        - short_description
+        - title
+        - updated_date
+        - url
+        - user
+    PostCard:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          nullable: true
+          description: Leave it blank to generate automatically
+          maxLength: 200
+          pattern: ^[-a-zA-Z0-9_]+$
+        featured_image:
+          type: string
+          readOnly: true
+        bookmarked:
+          type: string
+          readOnly: true
+        short_description:
+          type: string
+          readOnly: true
+        is_featured:
+          type: boolean
+        user:
+          allOf:
+            - $ref: "#/components/schemas/UserPost"
+          readOnly: true
+        published_date:
+          type: string
+          format: date-time
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        category:
+          type: array
+          items:
+            $ref: "#/components/schemas/Category"
+          readOnly: true
+      required:
+        - bookmarked
+        - category
+        - featured_image
+        - id
+        - published_date
+        - short_description
+        - title
+        - url
+        - user
+    PostTypeEnum:
+      enum:
+        - education
+        - post
+        - health_library
+        - page
+        - pharmacy
+      type: string
+      description: |-
+        * `education` - Education
+        * `post` - Post
+        * `health_library` - Health Library
+        * `page` - Page
+        * `pharmacy` - Pharmacy
+    PrefixEnum:
+      enum:
+        - Prof. Dr.
+        - Assoc. Prof. Dr.
+        - Asst. Prof. Dr.
+        - Dr.
+        - Mr.
+        - Ms.
+        - Mrs.
+      type: string
+      description: |-
+        * `Prof. Dr.` - Professor (Prof. Dr.)
+        * `Assoc. Prof. Dr.` - Associate Professor (Assoc. Prof. Dr.)
+        * `Asst. Prof. Dr.` - Assistant Professor (Asst. Prof. Dr.)
+        * `Dr.` - Medical Officer (Dr.)
+        * `Mr.` - Mr.
+        * `Ms.` - Ms.
+        * `Mrs.` - Mrs.
+    ProfileImage:
+      type: object
+      properties:
+        user_profile:
+          type: string
+          format: uri
+      required:
+        - user_profile
+    RecursiveCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 100
+        children:
+          type: string
+          readOnly: true
+      required:
+        - children
+        - id
+        - title
+    Slider:
+      type: object
+      properties:
+        image:
+          type: string
+        link:
+          type: string
+          format: uri
+          nullable: true
+          maxLength: 200
+      required:
+        - image
+    Specialization:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          description: This will be auto generated if leave empty
+          maxLength: 255
+          pattern: ^[-a-zA-Z0-9_]+$
+        icon:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        doctors:
+          type: string
+          readOnly: true
+      required:
+        - doctors
+        - id
+        - slug
+        - title
+    StatusC33Enum:
+      enum:
+        - pending
+        - completed
+        - failed
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `completed` - Completed
+        * `failed` - Failed
+    StatusDd9Enum:
+      enum:
+        - pending
+        - running
+        - ended
+      type: string
+      description: |-
+        * `pending` - Pending
+        * `running` - Running
+        * `ended` - Ended
+    Symptom:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        title:
+          type: string
+          maxLength: 255
+      required:
+        - id
+        - title
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+        - access
+        - refresh
+    TokenVerify:
+      type: object
+      properties:
+        token:
+          type: string
+          writeOnly: true
+      required:
+        - token
+    UpdatePassword:
+      type: object
+      properties:
+        new_password:
+          type: string
+        confirm_password:
+          type: string
+      required:
+        - confirm_password
+        - new_password
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        mediisha_id:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          nullable: true
+          title: Email address
+          maxLength: 254
+        phone_number:
+          type: string
+          nullable: true
+          maxLength: 15
+        prefix:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/PrefixEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        first_name:
+          type: string
+          maxLength: 30
+        middle_name:
+          type: string
+          maxLength: 30
+        last_name:
+          type: string
+          maxLength: 30
+        full_name:
+          type: string
+          readOnly: true
+        name_with_prefix:
+          type: string
+          readOnly: true
+        address:
+          type: string
+          nullable: true
+        gender:
+          nullable: true
+          oneOf:
+            - $ref: "#/components/schemas/GenderEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+            - $ref: "#/components/schemas/NullEnum"
+        age:
+          type: string
+          readOnly: true
+        user_profile:
+          type: string
+          readOnly: true
+        blood_group:
+          oneOf:
+            - $ref: "#/components/schemas/BloodGroupEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        date_of_birth:
+          type: string
+          format: date
+          nullable: true
+        total_points:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+        height:
+          type: string
+          readOnly: true
+        height_feet:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (feet)
+        height_inches:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (inches)
+        body_weight:
+          type: number
+          format: double
+          nullable: true
+          title: Body weight (kg)
+        body_weight_pound:
+          type: number
+          format: double
+          nullable: true
+          title: Body weight (pound)
+        is_doctor:
+          type: string
+          readOnly: true
+        specialization:
+          type: string
+          readOnly: true
+        status:
+          $ref: "#/components/schemas/UserStatusEnum"
+        qr_image:
+          type: string
+          readOnly: true
+        is_verified:
+          type: boolean
+          title: Verified
+        ambulance:
+          type: string
+          readOnly: true
+        hospital:
+          type: string
+          readOnly: true
+        email_verified:
+          type: boolean
+        phone_number_verified:
+          type: boolean
+        fcm_token:
+          type: string
+          nullable: true
+        notification_settings:
+          type: string
+          readOnly: true
+      required:
+        - age
+        - ambulance
+        - full_name
+        - height
+        - hospital
+        - id
+        - is_doctor
+        - mediisha_id
+        - name_with_prefix
+        - notification_settings
+        - qr_image
+        - specialization
+        - user_profile
+    UserDocuments:
+      type: object
+      properties:
+        file:
+          type: string
+          format: uri
+          nullable: true
+    UserDocumentsRetrieve:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        url:
+          type: string
+          readOnly: true
+        file_type:
+          type: string
+          readOnly: true
+        filename:
+          type: string
+          nullable: true
+        file_size:
+          type: string
+          readOnly: true
+        size_formatted:
+          type: string
+          readOnly: true
+      required:
+        - file_size
+        - file_type
+        - id
+        - size_formatted
+        - url
+    UserFolder:
+      type: object
+      properties:
+        id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        slug:
+          type: string
+          maxLength: 255
+        is_custom:
+          type: boolean
+        is_shared:
+          type: boolean
+        can_upload:
+          type: boolean
+      required:
+        - id
+        - name
+        - slug
+    UserPhoneBook:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 255
+        relation:
+          type: string
+          nullable: true
+          maxLength: 255
+        phone_number:
+          type: string
+          maxLength: 15
+        image:
+          type: string
+          format: uri
+          nullable: true
+      required:
+        - id
+        - name
+        - phone_number
+    UserPost:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        full_name:
+          type: string
+          readOnly: true
+        user_profile:
+          type: string
+          readOnly: true
+      required:
+        - full_name
+        - id
+        - user_profile
+    UserStatusEnum:
+      enum:
+        - active
+        - pending
+        - hold
+        - banned
+        - deleted
+      type: string
+      description: |-
+        * `active` - Active
+        * `pending` - Pending
+        * `hold` - Hold
+        * `banned` - Banned
+        * `deleted` - Deleted
+    UserUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        middle_name:
+          type: string
+        last_name:
+          type: string
+        blood_group:
+          oneOf:
+            - $ref: "#/components/schemas/BloodGroupEnum"
+            - $ref: "#/components/schemas/BlankEnum"
+        date_of_birth:
+          type: string
+          format: date
+        gender:
+          $ref: "#/components/schemas/GenderEnum"
+        email:
+          type: string
+          format: email
+        height:
+          type: string
+        body_weight:
+          type: number
+          format: double
+        phone_number:
+          type: string
+        user_profile:
+          type: string
+          format: uri
+        address:
+          type: string
+        body_weight_pound:
+          type: number
+          format: double
+        fcm_token:
+          type: string
+          nullable: true
+        height_feet:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (feet)
+        height_inches:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          nullable: true
+          title: Height (inches)
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
