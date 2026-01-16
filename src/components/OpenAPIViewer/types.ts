@@ -1,6 +1,8 @@
 export interface OpenAPIViewerProps {
     source: string;
     authentication?: ProtectionGateProps
+    company: string | React.ReactNode;
+    theme: 'light' | 'dark' | 'system';
 }
 
 interface AuthField {

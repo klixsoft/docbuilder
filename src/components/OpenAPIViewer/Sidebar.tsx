@@ -21,6 +21,7 @@ interface AppSidebarProps {
     servers: Server[] | undefined;
     info: InfoObject;
     securitySchemes?: Record<string, SecuritySchemeObject>;
+    enabletheme: boolean;
 }
 
 export default function AppSidebar({
@@ -30,11 +31,17 @@ export default function AppSidebar({
     servers,
     info,
     securitySchemes,
+    enabletheme
 }: AppSidebarProps) {
     return (
         <Sidebar>
             <SidebarHeader>
-                <TeamSwitcher info={info} servers={servers} securitySchemes={securitySchemes} />
+                <TeamSwitcher
+                    info={info}
+                    servers={servers}
+                    securitySchemes={securitySchemes}
+                    enabletheme={enabletheme}
+                />
             </SidebarHeader>
 
             <SidebarContent>

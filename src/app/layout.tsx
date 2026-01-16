@@ -41,8 +41,8 @@ export default function RootLayout({
             >
                 <ThemeProvider
                     attribute="class"
-                    defaultTheme="light"
-                    enableSystem
+                    defaultTheme={process.env.THEME || "system"}
+                    enableSystem={process.env.THEME === "system"}
                     disableTransitionOnChange
                 >
                     {children}

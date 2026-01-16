@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: Mediisha API
+  title: Mediisha
   version: 2.0.9
   description:
     Mediisha is a comprehensive digital health platform that offers mental
@@ -2173,7 +2173,7 @@ paths:
         - parent-mode
       summary: Get Assistant Voice Details
       description: |
-          Retrieves detailed information about a specific voice assistant profile.
+        Retrieves detailed information about a specific voice assistant profile.
       responses:
         "200":
           content:
@@ -2193,7 +2193,7 @@ paths:
         - parent-mode
       summary: Update Assistant Voice
       description: |
-          Updates an existing voice assistant profile.
+        Updates an existing voice assistant profile.
       requestBody:
         content:
           application/json:
@@ -2224,7 +2224,7 @@ paths:
         - parent-mode
       summary: Update Assistant Voice
       description: |
-          Updates an existing voice assistant profile.
+        Updates an existing voice assistant profile.
       requestBody:
         content:
           application/json:
@@ -2255,7 +2255,7 @@ paths:
         - parent-mode
       summary: Delete Assistant Voice
       description: |
-          Deletes a voice assistant profile.
+        Deletes a voice assistant profile.
       responses:
         "204":
           description: No response body
@@ -2279,7 +2279,7 @@ paths:
         - parent-mode
       summary: List Phonebook Contacts
       description: |
-          Retrieves phonebook contacts for parent/elderly mode.
+        Retrieves phonebook contacts for parent/elderly mode.
       responses:
         "200":
           content:
@@ -2293,7 +2293,7 @@ paths:
         - parent-mode
       summary: Add Phonebook Contact
       description: |
-          Adds a new contact to the parent mode phonebook.
+        Adds a new contact to the parent mode phonebook.
       requestBody:
         content:
           application/json:
@@ -2326,7 +2326,7 @@ paths:
         - parent-mode
       summary: Get Contact Details
       description: |
-          Retrieves details of a specific phonebook contact.
+        Retrieves details of a specific phonebook contact.
       responses:
         "200":
           content:
@@ -2346,7 +2346,7 @@ paths:
         - parent-mode
       summary: Update Phonebook Contact
       description: |
-          Updates an existing phonebook contact.
+        Updates an existing phonebook contact.
       requestBody:
         content:
           application/json:
@@ -2378,7 +2378,7 @@ paths:
         - parent-mode
       summary: Update Phonebook Contact
       description: |
-          Updates an existing phonebook contact.
+        Updates an existing phonebook contact.
       requestBody:
         content:
           application/json:
@@ -2409,7 +2409,7 @@ paths:
         - parent-mode
       summary: Delete Phonebook Contact
       description: |
-          Removes a contact from the parent mode phonebook.
+        Removes a contact from the parent mode phonebook.
       responses:
         "204":
           description: No response body
@@ -2487,7 +2487,7 @@ paths:
         - promotional
       summary: List Hospital Discounts
       description: |
-          Retrieves available promotional discounts for hospital services.
+        Retrieves available promotional discounts for hospital services.
       responses:
         "200":
           content:
@@ -2501,7 +2501,7 @@ paths:
         - promotional
       summary: Create Hospital Discount
       description: |
-          Creates a new hospital discount promotion.
+        Creates a new hospital discount promotion.
       requestBody:
         content:
           application/json:
@@ -2535,7 +2535,7 @@ paths:
         - promotional
       summary: Get Discount Details
       description: |
-          Retrieves details of a specific hospital discount.
+        Retrieves details of a specific hospital discount.
       responses:
         "200":
           content:
@@ -2556,7 +2556,7 @@ paths:
         - promotional
       summary: Update Hospital Discount
       description: |
-          Updates an existing hospital discount.
+        Updates an existing hospital discount.
       requestBody:
         content:
           application/json:
@@ -2589,7 +2589,7 @@ paths:
         - promotional
       summary: Update Hospital Discount
       description: |
-          Updates an existing hospital discount.
+        Updates an existing hospital discount.
       requestBody:
         content:
           application/json:
@@ -2621,7 +2621,7 @@ paths:
         - promotional
       summary: Delete Hospital Discount
       description: |
-          Removes a hospital discount promotion.
+        Removes a hospital discount promotion.
       responses:
         "204":
           description: No response body
@@ -2632,7 +2632,7 @@ paths:
         - promotional
       summary: Claim Promotional Voucher
       description: |
-          Claims a promotional voucher for the user account.
+        Claims a promotional voucher for the user account.
       security:
         - jwtAuth: []
       responses:
@@ -2645,7 +2645,7 @@ paths:
         - gamification
       summary: Check Quiz Answer
       description: |
-          Validates quiz answers and calculates scores.
+        Validates quiz answers and calculates scores.
       responses:
         "200":
           description: No response body
@@ -2655,7 +2655,7 @@ paths:
         - gamification
       summary: Check Quiz Answer
       description: |
-          Validates quiz answers and calculates scores.
+        Validates quiz answers and calculates scores.
       responses:
         "200":
           description: No response body
@@ -2666,7 +2666,7 @@ paths:
         - gamification
       summary: Get Quiz Client Data
       description: |
-          Retrieves quiz data for client applications.
+        Retrieves quiz data for client applications.
       responses:
         "200":
           description: No response body
@@ -2683,7 +2683,7 @@ paths:
         - gamification
       summary: Get Quiz Client Data
       description: |
-          Retrieves quiz data for client applications.
+        Retrieves quiz data for client applications.
       responses:
         "200":
           description: No response body
@@ -2694,7 +2694,7 @@ paths:
         - gamification
       summary: Check Quiz Answer
       description: |
-          Validates quiz answers and calculates scores.
+        Validates quiz answers and calculates scores.
       responses:
         "200":
           description: No response body
@@ -2712,7 +2712,7 @@ paths:
         - gamification
       summary: List Quiz Leaderboard
       description: |
-          Retrieves quiz leaderboard rankings and scores.
+        Retrieves quiz leaderboard rankings and scores.
       security:
         - jwtAuth: []
       responses:
@@ -2728,7 +2728,7 @@ paths:
         - gamification
       summary: Submit Quiz Entry
       description: |
-          Submits a quiz entry for leaderboard ranking.
+        Submits a quiz entry for leaderboard ranking.
       requestBody:
         content:
           application/json:
@@ -2763,7 +2763,7 @@ paths:
         - gamification
       summary: Get Leaderboard Entry
       description: |
-          Retrieves a specific leaderboard entry.
+        Retrieves a specific leaderboard entry.
       security:
         - jwtAuth: []
       responses:
@@ -2786,7 +2786,7 @@ paths:
         - gamification
       summary: Update Leaderboard Entry
       description: |
-          Updates a leaderboard entry.
+        Updates a leaderboard entry.
       requestBody:
         content:
           application/json:
@@ -2820,7 +2820,7 @@ paths:
         - gamification
       summary: Update Leaderboard Entry
       description: |
-          Updates a leaderboard entry.
+        Updates a leaderboard entry.
       requestBody:
         content:
           application/json:
@@ -2866,7 +2866,7 @@ paths:
         - authentication
       summary: Register with Phone
       description: |
-          Initiates user registration using phone number with OTP verification.
+        Initiates user registration using phone number with OTP verification.
       security:
         - {}
       responses:
@@ -2879,7 +2879,7 @@ paths:
         - user-management
       summary: Request Account Deletion
       description: |
-          Initiates account deletion request with verification process.
+        Initiates account deletion request with verification process.
       responses:
         "200":
           description: No response body
@@ -2890,7 +2890,7 @@ paths:
         - authentication
       summary: Resend OTP
       description: |
-          Resends One-Time Password for verification.
+        Resends One-Time Password for verification.
       security:
         - {}
       responses:
@@ -2903,7 +2903,7 @@ paths:
         - appointments
       summary: Get Schedules
       description: |
-          Retrieves user appointment schedules.
+        Retrieves user appointment schedules.
       responses:
         "200":
           description: No response body
@@ -2914,7 +2914,7 @@ paths:
         - search
       summary: Search
       description: |
-          Performs search across platform resources.
+        Performs search across platform resources.
       security:
         - jwtAuth: []
       responses:
@@ -2933,7 +2933,7 @@ paths:
         - search
       summary: Search
       description: |
-          Performs search across platform resources.
+        Performs search across platform resources.
       security:
         - {}
       responses:
@@ -2946,7 +2946,7 @@ paths:
         - authentication
       summary: Send Verification Code
       description: |
-          Sends verification code to user email or phone.
+        Sends verification code to user email or phone.
       responses:
         "200":
           description: No response body
@@ -2964,7 +2964,7 @@ paths:
         - appointments
       summary: Get Appointment Slot
       description: |
-          Retrieves appointment slot details.
+        Retrieves appointment slot details.
       responses:
         "200":
           content:
@@ -3091,7 +3091,7 @@ paths:
         - appointments
       summary: Generate Slot Signature
       description: |
-          Generates signature for appointment slot access.
+        Generates signature for appointment slot access.
       security:
         - jwtAuth: []
       responses:
@@ -3104,7 +3104,7 @@ paths:
         - appointments
       summary: Update Appointment Slot
       description: |
-          Updates appointment slot information.
+        Updates appointment slot information.
       responses:
         "200":
           description: No response body
@@ -3114,7 +3114,7 @@ paths:
         - appointments
       summary: Update Appointment Slot
       description: |
-          Updates appointment slot information.
+        Updates appointment slot information.
       responses:
         "200":
           description: No response body
@@ -3132,7 +3132,7 @@ paths:
         - appointments
       summary: List Appointment Slots
       description: |
-          Retrieves available appointment slots.
+        Retrieves available appointment slots.
       responses:
         "200":
           content:
@@ -3172,7 +3172,7 @@ paths:
         - user-management
       summary: User Management
       description: |
-          Manages user account and profile.
+        Manages user account and profile.
       responses:
         "200":
           description: No response body
@@ -3183,7 +3183,7 @@ paths:
         - user-management
       summary: User Management
       description: |
-          Manages user account and profile.
+        Manages user account and profile.
       responses:
         "200":
           description: No response body
@@ -3194,7 +3194,7 @@ paths:
         - emergency
       summary: Get SOS Alert
       description: |
-          Retrieves SOS alert details.
+        Retrieves SOS alert details.
       responses:
         "200":
           description: No response body
@@ -3204,7 +3204,7 @@ paths:
         - emergency
       summary: Create SOS Alert
       description: |
-          Creates an emergency SOS alert.
+        Creates an emergency SOS alert.
       responses:
         "200":
           description: No response body
@@ -3221,7 +3221,7 @@ paths:
         - emergency
       summary: Send SOS Notification
       description: |
-          Sends SOS emergency notification to contacts.
+        Sends SOS emergency notification to contacts.
       security:
         - jwtAuth: []
       responses:
@@ -3240,7 +3240,7 @@ paths:
         - emergency
       summary: Get SOS Alert
       description: |
-          Retrieves SOS alert details.
+        Retrieves SOS alert details.
       responses:
         "200":
           description: No response body
@@ -3256,7 +3256,7 @@ paths:
         - emergency
       summary: Update SOS Alert
       description: |
-          Updates SOS alert status.
+        Updates SOS alert status.
       responses:
         "200":
           description: No response body
@@ -3282,7 +3282,7 @@ paths:
         - emergency
       summary: Send SOS Notification
       description: |
-          Sends SOS emergency notification to contacts.
+        Sends SOS emergency notification to contacts.
       security:
         - jwtAuth: []
       responses:
@@ -3295,7 +3295,7 @@ paths:
         - newsletter
       summary: Subscribe to Newsletter
       description: |
-          Subscribes user to newsletter.
+        Subscribes user to newsletter.
       security:
         - {}
       responses:
@@ -3314,7 +3314,7 @@ paths:
         - authentication
       summary: Update Password
       description: |
-          Updates user password using reset token.
+        Updates user password using reset token.
       requestBody:
         content:
           application/json:
@@ -3349,7 +3349,7 @@ paths:
         - authentication
       summary: Update Password
       description: |
-          Updates user password using reset token.
+        Updates user password using reset token.
       requestBody:
         content:
           application/json:
@@ -3384,7 +3384,7 @@ paths:
         - authentication
       summary: Update Password
       description: |
-          Updates user password using reset token.
+        Updates user password using reset token.
       requestBody:
         content:
           application/json:
@@ -3413,7 +3413,7 @@ paths:
         - user-management
       summary: Change Password
       description: |
-          Changes user password with current password verification.
+        Changes user password with current password verification.
       requestBody:
         content:
           application/json:
@@ -3439,7 +3439,7 @@ paths:
         - user-management
       summary: Change Password
       description: |
-          Changes user password with current password verification.
+        Changes user password with current password verification.
       requestBody:
         content:
           application/json:
@@ -3465,7 +3465,7 @@ paths:
         - user-management
       summary: Change Password
       description: |
-          Changes user password with current password verification.
+        Changes user password with current password verification.
       requestBody:
         content:
           application/json:
@@ -3491,7 +3491,7 @@ paths:
         - user-management
       summary: Update User
       description: |
-          Updates user account information.
+        Updates user account information.
       requestBody:
         content:
           application/json:
@@ -3516,7 +3516,7 @@ paths:
         - user-management
       summary: Update User
       description: |
-          Updates user account information.
+        Updates user account information.
       requestBody:
         content:
           application/json:
@@ -3541,7 +3541,7 @@ paths:
         - user-management
       summary: Update User
       description: |
-          Updates user account information.
+        Updates user account information.
       requestBody:
         content:
           application/json:
@@ -3567,7 +3567,7 @@ paths:
         - user-management
       summary: Update User Password
       description: |
-          Updates user password.
+        Updates user password.
       responses:
         "200":
           description: No response body
@@ -3577,7 +3577,7 @@ paths:
         - user-management
       summary: Update User Password
       description: |
-          Updates user password.
+        Updates user password.
       responses:
         "200":
           description: No response body
@@ -3587,7 +3587,7 @@ paths:
         - user-management
       summary: Update User Password
       description: |
-          Updates user password.
+        Updates user password.
       responses:
         "200":
           description: No response body
@@ -3598,7 +3598,7 @@ paths:
         - user-management
       summary: Update User Profile
       description: |
-          Updates user profile information.
+        Updates user profile information.
       requestBody:
         content:
           application/json:
@@ -3624,7 +3624,7 @@ paths:
         - user-management
       summary: Update User Profile
       description: |
-          Updates user profile information.
+        Updates user profile information.
       requestBody:
         content:
           application/json:
@@ -3650,7 +3650,7 @@ paths:
         - user-management
       summary: Update User Profile
       description: |
-          Updates user profile information.
+        Updates user profile information.
       requestBody:
         content:
           application/json:
@@ -3676,7 +3676,7 @@ paths:
         - user-management
       summary: User Management
       description: |
-          Manages user account and profile.
+        Manages user account and profile.
       responses:
         "200":
           content:
@@ -3689,7 +3689,7 @@ paths:
       operationId: v1_user_doctor_list
       summary: List Doctors
       description: |
-          Retrieves list of doctors with their profiles. Handles the retrieval of doctor details using a GET request.
+        Retrieves list of doctors with their profiles. Handles the retrieval of doctor details using a GET request.
       parameters:
         - name: page
           required: false
@@ -3714,7 +3714,7 @@ paths:
         - doctor-management
       summary: Create Doctor Profile
       description: |
-          Creates a new doctor profile.
+        Creates a new doctor profile.
       requestBody:
         content:
           multipart/form-data:
@@ -3746,7 +3746,7 @@ paths:
         - doctor-management
       summary: Get Doctor Profile
       description: |
-          Retrieves doctor profile details.
+        Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -3757,7 +3757,7 @@ paths:
         - doctor-management
       summary: Get Doctor Profile
       description: |
-          Retrieves doctor profile details.
+        Retrieves doctor profile details.
       security:
         - jwtAuth: []
         - {}
@@ -3771,7 +3771,7 @@ paths:
         - doctor-management
       summary: List Doctors
       description: |
-          Retrieves list of doctors with their profiles.
+        Retrieves list of doctors with their profiles.
       security:
         - {}
       responses:
@@ -3784,7 +3784,7 @@ paths:
         - doctor-management
       summary: Create Doctor Profile
       description: |
-          Creates a new doctor profile.
+        Creates a new doctor profile.
       requestBody:
         content:
           application/json:
@@ -3814,7 +3814,7 @@ paths:
         - doctor-management
       summary: Get Doctor Profile
       description: |
-          Retrieves doctor profile details.
+        Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -3825,7 +3825,7 @@ paths:
         - doctor-management
       summary: Create Doctor Profile
       description: |
-          Creates a new doctor profile.
+        Creates a new doctor profile.
       requestBody:
         content:
           application/json:
@@ -3850,7 +3850,7 @@ paths:
         - doctor-management
       summary: Update Doctor Profile
       description: |
-          Updates doctor profile information.
+        Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -3875,7 +3875,7 @@ paths:
         - doctor-management
       summary: Update Doctor Profile
       description: |
-          Updates doctor profile information.
+        Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -3907,7 +3907,7 @@ paths:
         - doctor-management
       summary: Create Doctor Profile
       description: |
-          Creates a new doctor profile.
+        Creates a new doctor profile.
       requestBody:
         content:
           application/json:
@@ -3940,7 +3940,7 @@ paths:
         - doctor-management
       summary: Update Doctor Profile
       description: |
-          Updates doctor profile information.
+        Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -3973,7 +3973,7 @@ paths:
         - doctor-management
       summary: Update Doctor Profile
       description: |
-          Updates doctor profile information.
+        Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -4001,7 +4001,7 @@ paths:
         - doctor-management
       summary: Get Doctor Profile
       description: |
-          Retrieves doctor profile details.
+        Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -4012,7 +4012,7 @@ paths:
         - doctor-management
       summary: Get Doctor Profile
       description: |
-          Retrieves doctor profile details.
+        Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -4029,7 +4029,7 @@ paths:
         - document-management
       summary: Delete Document
       description: |
-          Deletes a user document file.
+        Deletes a user document file.
       responses:
         "204":
           description: No response body
@@ -4047,7 +4047,7 @@ paths:
         - document-management
       summary: List Folders
       description: |
-          Retrieves user document folders.
+        Retrieves user document folders.
       responses:
         "200":
           content:
@@ -4061,7 +4061,7 @@ paths:
         - document-management
       summary: Create Folder
       description: |
-          Creates a new document folder.
+        Creates a new document folder.
       requestBody:
         content:
           application/json:
@@ -4100,7 +4100,7 @@ paths:
         - document-management
       summary: List Folder Files
       description: |
-          Retrieves files in a specific folder.
+        Retrieves files in a specific folder.
       responses:
         "200":
           content:
@@ -4121,7 +4121,7 @@ paths:
         - document-management
       summary: Rename Folder
       description: |
-          Renames a document folder.
+        Renames a document folder.
       requestBody:
         content:
           application/json:
@@ -4154,7 +4154,7 @@ paths:
         - document-management
       summary: Rename Folder
       description: |
-          Renames a document folder.
+        Renames a document folder.
       requestBody:
         content:
           application/json:
@@ -4187,7 +4187,7 @@ paths:
         - document-management
       summary: Rename Folder
       description: |
-          Renames a document folder.
+        Renames a document folder.
       requestBody:
         content:
           application/json:
@@ -4221,7 +4221,7 @@ paths:
         - document-management
       summary: Create Folder
       description: |
-          Creates a new document folder.
+        Creates a new document folder.
       requestBody:
         content:
           application/json:
@@ -4254,7 +4254,7 @@ paths:
         - document-management
       summary: Update Folder
       description: |
-          Updates folder properties.
+        Updates folder properties.
       requestBody:
         content:
           application/json:
@@ -4287,7 +4287,7 @@ paths:
         - document-management
       summary: Update Folder
       description: |
-          Updates folder properties.
+        Updates folder properties.
       requestBody:
         content:
           application/json:
@@ -4321,7 +4321,7 @@ paths:
         - document-management
       summary: Upload to Folder
       description: |
-          Uploads files to a document folder.
+        Uploads files to a document folder.
       requestBody:
         content:
           multipart/form-data:
@@ -4341,7 +4341,7 @@ paths:
         - user-management
       summary: Manage Health Profile
       description: |
-          Manages user health profile and medical history.
+        Manages user health profile and medical history.
       responses:
         "200":
           content:
@@ -4354,7 +4354,7 @@ paths:
       operationId: v1_user_token_refresh_create
       summary: Refresh Token
       description: |
-          Refreshes authentication token. Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
+        Refreshes authentication token. Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
       tags:
         - authentication
       requestBody:
@@ -4381,7 +4381,7 @@ paths:
       operationId: v1_user_token_verify_create
       summary: Verify Token
       description: |
-          Verifies authentication token validity. Takes a token and indicates if it is valid. This view provides no information about a token's fitness for a particular use.
+        Verifies authentication token validity. Takes a token and indicates if it is valid. This view provides no information about a token's fitness for a particular use.
       tags:
         - authentication
       requestBody:
@@ -4410,7 +4410,7 @@ paths:
         - authentication
       summary: Verify Email
       description: |
-          Verifies user email address using verification code.
+        Verifies user email address using verification code.
       responses:
         "200":
           description: No response body
@@ -4421,7 +4421,7 @@ paths:
         - user-management
       summary: Verify Account Deletion
       description: |
-          Verifies account deletion request before permanent removal.
+        Verifies account deletion request before permanent removal.
       responses:
         "200":
           description: No response body
@@ -4438,7 +4438,7 @@ paths:
         - authentication
       summary: Verify Phone
       description: |
-          Verifies user phone number using OTP.
+        Verifies user phone number using OTP.
       security:
         - jwtAuth: []
         - {}
@@ -4452,7 +4452,7 @@ paths:
         - content
       summary: List Health Videos
       description: |
-          Retrieves educational health videos.
+        Retrieves educational health videos.
       security:
         - jwtAuth: []
       responses:

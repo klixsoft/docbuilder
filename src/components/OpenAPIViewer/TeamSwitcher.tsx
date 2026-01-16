@@ -31,26 +31,18 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from 'next-themes';
-import type { InfoObject, ReferenceObject, SecuritySchemeObject, Server } from './types';
+import type { InfoObject, SecuritySchemeObject, Server } from './types';
 import { useOpenAPI } from '@/context/OpenAIContext';
-
-interface SecurityScheme {
-    type: 'apiKey' | 'http' | 'oauth2' | 'openIdConnect';
-    scheme?: string;
-    bearerFormat?: string;
-    name?: string;
-    in?: 'query' | 'header' | 'cookie';
-    flows?: any;
-    description?: string;
-}
+import { cn } from '@/lib/utils';
 
 interface TeamSwitcherProps {
     info: InfoObject;
     servers: Server[] | undefined;
     securitySchemes?: Record<string, SecuritySchemeObject>;
+    enabletheme: boolean;
 }
 
-export default function TeamSwitcher({ info, servers, securitySchemes }: TeamSwitcherProps) {
+export default function TeamSwitcher({ info, servers, securitySchemes, enabletheme }: TeamSwitcherProps) {
     const { theme, setTheme } = useTheme();
     const { selectedServer, setSelectedServer, securityConfig, updateSecurityValue } = useOpenAPI();
     const [settingsOpen, setSettingsOpen] = useState(false);
@@ -222,10 +214,13 @@ export default function TeamSwitcher({ info, servers, securitySchemes }: TeamSwi
                     </DialogHeader>
 
                     <Tabs defaultValue="server" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3">
+                        <TabsList className={cn(
+                            "grid w-full grid-cols-3",
+                            !enabletheme && "grid-cols-2"
+                        )}>
                             <TabsTrigger value="server">Server</TabsTrigger>
                             <TabsTrigger value="auth">Authentication</TabsTrigger>
-                            <TabsTrigger value="theme">Theme</TabsTrigger>
+                            {enabletheme && <TabsTrigger value="theme">Theme</TabsTrigger>}
                         </TabsList>
 
                         <TabsContent value="server" className="space-y-4 mt-4">

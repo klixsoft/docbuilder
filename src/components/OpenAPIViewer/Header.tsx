@@ -18,9 +18,10 @@ interface HeaderProps {
     info: InfoObject;
     groups: EndpointGroup[];
     onSelectEndpoint: (path: string, method: string) => void;
+    theme: 'light' | 'dark' | 'system';
 }
 
-export default function Header({ info, groups, onSelectEndpoint }: HeaderProps) {
+export default function Header({ info, groups, onSelectEndpoint, theme }: HeaderProps) {
     const [searchOpen, setSearchOpen] = useState(false);
 
     const allEndpoints = groups.flatMap((group) =>
@@ -83,7 +84,7 @@ export default function Header({ info, groups, onSelectEndpoint }: HeaderProps) 
                                 </a>
                             </Button>
                         )}
-                        <ThemeToggle />
+                        {theme == "system" && <ThemeToggle />}
                         <div className="hidden md:flex items-center ml-2 px-2 py-1 rounded-md bg-muted">
                             <span className="text-xs font-medium text-muted-foreground">
                                 v{info.version}

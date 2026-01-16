@@ -10,6 +10,7 @@ import type { OpenAPISpec, EndpointGroup, HttpMethod } from './types';
 import { OpenAPIProvider, useOpenAPI } from '@/context/OpenAIContext';
 import { ProtectionGate } from './ProtectionGate';
 import { checkAccess } from '@/app/actions/auth';
+import Footer from './Footer';
 
 interface AuthField {
     type: string;
@@ -25,9 +26,11 @@ interface AuthenticationConfig {
 interface OpenAPIViewerContentProps {
     spec: OpenAPISpec;
     authentication?: AuthenticationConfig;
+    company: string | React.ReactNode;
+    theme: 'light' | 'dark' | 'system';
 }
 
-function OpenAPIViewerContentInner({ spec, authentication }: OpenAPIViewerContentProps) {
+function OpenAPIViewerContentInner({ spec, authentication, company, theme }: OpenAPIViewerContentProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [checkingAuth, setCheckingAuth] = useState(true);
     const [selectedPath, setSelectedPath] = useState<string | null>(null);
@@ -152,12 +155,14 @@ function OpenAPIViewerContentInner({ spec, authentication }: OpenAPIViewerConten
                 servers={spec.servers}
                 info={spec.info}
                 securitySchemes={spec.components?.securitySchemes}
+                enabletheme={theme == 'system'}
             />
             <SidebarInset>
                 <Header
                     info={spec.info}
                     groups={groups}
                     onSelectEndpoint={handleSelectEndpoint}
+                    theme={theme}
                 />
                 <main className="flex-1 overflow-y-auto">
                     <ContentArea
@@ -166,6 +171,10 @@ function OpenAPIViewerContentInner({ spec, authentication }: OpenAPIViewerConten
                         selectedMethod={selectedMethod as HttpMethod | null}
                     />
                 </main>
+                <Footer
+                    info={spec.info}
+                    company={company}
+                />
             </SidebarInset>
         </SidebarProvider>
     );
