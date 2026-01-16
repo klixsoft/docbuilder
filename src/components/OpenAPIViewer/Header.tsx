@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Search, Github, FileText, Book } from 'lucide-react';
+import { Search, Github, FileText, Book, Layers } from 'lucide-react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '../ThemeToggle';
 import {
@@ -62,24 +63,26 @@ export default function Header({ info, groups, onSelectEndpoint }: HeaderProps) 
                     </div>
 
                     <nav className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm" asChild>
-                            <a href="#" className="gap-2">
+                        <Link href="/">
+                            <Button variant="ghost" size="sm" className="gap-2">
                                 <Book className="h-4 w-4" />
-                                <span className="hidden sm:inline">Docs</span>
-                            </a>
-                        </Button>
-                        <Button variant="ghost" size="sm" asChild>
-                            <a href="#" className="gap-2">
-                                <FileText className="h-4 w-4" />
-                                <span className="hidden sm:inline">API Spec</span>
-                            </a>
-                        </Button>
-                        <Button variant="ghost" size="icon" asChild>
-                            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
-                                <Github className="h-5 w-5" />
-                                <span className="sr-only">GitHub</span>
-                            </a>
-                        </Button>
+                                <span className="hidden sm:inline">API Docs</span>
+                            </Button>
+                        </Link>
+                        <Link href="/schemas">
+                            <Button variant="ghost" size="sm" className="gap-2">
+                                <Layers className="h-4 w-4" />
+                                <span className="hidden sm:inline">Schemas</span>
+                            </Button>
+                        </Link>
+                        {info.contact?.url && (
+                            <Button variant="ghost" size="icon" asChild>
+                                <a href={info.contact.url} target="_blank" rel="noopener noreferrer">
+                                    <Github className="h-5 w-5" />
+                                    <span className="sr-only">GitHub</span>
+                                </a>
+                            </Button>
+                        )}
                         <ThemeToggle />
                         <div className="hidden md:flex items-center ml-2 px-2 py-1 rounded-md bg-muted">
                             <span className="text-xs font-medium text-muted-foreground">

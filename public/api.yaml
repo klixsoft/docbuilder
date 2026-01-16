@@ -14,70 +14,47 @@ servers:
     description: Development Server
 
 paths:
-  /api/v1/ambulance/:
-    get:
-      operationId: v1_ambulance_retrieve
-      tags:
-        - v1
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          description: No response body
-  /api/v1/ambulance/{id}/:
-    get:
-      operationId: v1_ambulance_retrieve_2
-      summary: Ambulance Details
-      description: Retrieve detailed information about a specific ambulance using its unique ID.
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: integer
-          description: A unique integer value identifying this ambulance.
-          required: true
-      tags:
-        - ambulance
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AmbulanceCard"
-          description: ""
-  /api/v1/ambulance/map/:
-    get:
-      operationId: v1_ambulance_map_retrieve
-      summary: Available Ambulances
-      description: Retrieve a list of available ambulances along with their current locations on the map.
-      tags:
-        - ambulance
-      security:
-        - jwtAuth: []
-      responses:
-        "200":
-          description: No response body
   /api/v1/app/settings/{path}/:
     get:
+      summary: App Settings
+      description: Retrieve the application settings for a specific path.
       operationId: v1_app_settings_retrieve
       parameters:
         - in: path
           name: path
+          description: The specific settings path to retrieve.
           schema:
             type: string
+            enum:
+              - general
+              - package
+              - instant-consultation
+              - sticky-promo
+              - parental-care
+              - faq
+              - redeem-points
+              - chat-cards
+              - partner-app-modal
+              - blood-bank-card
+              - cancer-support-card
+              - featured-quiz
+              - cancer
+              - homepagepopup
+              - versionupdate
+              - healthpackages
           required: true
       tags:
-        - v1
+        - settings
       security:
-        - {}
+        - jwtAuth: []
       responses:
         "200":
           description: No response body
   /api/v1/app/slider/:
     get:
       operationId: v1_app_slider_list
+      summary: App Sliders
+      description: Retrieve a paginated list of app sliders.
       parameters:
         - name: page
           required: false
@@ -86,7 +63,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - settings
       security:
         - jwtAuth: []
       responses:
@@ -98,6 +75,8 @@ paths:
           description: ""
   /api/v1/articles/:
     get:
+      summary: Articles
+      description: Retrieve a paginated list of articles.
       operationId: v1_articles_list
       parameters:
         - name: page
@@ -113,7 +92,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - articles
       security:
         - {}
       responses:
@@ -123,34 +102,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/PaginatedPostCardList"
           description: ""
-    post:
-      operationId: v1_articles_create
-      tags:
-        - v1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PostCard"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/PostCard"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/PostCard"
-        required: true
-      security:
-        - {}
-      responses:
-        "201":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PostCard"
-          description: ""
   /api/v1/articles/{id}/:
     get:
       operationId: v1_articles_retrieve
+      summary: Article Details
+      description: Retrieve the details of a specific article by its ID.
       parameters:
         - in: path
           name: id
@@ -159,7 +115,7 @@ paths:
           description: A unique value identifying this Article.
           required: true
       tags:
-        - v1
+        - articles
       security:
         - {}
       responses:
@@ -169,88 +125,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Post"
           description: ""
-    put:
-      operationId: v1_articles_update
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          description: A unique value identifying this Article.
-          required: true
-      tags:
-        - v1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Post"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/Post"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/Post"
-        required: true
-      security:
-        - {}
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Post"
-          description: ""
-    patch:
-      operationId: v1_articles_partial_update
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          description: A unique value identifying this Article.
-          required: true
-      tags:
-        - v1
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PatchedPost"
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: "#/components/schemas/PatchedPost"
-          multipart/form-data:
-            schema:
-              $ref: "#/components/schemas/PatchedPost"
-      security:
-        - {}
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Post"
-          description: ""
-    delete:
-      operationId: v1_articles_destroy
-      parameters:
-        - in: path
-          name: id
-          schema:
-            type: string
-          description: A unique value identifying this Article.
-          required: true
-      tags:
-        - v1
-      security:
-        - {}
-      responses:
-        "204":
-          description: No response body
   /api/v1/articles/{id}/bookmark/:
     get:
       operationId: v1_articles_bookmark_retrieve
+      summary: Check Article Bookmark Status
+      description: Check if a specific article is bookmarked by the authenticated user. Returns the bookmark status for the given article ID.
       parameters:
         - in: path
           name: id
@@ -258,7 +137,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - articles
       security:
         - jwtAuth: []
       responses:
@@ -266,6 +145,8 @@ paths:
           description: No response body
     post:
       operationId: v1_articles_bookmark_create_2
+      summary: Bookmark Article
+      description: Add a specific article to the authenticated user's bookmarks. This allows users to save articles for later reading and quick access.
       parameters:
         - in: path
           name: id
@@ -273,7 +154,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - articles
       security:
         - jwtAuth: []
       responses:
@@ -282,6 +163,8 @@ paths:
   /api/v1/articles/bookmark/:
     get:
       operationId: v1_articles_bookmark_list
+      summary: List Bookmarked Articles
+      description: Retrieve a paginated list of all articles bookmarked by the authenticated user. This endpoint returns articles that the user has saved for later reading, allowing them to access their saved content easily.
       parameters:
         - name: page
           required: false
@@ -296,7 +179,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - articles
       security:
         - jwtAuth: []
       responses:
@@ -308,8 +191,10 @@ paths:
           description: ""
     post:
       operationId: v1_articles_bookmark_create
+      summary: Create Article Bookmark
+      description: Create a new bookmark for an article. Users can save articles to their bookmark collection for quick access later. This endpoint allows bookmarking articles by providing the article details in the request body.
       tags:
-        - v1
+        - articles
       requestBody:
         content:
           application/json:
@@ -334,8 +219,10 @@ paths:
   /api/v1/blood-banks/:
     get:
       operationId: v1_blood_banks_retrieve
+      summary: List Blood Banks
+      description: Retrieve a list of all registered blood banks in the system. This endpoint provides information about blood banks including their location, contact details, and availability. Useful for users searching for nearby blood banks or donation centers.
       tags:
-        - v1
+        - blood-bank
       security:
         - {}
       responses:
@@ -344,6 +231,8 @@ paths:
   /api/v1/blood-banks/{id}/:
     get:
       operationId: v1_blood_banks_retrieve_2
+      summary: Get Blood Bank Details
+      description: Retrieve detailed information about a specific blood bank by its ID. This includes the blood bank's name, address, contact information, operating hours, and available blood types.
       parameters:
         - in: path
           name: id
@@ -352,7 +241,7 @@ paths:
           description: A unique integer value identifying this blood bank.
           required: true
       tags:
-        - v1
+        - blood-bank
       security:
         - {}
       responses:
@@ -365,8 +254,10 @@ paths:
   /api/v1/blood/requests/:
     get:
       operationId: v1_blood_requests_retrieve
+      summary: List Blood Donation Requests
+      description: Retrieve all active blood donation requests in the system. This endpoint shows urgent and non-urgent blood requests from patients and hospitals, including blood type needed, location, and contact information. Helps connect donors with those in need.
       tags:
-        - v1
+        - blood-bank
       security:
         - {}
       responses:
@@ -374,8 +265,10 @@ paths:
           description: No response body
     post:
       operationId: v1_blood_requests_create
+      summary: Create Blood Donation Request
+      description: Create a new blood donation request. Patients or their families can post requests for specific blood types, specifying urgency level, location, hospital details, and patient information. This helps reach potential donors quickly during emergencies.
       tags:
-        - v1
+        - blood-bank
       security:
         - {}
       responses:
@@ -384,6 +277,8 @@ paths:
   /api/v1/blood/requests/{bloodtype}/donars/:
     get:
       operationId: v1_blood_requests_donars_list
+      summary: List Blood Donors by Type
+      description: Retrieve a paginated list of registered blood donors filtered by blood type. This endpoint helps find potential donors matching a specific blood type requirement (A+, B+, O-, etc.), showing donor contact information and availability status.
       parameters:
         - in: path
           name: bloodtype
@@ -403,7 +298,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - blood-bank
       security:
         - {}
       responses:
@@ -416,6 +311,8 @@ paths:
   /api/v1/blood/requests/{id}/:
     get:
       operationId: v1_blood_requests_retrieve_2
+      summary: Get Blood Request Details
+      description: Retrieve detailed information about a specific blood donation request by its ID. This includes patient details, required blood type, urgency level, hospital information, and current status of the request.
       parameters:
         - in: path
           name: id
@@ -423,7 +320,7 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - blood-bank
       security:
         - {}
       responses:
@@ -431,6 +328,8 @@ paths:
           description: No response body
     post:
       operationId: v1_blood_requests_create_2
+      summary: Update Blood Request
+      description: Update an existing blood donation request. This can be used to modify request details such as urgency status, contact information, or mark the request as fulfilled when a donor is found.
       parameters:
         - in: path
           name: id
@@ -438,7 +337,7 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - blood-bank
       security:
         - {}
       responses:
@@ -447,6 +346,8 @@ paths:
   /api/v1/blood/requests/{id}/acceptances/:
     get:
       operationId: v1_blood_requests_acceptances_list
+      summary: List Donation Acceptances
+      description: Retrieve a paginated list of all donors who have accepted or responded to a specific blood donation request. This shows which donors have committed to donating blood for this particular request, including their contact details and confirmation status.
       parameters:
         - in: path
           name: id
@@ -466,7 +367,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - blood-bank
       security:
         - jwtAuth: []
       responses:
@@ -479,8 +380,10 @@ paths:
   /api/v1/blood/requests/accept/invitation/:
     post:
       operationId: v1_blood_requests_accept_invitation_create
+      summary: Accept Donation Invitation
+      description: Accept an invitation to donate blood for a specific request. When a donor is willing to donate blood, they use this endpoint to confirm their acceptance and notify the requester. Requires authentication to track donor commitments.
       tags:
-        - v1
+        - blood-bank
       security:
         - jwtAuth: []
       responses:
@@ -489,16 +392,20 @@ paths:
   /api/v1/blood/requests/summary/:
     get:
       operationId: v1_blood_requests_summary_retrieve
+      summary: Blood Requests Summary
+      description: Get a summary overview of all blood donation requests including statistics like total active requests, requests by blood type, urgent vs non-urgent requests, and fulfillment rates. Useful for dashboard and analytics.
       tags:
-        - v1
+        - blood-bank
       responses:
         "200":
           description: No response body
   /api/v1/booking/slot/:
     post:
       operationId: v1_booking_slot_create
+      summary: Book Consultation Slot
+      description: Book a specific time slot for a doctor consultation. Users can reserve an available appointment slot with their chosen doctor, providing patient details and preferred consultation time. This creates a confirmed booking in the system.
       tags:
-        - v1
+        - consultations
       requestBody:
         content:
           application/json:
@@ -521,8 +428,10 @@ paths:
   /api/v1/cancer/:
     get:
       operationId: v1_cancer_retrieve
+      summary: Get Cancer Support Information
+      description: Retrieve information about the cancer support program including available services, how to request cancer report reviews, consultation options, and program guidelines. This provides an overview of cancer care services offered through the platform.
       tags:
-        - v1
+        - cancer-support
       security:
         - jwtAuth: []
       responses:
@@ -531,6 +440,8 @@ paths:
   /api/v1/cancer/requests/:
     get:
       operationId: v1_cancer_requests_list
+      summary: List Cancer Review Requests
+      description: Retrieve a paginated list of cancer report review requests submitted by the authenticated user. This shows all requests for second opinions on cancer diagnoses, pathology reports, or treatment plans, including their current status (pending, under review, completed).
       parameters:
         - name: page
           required: false
@@ -539,7 +450,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - cancer-support
       security:
         - jwtAuth: []
       responses:
@@ -551,8 +462,10 @@ paths:
           description: ""
     post:
       operationId: v1_cancer_requests_create
+      summary: Create Cancer Review Request
+      description: Submit a new request for cancer report review by medical experts. Users can upload pathology reports, biopsy results, or imaging studies for a second opinion. The request initiates the review process and connects users with oncology specialists.
       tags:
-        - v1
+        - cancer-support
       requestBody:
         content:
           application/json:
@@ -577,6 +490,8 @@ paths:
   /api/v1/cancer/requests/{id}/:
     get:
       operationId: v1_cancer_requests_retrieve
+      summary: Get Cancer Review Request Details
+      description: Retrieve detailed information about a specific cancer review request including uploaded documents, review status, expert comments, and recommendations. This allows users to track the progress of their case and access medical opinions.
       parameters:
         - in: path
           name: id
@@ -585,7 +500,7 @@ paths:
           description: A unique integer value identifying this Cancer Request.
           required: true
       tags:
-        - v1
+        - cancer-support
       security:
         - jwtAuth: []
       responses:
@@ -597,6 +512,8 @@ paths:
           description: ""
     put:
       operationId: v1_cancer_requests_update
+      summary: Update Cancer Review Request
+      description: Update all fields of an existing cancer review request. Users can modify patient information, add additional medical history, or update contact details before the review is finalized.
       parameters:
         - in: path
           name: id
@@ -605,7 +522,7 @@ paths:
           description: A unique integer value identifying this Cancer Request.
           required: true
       tags:
-        - v1
+        - cancer-support
       requestBody:
         content:
           application/json:
@@ -629,6 +546,8 @@ paths:
           description: ""
     patch:
       operationId: v1_cancer_requests_partial_update
+      summary: Partially Update Cancer Review Request
+      description: Update specific fields of an existing cancer review request without modifying the entire object. Useful for making targeted updates like changing status or adding notes.
       parameters:
         - in: path
           name: id
@@ -637,7 +556,7 @@ paths:
           description: A unique integer value identifying this Cancer Request.
           required: true
       tags:
-        - v1
+        - cancer-support
       requestBody:
         content:
           application/json:
@@ -660,6 +579,8 @@ paths:
           description: ""
     delete:
       operationId: v1_cancer_requests_destroy
+      summary: Delete Cancer Review Request
+      description: Delete a cancer review request from the system. This permanently removes the request and associated documents. Typically used when a request was created by mistake or is no longer needed.
       parameters:
         - in: path
           name: id
@@ -668,7 +589,7 @@ paths:
           description: A unique integer value identifying this Cancer Request.
           required: true
       tags:
-        - v1
+        - cancer-support
       security:
         - jwtAuth: []
       responses:
@@ -677,6 +598,8 @@ paths:
   /api/v1/cancer/requests/{id}/presigned-url/:
     get:
       operationId: v1_cancer_requests_presigned_url_retrieve
+      summary: Get Presigned Upload URL
+      description: Generate a presigned URL for securely uploading medical documents (reports, scans, pathology results) directly to cloud storage. This URL is time-limited and provides secure, direct upload capability for large medical files associated with the cancer review request.
       parameters:
         - in: path
           name: id
@@ -685,7 +608,7 @@ paths:
           description: A unique integer value identifying this Cancer Request.
           required: true
       tags:
-        - v1
+        - cancer-support
       security:
         - jwtAuth: []
       responses:
@@ -698,6 +621,8 @@ paths:
   /api/v1/cancer/requests/{id}/submit/:
     post:
       operationId: v1_cancer_requests_submit_create
+      summary: Submit Cancer Review Request
+      description: Submit a cancer review request for expert evaluation after all documents have been uploaded. This moves the request from draft status to the review queue, notifying medical experts to begin the review process.
       parameters:
         - in: path
           name: id
@@ -706,7 +631,7 @@ paths:
           description: A unique integer value identifying this Cancer Request.
           required: true
       tags:
-        - v1
+        - cancer-support
       requestBody:
         content:
           application/json:
@@ -731,6 +656,8 @@ paths:
   /api/v1/cancer/requests/{id}/upload/:
     post:
       operationId: v1_cancer_requests_upload_create
+      summary: Upload Cancer Documents
+      description: Upload medical documents (pathology reports, imaging scans, biopsy results) for a cancer review request. Supports multiple file formats including PDF, JPEG, PNG, and DICOM. Files are securely stored and attached to the review request.
       parameters:
         - in: path
           name: id
@@ -739,7 +666,7 @@ paths:
           description: A unique integer value identifying this Cancer Request.
           required: true
       tags:
-        - v1
+        - cancer-support
       requestBody:
         content:
           application/json:
@@ -764,6 +691,9 @@ paths:
   /api/v1/categories/{post_type}/:
     get:
       operationId: v1_categories_list
+      summary: List Categories by Post Type
+      description: |
+        Retrieves a paginated list of categories filtered by post type. This endpoint is used to fetch categories for different content types in the application such as articles, health library items, or other categorized content. The post_type parameter determines which category tree to retrieve. Results support pagination for efficient loading of large category lists.
       parameters:
         - name: page
           required: false
@@ -783,7 +713,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - content
       security:
         - jwtAuth: []
       responses:
@@ -796,6 +726,9 @@ paths:
   /api/v1/categories/{post_type}/children/{parent_id}/:
     get:
       operationId: v1_categories_children_list
+      summary: List Child Categories
+      description: |
+        Retrieves all child categories under a specific parent category within a given post type. This endpoint is useful for building hierarchical category navigation, where users can drill down from parent categories to their children. For example, in a health library, a parent category "Diseases" might have children like "Cardiovascular", "Respiratory", etc. Supports pagination for large category trees.
       parameters:
         - name: page
           required: false
@@ -820,7 +753,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - content
       security:
         - jwtAuth: []
       responses:
@@ -833,6 +766,9 @@ paths:
   /api/v1/categories/{post_type}/hierarchy/:
     get:
       operationId: v1_categories_hierarchy_list
+      summary: Get Category Hierarchy
+      description: |
+        Retrieves the complete hierarchical tree structure of categories for a specific post type. This endpoint returns categories with their nested relationships intact, allowing clients to render full category trees, navigation menus, or breadcrumbs. The recursive structure includes all parent-child relationships in a single response. Useful for building category selectors, filters, or navigation components that need the full category taxonomy.
       parameters:
         - name: page
           required: false
@@ -852,7 +788,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - content
       security:
         - jwtAuth: []
       responses:
@@ -865,8 +801,11 @@ paths:
   /api/v1/checkout/:
     post:
       operationId: v1_checkout_create
+      summary: Create Checkout Session
+      description: |
+        Initiates a checkout session for booking a consultation. This endpoint processes payment information and creates a booked consultation record. It handles the payment transaction, validates the consultation slot availability, and confirms the booking. The request should include consultation details, payment method, and any applicable discount codes. Returns the confirmed booking details with payment status and consultation information.
       tags:
-        - v1
+        - payments
       requestBody:
         content:
           application/json:
@@ -889,7 +828,9 @@ paths:
   /api/v1/consultation/{consultation_id}/images/:
     get:
       operationId: v1_consultation_images_retrieve
-      description: List all consultation images for a specific consultation.
+      summary: List Consultation Images
+      description: |
+        Retrieves all images associated with a specific consultation. These images may include medical photos, test results, prescriptions, or any other visual documentation uploaded by the patient or doctor during the consultation. This endpoint is useful for viewing the complete image history of a consultation session. Images are returned with their metadata including upload timestamp, file size, and URLs for access.
       parameters:
         - in: path
           name: consultation_id
@@ -897,13 +838,15 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_consultation_images_create
-      description: Add a new consultation image for a specific consultation.
+      summary: Add Consultation Image
+      description: |
+        Uploads a new image to a specific consultation. Patients can use this to share symptoms, medical documents, or test results with their doctor. Doctors can upload prescriptions, reports, or other relevant medical images. The image is securely stored and associated with the consultation record. Supports common image formats (JPEG, PNG, PDF) with size validation to ensure optimal performance.
       parameters:
         - in: path
           name: consultation_id
@@ -911,13 +854,15 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           description: No response body
     delete:
       operationId: v1_consultation_images_destroy
-      description: Delete a consultation image for a specific consultation.
+      summary: Delete All Consultation Images
+      description: |
+        Removes all images associated with a specific consultation. This is a bulk delete operation that clears all uploaded images for the consultation. Use with caution as this action is typically irreversible. This endpoint is useful for privacy compliance or when a user requests removal of their medical images. Proper authentication and authorization checks ensure only authorized users can delete consultation images.
       parameters:
         - in: path
           name: consultation_id
@@ -925,14 +870,16 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "204":
           description: No response body
   /api/v1/consultation/{consultation_id}/images/{id}/:
     get:
       operationId: v1_consultation_images_retrieve_2
-      description: List all consultation images for a specific consultation.
+      summary: Get Specific Consultation Image
+      description: |
+        Retrieves a specific image by ID within a consultation. This endpoint returns detailed information about a single image including its URL, upload timestamp, file metadata, and any associated annotations or notes. Use this when you need to display or download a particular image rather than listing all images for a consultation. The response includes secure signed URLs for accessing the image file.
       parameters:
         - in: path
           name: consultation_id
@@ -945,13 +892,15 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_consultation_images_create_2
-      description: Add a new consultation image for a specific consultation.
+      summary: Update Specific Consultation Image
+      description: |
+        Updates or replaces a specific consultation image by ID. This endpoint allows modification of image metadata or replacement of the image file itself. Useful for correcting uploads, adding annotations, or updating image descriptions. The operation maintains the image ID while updating its content or properties. Authorization checks ensure only the consultation participants can modify images.
       parameters:
         - in: path
           name: consultation_id
@@ -964,13 +913,15 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           description: No response body
     delete:
       operationId: v1_consultation_images_destroy_2
-      description: Delete a consultation image for a specific consultation.
+      summary: Delete Specific Consultation Image
+      description: |
+        Removes a specific image by ID from a consultation. This allows selective deletion of individual images while preserving others in the consultation. Useful when a wrong image was uploaded or when a patient requests removal of specific medical photos. The deletion is permanent and the image file is removed from storage. Authorization ensures only authorized users can delete consultation images.
       parameters:
         - in: path
           name: consultation_id
@@ -983,14 +934,16 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "204":
           description: No response body
   /api/v1/consultation/{consultation_id}/images/upload/:
     get:
       operationId: v1_consultation_images_upload_retrieve
-      description: List all consultation images for a specific consultation.
+      summary: Get Upload Status
+      description: |
+        Retrieves the upload status and configuration for consultation images. This endpoint provides information about upload limits, supported file types, maximum file sizes, and any currently pending uploads. Useful for preparing the client-side upload interface with proper validation rules and for checking the status of ongoing upload operations. Returns upload URLs and authentication tokens if needed for direct uploads.
       parameters:
         - in: path
           name: consultation_id
@@ -998,13 +951,15 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_consultation_images_upload_create
-      description: Add a new consultation image for a specific consultation.
+      summary: Upload Consultation Image
+      description: |
+        Handles the direct upload of consultation images with multipart form data. This endpoint receives image files from clients, validates them for format and size, processes them for optimal storage, and associates them with the consultation. Supports batch uploads for multiple images. The uploaded images are securely stored and made accessible to consultation participants. Returns upload confirmation with image IDs and access URLs.
       parameters:
         - in: path
           name: consultation_id
@@ -1012,13 +967,15 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           description: No response body
     delete:
       operationId: v1_consultation_images_upload_destroy
-      description: Delete a consultation image for a specific consultation.
+      summary: Cancel Ongoing Upload
+      description: |
+        Cancels an ongoing or pending image upload for a consultation. This endpoint is used to abort incomplete multipart uploads or clear temporary upload sessions. Useful when users navigate away during upload or when upload errors occur. Cleans up temporary storage and upload resources. Does not affect already completed uploads - use the specific image delete endpoint for removing completed uploads.
       parameters:
         - in: path
           name: consultation_id
@@ -1026,13 +983,16 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       responses:
         "204":
           description: No response body
   /api/v1/consultation/{slotid}/symptoms/:
     get:
       operationId: v1_consultation_symptoms_list
+      summary: List Consultation Symptoms
+      description: |
+        Retrieves all symptoms recorded for a specific consultation slot. This endpoint provides access to the patient-reported symptoms that were documented before or during the consultation. Symptoms include descriptions, severity levels, duration, and any related notes. Doctors use this information for diagnosis and treatment planning. The data is presented in a structured format for easy review and analysis during the consultation.
       parameters:
         - name: page
           required: false
@@ -1052,7 +1012,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       security:
         - jwtAuth: []
       responses:
@@ -1065,6 +1025,9 @@ paths:
   /api/v1/consultation/report/{consultation_id}/:
     get:
       operationId: v1_consultation_report_retrieve
+      summary: Get Consultation Report
+      description: |
+        Retrieves the complete medical report for a consultation. This includes the doctor's diagnosis, treatment plan, prescribed medications, recommended tests, follow-up instructions, and any other clinical notes. The report serves as the official medical record of the consultation session. Patients can view their reports to understand their treatment plan, and doctors can reference them for continuity of care. Returns structured data that can be formatted for display or download as PDF.
       parameters:
         - in: path
           name: consultation_id
@@ -1072,7 +1035,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       security:
         - jwtAuth: []
       responses:
@@ -1080,6 +1043,9 @@ paths:
           description: No response body
     post:
       operationId: v1_consultation_report_create
+      summary: Create Consultation Report
+      description: |
+        Creates or updates a medical report for a consultation. Doctors use this endpoint to document their findings, diagnosis, and treatment recommendations after examining a patient. The report includes structured fields for symptoms assessment, clinical observations, diagnostic conclusions, medication prescriptions, lab test orders, and follow-up advice. The system validates the report format and ensures all required clinical information is captured for medical record completeness.
       parameters:
         - in: path
           name: consultation_id
@@ -1087,7 +1053,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - consultations
       security:
         - jwtAuth: []
       responses:
@@ -1096,8 +1062,11 @@ paths:
   /api/v1/consultation/report/medication/fields/:
     get:
       operationId: v1_consultation_report_medication_fields_retrieve
+      summary: Get Medication Form Fields
+      description: |
+        Retrieves the schema and metadata for medication prescription fields used in consultation reports. This endpoint returns information about available form fields, their data types, validation rules, required fields, and default values. Doctors can use this to build dynamic prescription forms with proper field configurations. Includes dosage options, frequency intervals, duration choices, and administration instructions templates for standardized prescription writing.
       tags:
-        - v1
+        - consultations
       security:
         - jwtAuth: []
       responses:
@@ -1106,8 +1075,11 @@ paths:
   /api/v1/contact/:
     post:
       operationId: v1_contact_create
+      summary: Submit Contact Form
+      description: |
+        Submits a contact form message from users to the support team. This endpoint handles general inquiries, feedback, complaints, or support requests. Users can provide their contact information, select a message category, and describe their concern or question. The submission is logged and forwarded to the appropriate support channel for follow-up. Useful for users who need assistance, want to report issues, or provide feedback about the platform.
       tags:
-        - v1
+        - support
       security:
         - {}
       responses:
@@ -1116,8 +1088,11 @@ paths:
   /api/v1/districts/:
     get:
       operationId: v1_districts_retrieve
+      summary: List Districts
+      description: |
+        Retrieves a list of all available districts or regions supported by the platform. This endpoint provides geographical location data used for filtering hospitals, doctors, pharmacies, and lab facilities by location. The district list helps users find healthcare services in their area. Each district includes its name, code, and potentially related geographical data like coordinates or parent administrative regions. Used in location-based search and filtering features throughout the application.
       tags:
-        - v1
+        - location
       security:
         - jwtAuth: []
       responses:
@@ -1126,6 +1101,9 @@ paths:
   /api/v1/doctor/slots/{id}/:
     get:
       operationId: v1_doctor_slots_list
+      summary: Get Doctor's Consultation Slots
+      description: |
+        Retrieves consultation slots for a specific doctor. This endpoint is used by doctors to view their scheduled appointments and availability. The response includes slot details such as date, time, patient information (if booked), consultation type, and booking status. Supports pagination for doctors with many scheduled slots. Doctors can use this to manage their schedule, prepare for upcoming consultations, and view their daily or weekly calendar of patient appointments.
       parameters:
         - in: path
           name: id
@@ -1141,7 +1119,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           content:
@@ -1152,16 +1130,22 @@ paths:
   /api/v1/doctor/slots/completed/:
     get:
       operationId: v1_doctor_slots_completed_retrieve
+      summary: List Completed Consultation Slots
+      description: |
+        Retrieves all completed consultation slots for a doctor. This endpoint provides access to the doctor's consultation history, including past appointments that have been finished. Each completed slot includes patient information, consultation date and time, diagnosis, prescribed treatments, and any notes from the session. Useful for reviewing patient history, generating reports, tracking consultation volume, and maintaining medical records. Doctors can reference this data for follow-up appointments or continuity of care.
       tags:
-        - v1
+        - consultations
       responses:
         "200":
           description: No response body
   /api/v1/forget-password/:
     post:
       operationId: v1_forget_password_create
+      summary: Request Password Reset
+      description: |
+        Initiates the password reset process for users who have forgotten their password. This endpoint accepts the user's email address or phone number and sends a verification code or reset link. The system validates that the account exists and is active before sending the reset instructions. This is the first step in the password recovery flow. Security measures ensure that reset requests are rate-limited to prevent abuse.
       tags:
-        - v1
+        - authentication
       security:
         - jwtAuth: []
         - {}
@@ -1171,8 +1155,11 @@ paths:
   /api/v1/forget-password/verify/:
     post:
       operationId: v1_forget_password_verify_create
+      summary: Verify Password Reset Code
+      description: |
+        Verifies the password reset code sent to the user's email or phone. This endpoint validates the verification code provided by the user against the code generated during the password reset request. If the code is valid and not expired, the system allows the user to proceed to set a new password. This is the second step in the password recovery flow, ensuring secure verification before allowing password changes.
       tags:
-        - v1
+        - authentication
       security:
         - jwtAuth: []
         - {}
@@ -1182,8 +1169,11 @@ paths:
   /api/v1/generate/signature/:
     post:
       operationId: v1_generate_signature_create
+      summary: Generate Upload Signature
+      description: |
+        Generates a cryptographic signature for secure file uploads to cloud storage. This endpoint creates time-limited, authenticated upload URLs that allow clients to upload files directly to cloud storage (like AWS S3, CloudFlare R2, or similar services) without exposing storage credentials. The signature includes upload permissions, expiration time, and file constraints. Commonly used for uploading consultation images, medical documents, profile photos, and other user-generated content securely.
       tags:
-        - v1
+        - media
       security:
         - jwtAuth: []
       responses:
@@ -1192,6 +1182,9 @@ paths:
   /api/v1/health-library/:
     get:
       operationId: v1_health_library_list
+      summary: List Health Library Articles
+      description: |
+        Retrieves a paginated list of health library articles and educational content. This endpoint provides access to a curated collection of health information, medical guides, disease information, wellness tips, and preventive care resources. Each article includes a title, summary, category, featured image, and publication date. Users can browse through health topics to educate themselves about various medical conditions, treatments, and healthy living practices. The content is designed to empower users with reliable health information.
       parameters:
         - name: page
           required: false
@@ -1206,7 +1199,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - health-library
       security:
         - {}
       responses:
@@ -1218,8 +1211,11 @@ paths:
           description: ""
     post:
       operationId: v1_health_library_create
+      summary: Create Health Library Article
+      description: |
+        Creates a new health library article. This endpoint is typically used by administrators or content managers to add educational health content to the platform. The article should include title, content body, category assignment, featured images, author information, and SEO metadata. The content goes through validation to ensure it meets quality standards before being published. Newly created articles can be drafted or immediately published based on the provided status.
       tags:
-        - v1
+        - health-library
       requestBody:
         content:
           application/json:
@@ -1244,6 +1240,9 @@ paths:
   /api/v1/health-library/{id}/:
     get:
       operationId: v1_health_library_retrieve
+      summary: Get Health Library Article
+      description: |
+        Retrieves the complete details of a specific health library article by ID. This endpoint returns the full article content including title, body text, images, videos, related articles, author information, publication date, and metadata. Users access this when they want to read a complete health article. The response includes formatted content suitable for display, along with SEO data for sharing. View counts may be tracked for analytics purposes.
       parameters:
         - in: path
           name: id
@@ -1252,7 +1251,7 @@ paths:
           description: A unique value identifying this Health Library.
           required: true
       tags:
-        - v1
+        - health-library
       security:
         - {}
       responses:
@@ -1264,6 +1263,9 @@ paths:
           description: ""
     put:
       operationId: v1_health_library_update
+      summary: Update Health Library Article
+      description: |
+        Completely updates a health library article with new data. This endpoint replaces all fields of an existing article with the provided data. Used by content managers to revise articles, update medical information, correct inaccuracies, or refresh outdated content. All required fields must be provided in the request. The update maintains the article's ID and creation date while refreshing its content. Version history may be maintained for audit purposes.
       parameters:
         - in: path
           name: id
@@ -1272,7 +1274,7 @@ paths:
           description: A unique value identifying this Health Library.
           required: true
       tags:
-        - v1
+        - health-library
       requestBody:
         content:
           application/json:
@@ -1296,6 +1298,9 @@ paths:
           description: ""
     patch:
       operationId: v1_health_library_partial_update
+      summary: Partially Update Health Library Article
+      description: |
+        Partially updates specific fields of a health library article without requiring all fields. This endpoint allows selective updates to article properties such as title, content sections, images, or metadata. Useful for quick edits like fixing typos, updating statistics, or adding new sections without resending the entire article data. Only the provided fields are updated while other fields remain unchanged. More efficient than full updates for minor modifications.
       parameters:
         - in: path
           name: id
@@ -1304,7 +1309,7 @@ paths:
           description: A unique value identifying this Health Library.
           required: true
       tags:
-        - v1
+        - health-library
       requestBody:
         content:
           application/json:
@@ -1327,6 +1332,9 @@ paths:
           description: ""
     delete:
       operationId: v1_health_library_destroy
+      summary: Delete Health Library Article
+      description: |
+        Permanently removes a health library article from the platform. This endpoint is used by administrators to delete outdated, inaccurate, or irrelevant content. The deletion is typically permanent and cannot be undone, so it should be used with caution. Before deletion, the system may check for references or dependencies. Alternatively, articles might be soft-deleted (marked as inactive) rather than permanently removed to maintain content history and referential integrity.
       parameters:
         - in: path
           name: id
@@ -1335,7 +1343,7 @@ paths:
           description: A unique value identifying this Health Library.
           required: true
       tags:
-        - v1
+        - health-library
       security:
         - {}
       responses:
@@ -1344,8 +1352,11 @@ paths:
   /api/v1/homepage/:
     get:
       operationId: v1_homepage_retrieve
+      summary: Get Homepage Content
+      description: |
+        Retrieves dynamic content and data for the application's homepage. This endpoint aggregates various content sections including featured articles, banner sliders, quick access widgets, health tips, upcoming events, promotional content, and featured doctors or hospitals. The response is optimized for homepage display with pre-formatted data structures. This centralized endpoint reduces the number of API calls needed to render the homepage, improving performance and user experience.
       tags:
-        - v1
+        - app-content
       security:
         - jwtAuth: []
       responses:
@@ -1354,8 +1365,11 @@ paths:
   /api/v1/hospitals/:
     get:
       operationId: v1_hospitals_retrieve
+      summary: List All Hospitals
+      description: |
+        Retrieves a list of all registered hospitals in the platform. This endpoint provides comprehensive hospital directory information including names, locations, contact details, available specializations, facilities, ratings, and operational status. Users can browse hospitals to find healthcare facilities in their area or search for hospitals offering specific medical services. The data helps users make informed decisions about where to seek medical care.
       tags:
-        - v1
+        - hospitals
       security:
         - {}
       responses:
@@ -1364,6 +1378,9 @@ paths:
   /api/v1/hospitals/{id}/:
     get:
       operationId: v1_hospitals_retrieve_2
+      summary: Get Hospital Details
+      description: |
+        Retrieves detailed information about a specific hospital by ID. This endpoint returns comprehensive hospital data including full address, contact numbers, email, website, operating hours, available departments, medical specializations, facilities and amenities, bed capacity, accreditations, doctor list, patient reviews, ratings, and location coordinates. Users access this when they want complete information about a hospital before booking a consultation or visiting the facility.
       parameters:
         - in: path
           name: id
@@ -1372,7 +1389,7 @@ paths:
           description: A unique integer value identifying this Hospital.
           required: true
       tags:
-        - v1
+        - hospitals
       security:
         - {}
       responses:
@@ -1385,6 +1402,9 @@ paths:
   /api/v1/hospitals/{id}/doctors/:
     get:
       operationId: v1_hospitals_doctors_list
+      summary: List Hospital Doctors
+      description: |
+        Retrieves a paginated list of all doctors affiliated with a specific hospital. This endpoint provides doctor profiles including their names, specializations, qualifications, experience, consultation fees, available time slots, and ratings. Patients use this to find doctors practicing at a particular hospital and to book appointments with them. The list helps users choose appropriate specialists based on their medical needs and doctor availability at their preferred hospital location.
       parameters:
         - in: path
           name: id
@@ -1405,7 +1425,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - hospitals
       security:
         - {}
       responses:
@@ -1418,6 +1438,9 @@ paths:
   /api/v1/hospitals/geojson/:
     get:
       operationId: v1_hospitals_geojson_list
+      summary: Get Hospitals GeoJSON
+      description: |
+        Retrieves hospital locations in GeoJSON format for map visualization. This endpoint returns hospital data with geographical coordinates formatted according to the GeoJSON specification, making it easy to render hospitals on interactive maps. Each feature includes hospital properties like name, address, specializations, and contact info along with precise latitude/longitude coordinates. Ideal for building map-based hospital finder features where users can visually explore nearby healthcare facilities.
       parameters:
         - name: page
           required: false
@@ -1426,7 +1449,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - hospitals
       security:
         - jwtAuth: []
       responses:
@@ -1439,6 +1462,9 @@ paths:
   /api/v1/hospitals/specializations/:
     get:
       operationId: v1_hospitals_specializations_list
+      summary: List Hospital Specializations
+      description: |
+        Retrieves a list of all medical specializations available across hospitals in the platform. This endpoint provides a catalog of specialties like Cardiology, Neurology, Orthopedics, Pediatrics, etc., which users can use to filter and find hospitals or doctors offering specific medical services. Each specialization includes its name, description, and icon. Useful for building search filters and helping patients find appropriate healthcare providers based on their medical needs.
       parameters:
         - name: page
           required: false
@@ -1453,7 +1479,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - hospitals
       security:
         - {}
       responses:
@@ -1465,8 +1491,11 @@ paths:
           description: ""
     post:
       operationId: v1_hospitals_specializations_create
+      summary: Create Hospital Specialization
+      description: |
+        Creates a new medical specialization entry in the system. This endpoint is typically used by administrators to add new specialties that hospitals can offer. The request should include the specialization name, description, category, and optional icon or image. New specializations become available for hospitals to associate with their services and for users to filter when searching for healthcare providers. This helps maintain an up-to-date catalog of medical services offered across the platform.
       tags:
-        - v1
+        - hospitals
       requestBody:
         content:
           application/json:
@@ -1491,8 +1520,11 @@ paths:
   /api/v1/instant-consultation/:
     post:
       operationId: v1_instant_consultation_create
+      summary: Request Instant Consultation
+      description: |
+        Initiates an instant consultation request for immediate medical advice. This endpoint allows patients to request urgent consultations with available doctors without prior appointment scheduling. The system matches the patient with the first available doctor based on specialty, language preferences, or general availability. Useful for non-emergency medical questions that require prompt professional advice. The request includes patient symptoms, preferred consultation mode (chat/video/audio), and any urgent notes.
       tags:
-        - v1
+        - instant-consultations
       requestBody:
         content:
           application/json:
@@ -1514,6 +1546,9 @@ paths:
   /api/v1/instant-consultation/detail/{consultation_id}/:
     get:
       operationId: v1_instant_consultation_detail_retrieve
+      summary: Get Instant Consultation Details
+      description: |
+        Retrieves complete details of a specific instant consultation by ID. This endpoint returns the consultation status, assigned doctor information, patient symptoms, consultation mode, start and end times, chat history or video session details, prescriptions, and any follow-up recommendations. Both patients and doctors can use this to access consultation information during or after the session. The response includes all relevant data for consultation continuity and record-keeping.
       parameters:
         - in: path
           name: consultation_id
@@ -1521,7 +1556,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - instant-consultations
       responses:
         "200":
           content:
@@ -1532,8 +1567,11 @@ paths:
   /api/v1/instant-consultation/signature/:
     post:
       operationId: v1_instant_consultation_signature_create
+      summary: Generate Instant Consultation Signature
+      description: |
+        Generates authentication signature for joining an instant consultation session. This endpoint creates secure access tokens required for video/audio consultations or real-time chat sessions. The signature includes session credentials, expiration time, and access permissions. Participants use this signature to authenticate when connecting to the consultation communication platform (like Agora, Twilio, or WebRTC). Ensures secure and authorized access to consultation sessions.
       tags:
-        - v1
+        - instant-consultations
       security:
         - jwtAuth: []
       responses:
@@ -1542,16 +1580,22 @@ paths:
   /api/v1/instant-consultation/symptoms/:
     get:
       operationId: v1_instant_consultation_symptoms_retrieve
+      summary: Get Instant Consultation Symptoms List
+      description: |
+        Retrieves a predefined list of common symptoms that patients can select when requesting instant consultations. This endpoint provides a structured symptom catalog with categories, severity indicators, and descriptions to help patients accurately describe their condition. The symptom list streamlines the consultation request process and helps doctors quickly understand patient concerns. Includes symptoms across various medical categories for comprehensive coverage of common health complaints.
       tags:
-        - v1
+        - instant-consultations
       responses:
         "200":
           description: No response body
   /api/v1/lab/:
     get:
       operationId: v1_lab_retrieve
+      summary: List All Labs
+      description: |
+        Retrieves a list of all diagnostic laboratories and testing facilities registered in the platform. This endpoint provides lab directory information including names, locations, contact details, operating hours, available test types, accreditations, and home sample collection availability. Users can browse labs to find diagnostic centers in their area for booking health checkups and medical tests. The data helps users choose reliable labs based on location, services offered, and ratings.
       tags:
-        - v1
+        - health-packages
       security:
         - {}
       responses:
@@ -1560,6 +1604,9 @@ paths:
   /api/v1/lab/{id}/:
     get:
       operationId: v1_lab_retrieve_2
+      summary: Get Lab Details
+      description: |
+        Retrieves comprehensive details about a specific laboratory by ID. This endpoint returns complete lab information including full address, multiple contact numbers, email, website, operating hours, available test packages, individual tests, pricing, home collection services, sample collection timings, report delivery timeline, accreditations, certifications, facility images, and user ratings. Patients access this when evaluating labs for booking diagnostic tests or health checkup packages.
       parameters:
         - in: path
           name: id
@@ -1568,7 +1615,7 @@ paths:
           description: A unique integer value identifying this Lab.
           required: true
       tags:
-        - v1
+        - health-packages
       security:
         - {}
       responses:
@@ -1581,6 +1628,9 @@ paths:
   /api/v1/lab/packages/:
     get:
       operationId: v1_lab_packages_list
+      summary: List Lab Test Packages
+      description: |
+        Retrieves a paginated list of available lab test packages. This endpoint provides comprehensive health checkup packages that bundle multiple tests at discounted rates. Each package includes package name, description, included tests, pricing, preparation instructions, sample type, and suitable age groups or health conditions. Popular packages include complete health checkups, diabetes panels, thyroid profiles, cardiac risk assessments, and preventive health screens. Helps users find cost-effective bundled test options.
       parameters:
         - name: page
           required: false
@@ -1595,7 +1645,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - health-packages
       security:
         - {}
       responses:
@@ -1608,6 +1658,9 @@ paths:
   /api/v1/lab/packages/{id}/:
     get:
       operationId: v1_lab_packages_retrieve
+      summary: Get Lab Package Details
+      description: |
+        Retrieves detailed information about a specific lab test package by ID. This endpoint returns comprehensive package details including the complete list of individual tests included, their normal ranges, package price versus individual test total, lab facilities offering this package, preparation instructions (fasting requirements, medication restrictions), sample collection details, report delivery timeframe, and any special conditions. Users access this to understand exactly what tests are included before booking a health package.
       parameters:
         - in: path
           name: id
@@ -1616,7 +1669,7 @@ paths:
           description: A unique integer value identifying this Lab Package.
           required: true
       tags:
-        - v1
+        - health-packages
       security:
         - {}
       responses:
@@ -1629,8 +1682,11 @@ paths:
   /api/v1/login/:
     post:
       operationId: v1_login_create
+      summary: User Login
+      description: |
+        Authenticates a user and creates a session. This endpoint accepts user credentials (email/phone and password) and validates them against the stored user data. Upon successful authentication, it returns authentication tokens (access token and refresh token) that the client should use for subsequent API requests. The endpoint also handles account status checks to ensure the user account is active and verified. Failed login attempts are logged for security monitoring.
       tags:
-        - v1
+        - authentication
       requestBody:
         content:
           application/json:
@@ -1656,29 +1712,41 @@ paths:
   /api/v1/logout/:
     post:
       operationId: v1_logout_create
+      summary: User Logout
+      description: |
+        Logs out the current user and invalidates their authentication tokens. This endpoint revokes the access token and refresh token to ensure the user session is properly terminated. After logout, the user will need to login again to access protected resources. This is important for security, especially on shared devices, and helps maintain proper session management. The endpoint may also clear server-side session data if applicable.
       tags:
-        - v1
+        - authentication
       responses:
         "200":
           description: No response body
   /api/v1/medicine-remainders/:
     get:
       operationId: v1_medicine_remainders_retrieve
+      summary: List Medicine Reminders
+      description: |
+        Retrieves all medicine reminders configured by the user. This endpoint returns a list of medication schedules including medicine names, dosages, frequency, timing, duration, and reminder status. Users can view their complete medication regimen to manage their treatment adherence. The reminders help patients remember to take their medications on time. Supports chronic disease management and post-treatment care by providing structured medication tracking.
       tags:
-        - v1
+        - medicine-reminders
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_medicine_remainders_create
+      summary: Create Medicine Reminder
+      description: |
+        Creates a new medicine reminder for the user. This endpoint allows patients to set up medication schedules by specifying medicine name, dosage, frequency (daily, twice daily, etc.), specific times, duration, and any special instructions. The system will send push notifications or alerts at scheduled times to remind the patient to take their medication. Particularly useful for managing multiple medications, chronic conditions, or ensuring treatment compliance after consultations.
       tags:
-        - v1
+        - medicine-reminders
       responses:
         "200":
           description: No response body
   /api/v1/medicine-remainders/{id}/:
     get:
       operationId: v1_medicine_remainders_retrieve_2
+      summary: Get Medicine Reminder Details
+      description: |
+        Retrieves detailed information about a specific medicine reminder by ID. This endpoint returns complete reminder data including medicine name, dosage, frequency schedule, timing, start and end dates, remaining days, reminder history, adherence statistics, and any special instructions. Users can view individual reminder details to track their medication compliance and review dosage instructions. Helpful for verifying medication schedules and monitoring treatment progress.
       parameters:
         - in: path
           name: id
@@ -1686,7 +1754,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - medicine-reminders
       security:
         - jwtAuth: []
       responses:
@@ -1694,6 +1762,9 @@ paths:
           description: No response body
     delete:
       operationId: v1_medicine_remainders_destroy
+      summary: Delete Medicine Reminder
+      description: |
+        Permanently deletes a medicine reminder from the user's medication schedule. This endpoint removes the reminder when treatment is completed, medication is discontinued, or the reminder is no longer needed. Once deleted, scheduled notifications for this medication will stop. Users should only delete reminders for medications they are no longer taking. Helps keep the medication list current and prevents unnecessary reminder notifications.
       parameters:
         - in: path
           name: id
@@ -1701,7 +1772,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - medicine-reminders
       security:
         - jwtAuth: []
       responses:
@@ -1710,9 +1781,11 @@ paths:
   /api/v1/medicine-remainders/sync/:
     post:
       operationId: v1_medicine_remainders_sync_create
-      description: "Sync reminders: update existing ones or create new ones."
+      summary: Sync Medicine Reminders
+      description: |
+        Synchronizes medicine reminders between the client device and server. This endpoint performs batch operations to update existing reminders or create new ones based on the provided data. Used when users switch devices, restore from backup, or sync changes made offline. The sync operation intelligently merges local and server data, resolving conflicts and ensuring consistency across platforms. Helps maintain medication schedules across multiple devices and prevents data loss.
       tags:
-        - v1
+        - medicine-reminders
       security:
         - jwtAuth: []
       responses:
@@ -1721,6 +1794,9 @@ paths:
   /api/v1/medicines/:
     get:
       operationId: v1_medicines_list
+      summary: Search Medicines
+      description: |
+        Retrieves a paginated, searchable list of medicines available in the platform. This endpoint provides comprehensive medicine information including names, generic names, brands, manufacturers, dosage forms, strengths, therapeutic categories, and pricing. Users can search for medicines by name to check availability, compare prices, and find alternatives. Pharmacists and users use this to discover medicines for ordering or to get information about prescribed medications. Supports filtering and search functionality for easy medicine lookup.
       parameters:
         - name: page
           required: false
@@ -1735,7 +1811,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - pharmacy
       security:
         - jwtAuth: []
       responses:
@@ -1748,8 +1824,11 @@ paths:
   /api/v1/medicines/company/:
     get:
       operationId: v1_medicines_company_retrieve
+      summary: List Pharmaceutical Companies
+      description: |
+        Retrieves a list of pharmaceutical companies and medicine manufacturers registered in the platform. This endpoint provides company information including names, country of origin, certifications, and product portfolios. Users can browse companies to understand medicine sources, verify manufacturer credentials, and explore product ranges. Useful for finding medicines by manufacturer, checking quality certifications, and understanding the pharmaceutical supplier landscape.
       tags:
-        - v1
+        - pharmacy
       security:
         - {}
       responses:
@@ -1758,6 +1837,9 @@ paths:
   /api/v1/medicines/company/{id}/:
     get:
       operationId: v1_medicines_company_retrieve_2
+      summary: Get Pharmaceutical Company Details
+      description: |
+        Retrieves detailed information about a specific pharmaceutical company by ID. This endpoint returns comprehensive company data including full name, headquarters location, establishment year, regulatory approvals, quality certifications (GMP, FDA, WHO), complete product catalog, manufacturing facilities, contact information, and company history. Users access this to verify manufacturer authenticity, understand company credibility, and explore their medicine portfolio before purchasing or prescribing products.
       parameters:
         - in: path
           name: id
@@ -1766,7 +1848,7 @@ paths:
           description: A unique integer value identifying this Pharmacy.
           required: true
       tags:
-        - v1
+        - pharmacy
       security:
         - {}
       responses:
@@ -1779,6 +1861,9 @@ paths:
   /api/v1/notices/:
     get:
       operationId: v1_notices_list
+      summary: List System Notices
+      description: |
+        Retrieves a paginated list of system-wide notices and announcements. This endpoint provides important platform updates, maintenance schedules, new feature announcements, policy changes, health alerts, or general information messages. Notices are typically displayed to all users or targeted user groups. Each notice includes a title, content, publication date, priority level, and read status. Helps keep users informed about platform changes and important health-related announcements.
       parameters:
         - name: page
           required: false
@@ -1787,7 +1872,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - notifications
       responses:
         "200":
           content:
@@ -1798,6 +1883,9 @@ paths:
   /api/v1/notices/{id}/:
     get:
       operationId: v1_notices_retrieve
+      summary: Get Notice Details
+      description: |
+        Retrieves the complete details of a specific system notice by ID. This endpoint returns the full notice content including title, detailed message body, publication date, expiry date, priority level, target audience, attached documents or links, and read status. Users access this to read the complete announcement or update information. Viewing a notice may automatically mark it as read for the user.
       parameters:
         - in: path
           name: id
@@ -1806,7 +1894,7 @@ paths:
           description: A unique value identifying this Notice.
           required: true
       tags:
-        - v1
+        - notifications
       responses:
         "200":
           content:
@@ -1817,6 +1905,9 @@ paths:
   /api/v1/notices/{id}/read/:
     put:
       operationId: v1_notices_read_update
+      summary: Mark Notice as Read
+      description: |
+        Marks a specific notice as read for the current user. This endpoint updates the read status of a notice, typically hiding it from the unread notices list and updating notification counters. Used when users view or dismiss notices to track which announcements they have acknowledged. Helps maintain accurate unread notice counts and allows the system to show only new or unread notices to users.
       parameters:
         - in: path
           name: id
@@ -1825,7 +1916,7 @@ paths:
           description: A unique integer value identifying this Notification.
           required: true
       tags:
-        - v1
+        - notifications
       requestBody:
         content:
           application/json:
@@ -1847,6 +1938,9 @@ paths:
           description: ""
     patch:
       operationId: v1_notices_read_partial_update
+      summary: Mark Notice as Read (Patch)
+      description: |
+        Partially updates notice read status and related metadata. Used to mark notices as read or update specific notice properties without sending the full notice data.
       parameters:
         - in: path
           name: id
@@ -1855,7 +1949,7 @@ paths:
           description: A unique integer value identifying this Notification.
           required: true
       tags:
-        - v1
+        - notifications
       requestBody:
         content:
           application/json:
@@ -1877,21 +1971,30 @@ paths:
   /api/v1/notification/settings/:
     get:
       operationId: v1_notification_settings_retrieve
+      summary: Get Notification Settings
+      description: |
+        Retrieves the user's notification preferences and settings. This endpoint returns the current configuration for various notification channels including push notifications, SMS, email, and in-app alerts. Settings cover different event types such as appointment reminders, consultation updates, medicine reminders, promotional offers, health tips, and system announcements. Users can view their notification preferences to understand what alerts they are subscribed to.
       tags:
-        - v1
+        - notifications
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_notification_settings_create
+      summary: Update Notification Settings
+      description: |
+        Updates the user's notification preferences and settings. This endpoint allows users to customize which notifications they want to receive and through which channels (push, SMS, email, in-app). Users can enable or disable specific notification categories, set quiet hours, configure reminder frequencies, and manage communication preferences. Helps users control their notification experience and reduce alert fatigue while ensuring they receive important health-related updates.
       tags:
-        - v1
+        - notifications
       responses:
         "200":
           description: No response body
   /api/v1/notifications/:
     get:
       operationId: v1_notifications_list
+      summary: List User Notifications
+      description: |
+        Retrieves a paginated list of notifications for the current user. This endpoint provides personalized notifications including appointment reminders, consultation updates, prescription ready alerts, test result notifications, payment confirmations, medicine reminder alerts, and promotional messages. Each notification includes a title, message, timestamp, read status, priority, and action links. Users access this to stay informed about their health activities and platform interactions.
       parameters:
         - name: page
           required: false
@@ -1900,7 +2003,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - notifications
       responses:
         "200":
           content:
@@ -1911,6 +2014,9 @@ paths:
   /api/v1/notifications/{id}/:
     get:
       operationId: v1_notifications_retrieve
+      summary: Get Notification Details
+      description: |
+        Retrieves the complete details of a specific notification by ID. This endpoint returns the full notification content including title, detailed message, timestamp, sender information, notification type, priority, read status, and any associated action links or data. Users access this to read notification details and take appropriate actions. Viewing a notification typically marks it as read automatically.
       parameters:
         - in: path
           name: id
@@ -1919,7 +2025,7 @@ paths:
           description: A unique value identifying this Notice.
           required: true
       tags:
-        - v1
+        - notifications
       responses:
         "200":
           content:
@@ -1930,6 +2036,9 @@ paths:
   /api/v1/order/{id}/:
     get:
       operationId: v1_order_retrieve
+      summary: Get Order Details
+      description: |
+        Retrieves complete details of a specific order by ID. This endpoint returns comprehensive order information including order number, items ordered (consultations, lab tests, medicines, or packages), quantities, pricing breakdown, applied discounts or coupons, payment status, payment method, order date, delivery/appointment details, and order status. Users access this to track their orders, view receipts, and manage their bookings. Essential for order management and transaction history.
       parameters:
         - in: path
           name: id
@@ -1938,7 +2047,7 @@ paths:
           description: A unique value identifying this Booked Consultation.
           required: true
       tags:
-        - v1
+        - payments
       responses:
         "200":
           content:
@@ -1948,6 +2057,9 @@ paths:
           description: ""
     post:
       operationId: v1_order_create
+      summary: Create Order Variant
+      description: |
+        Creates a new order variation or duplicate based on an existing order. This endpoint allows users to reorder the same items, create similar orders with modifications, or place recurring orders. The new order is created using the existing order as a template while allowing changes to quantities, delivery details, or additional items. Useful for repeat purchases of medicines, rebooking similar consultations, or reordering lab test packages. Streamlines the ordering process for frequently purchased items.
       parameters:
         - in: path
           name: id
@@ -1956,7 +2068,7 @@ paths:
           description: A unique value identifying this Booked Consultation.
           required: true
       tags:
-        - v1
+        - payments
       requestBody:
         content:
           application/json:
@@ -1979,6 +2091,9 @@ paths:
   /api/v1/order/coupon/{id}/:
     post:
       operationId: v1_order_coupon_create
+      summary: Apply Coupon to Order
+      description: |
+        Applies a validated coupon code to an order. This endpoint processes the coupon application, calculates the discount, and updates the order total. The coupon's usage count is tracked and the discount is applied according to the coupon terms (percentage off, fixed amount, or special offer). Returns the updated order total with discount breakdown. The system ensures coupons are used only once per user (if single-use) and validates all eligibility criteria before applying the discount.
       parameters:
         - in: path
           name: id
@@ -1986,7 +2101,7 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - payments
       security:
         - jwtAuth: []
       responses:
@@ -1995,6 +2110,9 @@ paths:
   /api/v1/parent/assistant-voices/:
     get:
       operationId: v1_parent_assistant_voices_list
+      summary: List Assistant Voices
+      description: |
+        Retrieves available voice assistant options for parent mode. This endpoint provides a list of voice profiles that can be used for voice-controlled features in parent/elderly care mode. Each voice includes language options, accent variations, speech characteristics, and sample audio. Parents or caregivers can select appropriate voices for voice-guided navigation, medication reminders, or other audio assistance features designed for elderly users who may prefer voice interaction over traditional UI.
       parameters:
         - name: page
           required: false
@@ -2009,7 +2127,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - parent-mode
       responses:
         "200":
           content:
@@ -2019,8 +2137,11 @@ paths:
           description: ""
     post:
       operationId: v1_parent_assistant_voices_create
+      summary: Create Assistant Voice
+      description: |
+        Creates a new voice assistant profile for parent mode. This endpoint allows administrators or caregivers to add custom voice profiles with specific characteristics tailored for elderly users. Voice profiles can be customized for language, accent, speaking pace, and tone. Used to expand voice options for accessibility features in parent/elderly care mode where voice interaction is preferred over traditional UI navigation.
       tags:
-        - v1
+        - parent-mode
       requestBody:
         content:
           application/json:
@@ -2049,7 +2170,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Get Assistant Voice Details
+      description: |
+          Retrieves detailed information about a specific voice assistant profile.
       responses:
         "200":
           content:
@@ -2066,7 +2190,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Update Assistant Voice
+      description: |
+          Updates an existing voice assistant profile.
       requestBody:
         content:
           application/json:
@@ -2094,7 +2221,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Update Assistant Voice
+      description: |
+          Updates an existing voice assistant profile.
       requestBody:
         content:
           application/json:
@@ -2122,7 +2252,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Delete Assistant Voice
+      description: |
+          Deletes a voice assistant profile.
       responses:
         "204":
           description: No response body
@@ -2143,7 +2276,10 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - parent-mode
+      summary: List Phonebook Contacts
+      description: |
+          Retrieves phonebook contacts for parent/elderly mode.
       responses:
         "200":
           content:
@@ -2154,7 +2290,10 @@ paths:
     post:
       operationId: v1_parent_phonebook_create
       tags:
-        - v1
+        - parent-mode
+      summary: Add Phonebook Contact
+      description: |
+          Adds a new contact to the parent mode phonebook.
       requestBody:
         content:
           application/json:
@@ -2184,7 +2323,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Get Contact Details
+      description: |
+          Retrieves details of a specific phonebook contact.
       responses:
         "200":
           content:
@@ -2201,7 +2343,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Update Phonebook Contact
+      description: |
+          Updates an existing phonebook contact.
       requestBody:
         content:
           application/json:
@@ -2230,7 +2375,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Update Phonebook Contact
+      description: |
+          Updates an existing phonebook contact.
       requestBody:
         content:
           application/json:
@@ -2258,23 +2406,32 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - parent-mode
+      summary: Delete Phonebook Contact
+      description: |
+          Removes a contact from the parent mode phonebook.
       responses:
         "204":
           description: No response body
   /api/v1/payments/consultations/:
     get:
       operationId: v1_payments_consultations_retrieve
+      summary: Get Consultation Payment History
+      description: |
+        Retrieves the payment history for all consultation bookings made by the user. This endpoint provides a comprehensive list of consultation payments including booking date, doctor information, consultation type, payment amount, payment method, transaction ID, payment status (successful, pending, failed), and refund information if applicable. Users access this to review their consultation expenses, track payments, generate expense reports, and manage their healthcare spending. Useful for insurance claims and financial record-keeping.
       tags:
-        - v1
+        - payments
       responses:
         "200":
           description: No response body
   /api/v1/pharmacy/:
     get:
       operationId: v1_pharmacy_retrieve
+      summary: List All Pharmacies
+      description: |
+        Retrieves a list of all registered pharmacies in the platform. This endpoint provides pharmacy directory information including names, locations, contact details, operating hours, home delivery availability, payment methods accepted, and ratings. Users can browse pharmacies to find medicine shops in their area for purchasing medications. The data helps users choose pharmacies based on location, services offered, delivery options, and customer reviews. Essential for medicine ordering and prescription fulfillment.
       tags:
-        - v1
+        - pharmacy
       security:
         - {}
       responses:
@@ -2283,6 +2440,9 @@ paths:
   /api/v1/pharmacy/{id}/:
     get:
       operationId: v1_pharmacy_retrieve_2
+      summary: Get Pharmacy Details
+      description: |
+        Retrieves comprehensive details about a specific pharmacy by ID. This endpoint returns complete pharmacy information including full address, multiple contact numbers, email, website, operating hours, holiday schedule, available medicines inventory, home delivery service details, delivery charges, minimum order amount, accepted payment methods, pharmacist information, license details, customer ratings, and reviews. Users access this when selecting a pharmacy for medicine orders or prescription fulfillment.
       parameters:
         - in: path
           name: id
@@ -2291,7 +2451,7 @@ paths:
           description: A unique integer value identifying this Pharmacy.
           required: true
       tags:
-        - v1
+        - pharmacy
       security:
         - {}
       responses:
@@ -2324,7 +2484,10 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - promotional
+      summary: List Hospital Discounts
+      description: |
+          Retrieves available promotional discounts for hospital services.
       responses:
         "200":
           content:
@@ -2335,7 +2498,10 @@ paths:
     post:
       operationId: v1_promotional_hospital_discount_create
       tags:
-        - v1
+        - promotional
+      summary: Create Hospital Discount
+      description: |
+          Creates a new hospital discount promotion.
       requestBody:
         content:
           application/json:
@@ -2366,7 +2532,10 @@ paths:
           description: A unique value identifying this hospital discount.
           required: true
       tags:
-        - v1
+        - promotional
+      summary: Get Discount Details
+      description: |
+          Retrieves details of a specific hospital discount.
       responses:
         "200":
           content:
@@ -2384,7 +2553,10 @@ paths:
           description: A unique value identifying this hospital discount.
           required: true
       tags:
-        - v1
+        - promotional
+      summary: Update Hospital Discount
+      description: |
+          Updates an existing hospital discount.
       requestBody:
         content:
           application/json:
@@ -2414,7 +2586,10 @@ paths:
           description: A unique value identifying this hospital discount.
           required: true
       tags:
-        - v1
+        - promotional
+      summary: Update Hospital Discount
+      description: |
+          Updates an existing hospital discount.
       requestBody:
         content:
           application/json:
@@ -2443,7 +2618,10 @@ paths:
           description: A unique value identifying this hospital discount.
           required: true
       tags:
-        - v1
+        - promotional
+      summary: Delete Hospital Discount
+      description: |
+          Removes a hospital discount promotion.
       responses:
         "204":
           description: No response body
@@ -2451,7 +2629,10 @@ paths:
     post:
       operationId: v1_promotional_vouchers_claim_create
       tags:
-        - v1
+        - promotional
+      summary: Claim Promotional Voucher
+      description: |
+          Claims a promotional voucher for the user account.
       security:
         - jwtAuth: []
       responses:
@@ -2461,14 +2642,20 @@ paths:
     get:
       operationId: v1_quiz_check_answer_retrieve
       tags:
-        - v1
+        - gamification
+      summary: Check Quiz Answer
+      description: |
+          Validates quiz answers and calculates scores.
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_quiz_check_answer_create
       tags:
-        - v1
+        - gamification
+      summary: Check Quiz Answer
+      description: |
+          Validates quiz answers and calculates scores.
       responses:
         "200":
           description: No response body
@@ -2476,7 +2663,10 @@ paths:
     get:
       operationId: v1_quiz_clients_retrieve
       tags:
-        - v1
+        - gamification
+      summary: Get Quiz Client Data
+      description: |
+          Retrieves quiz data for client applications.
       responses:
         "200":
           description: No response body
@@ -2490,7 +2680,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - gamification
+      summary: Get Quiz Client Data
+      description: |
+          Retrieves quiz data for client applications.
       responses:
         "200":
           description: No response body
@@ -2498,7 +2691,10 @@ paths:
     post:
       operationId: v1_quiz_clients_check_answer_create
       tags:
-        - v1
+        - gamification
+      summary: Check Quiz Answer
+      description: |
+          Validates quiz answers and calculates scores.
       responses:
         "200":
           description: No response body
@@ -2513,7 +2709,10 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - gamification
+      summary: List Quiz Leaderboard
+      description: |
+          Retrieves quiz leaderboard rankings and scores.
       security:
         - jwtAuth: []
       responses:
@@ -2526,7 +2725,10 @@ paths:
     post:
       operationId: v1_quiz_leaderboard_create
       tags:
-        - v1
+        - gamification
+      summary: Submit Quiz Entry
+      description: |
+          Submits a quiz entry for leaderboard ranking.
       requestBody:
         content:
           application/json:
@@ -2558,7 +2760,10 @@ paths:
           description: A unique integer value identifying this user.
           required: true
       tags:
-        - v1
+        - gamification
+      summary: Get Leaderboard Entry
+      description: |
+          Retrieves a specific leaderboard entry.
       security:
         - jwtAuth: []
       responses:
@@ -2578,7 +2783,10 @@ paths:
           description: A unique integer value identifying this user.
           required: true
       tags:
-        - v1
+        - gamification
+      summary: Update Leaderboard Entry
+      description: |
+          Updates a leaderboard entry.
       requestBody:
         content:
           application/json:
@@ -2609,7 +2817,10 @@ paths:
           description: A unique integer value identifying this user.
           required: true
       tags:
-        - v1
+        - gamification
+      summary: Update Leaderboard Entry
+      description: |
+          Updates a leaderboard entry.
       requestBody:
         content:
           application/json:
@@ -2632,6 +2843,8 @@ paths:
           description: ""
     delete:
       operationId: v1_quiz_leaderboard_destroy
+      summary: Delete Leaderboard Entry
+      description: Remove a user's entry from the quiz leaderboard. This permanently deletes the leaderboard record for the specified user. Typically used for moderation purposes or when a user requests data deletion.
       parameters:
         - in: path
           name: id
@@ -2640,7 +2853,7 @@ paths:
           description: A unique integer value identifying this user.
           required: true
       tags:
-        - v1
+        - gamification
       security:
         - jwtAuth: []
       responses:
@@ -2650,7 +2863,10 @@ paths:
     post:
       operationId: v1_register_phone_create
       tags:
-        - v1
+        - authentication
+      summary: Register with Phone
+      description: |
+          Initiates user registration using phone number with OTP verification.
       security:
         - {}
       responses:
@@ -2660,7 +2876,10 @@ paths:
     post:
       operationId: v1_request_account_deletion_create
       tags:
-        - v1
+        - user-management
+      summary: Request Account Deletion
+      description: |
+          Initiates account deletion request with verification process.
       responses:
         "200":
           description: No response body
@@ -2668,7 +2887,10 @@ paths:
     post:
       operationId: v1_resend_otp_create
       tags:
-        - v1
+        - authentication
+      summary: Resend OTP
+      description: |
+          Resends One-Time Password for verification.
       security:
         - {}
       responses:
@@ -2678,7 +2900,10 @@ paths:
     get:
       operationId: v1_schedules_retrieve
       tags:
-        - v1
+        - appointments
+      summary: Get Schedules
+      description: |
+          Retrieves user appointment schedules.
       responses:
         "200":
           description: No response body
@@ -2686,7 +2911,10 @@ paths:
     get:
       operationId: v1_search_retrieve
       tags:
-        - v1
+        - search
+      summary: Search
+      description: |
+          Performs search across platform resources.
       security:
         - jwtAuth: []
       responses:
@@ -2702,7 +2930,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - search
+      summary: Search
+      description: |
+          Performs search across platform resources.
       security:
         - {}
       responses:
@@ -2712,7 +2943,10 @@ paths:
     post:
       operationId: v1_send_verification_code_create
       tags:
-        - v1
+        - authentication
+      summary: Send Verification Code
+      description: |
+          Sends verification code to user email or phone.
       responses:
         "200":
           description: No response body
@@ -2727,7 +2961,10 @@ paths:
             format: uuid
           required: true
       tags:
-        - v1
+        - appointments
+      summary: Get Appointment Slot
+      description: |
+          Retrieves appointment slot details.
       responses:
         "200":
           content:
@@ -2737,6 +2974,8 @@ paths:
           description: ""
     post:
       operationId: v1_slot_create
+      summary: Create Consultation Slot
+      description: Create a new consultation time slot for a doctor. This endpoint allows doctors or administrators to add new available appointment slots to the scheduling system, specifying date, time, duration, and availability status.
       parameters:
         - in: path
           name: id
@@ -2745,7 +2984,7 @@ paths:
             format: uuid
           required: true
       tags:
-        - v1
+        - appointments
       requestBody:
         content:
           application/json:
@@ -2767,6 +3006,8 @@ paths:
           description: ""
     put:
       operationId: v1_slot_update
+      summary: Update Consultation Slot
+      description: Update all details of an existing consultation slot. This allows modification of slot time, availability status, consultation type, or any other slot properties. Requires providing complete slot data.
       parameters:
         - in: path
           name: id
@@ -2775,7 +3016,7 @@ paths:
             format: uuid
           required: true
       tags:
-        - v1
+        - appointments
       requestBody:
         content:
           application/json:
@@ -2797,6 +3038,8 @@ paths:
           description: ""
     patch:
       operationId: v1_slot_partial_update
+      summary: Partially Update Consultation Slot
+      description: Update specific fields of a consultation slot without modifying the entire object. Useful for making targeted changes like marking a slot as unavailable, changing duration, or updating status.
       parameters:
         - in: path
           name: id
@@ -2805,7 +3048,7 @@ paths:
             format: uuid
           required: true
       tags:
-        - v1
+        - appointments
       requestBody:
         content:
           application/json:
@@ -2826,6 +3069,9 @@ paths:
           description: ""
     delete:
       operationId: v1_slot_destroy
+      summary: Cancel Appointment Slot
+      description: |
+        Cancels an appointment slot booking. This permanently removes the booking and makes the slot available for other users. Cancellation policies and refund eligibility may apply based on timing.
       parameters:
         - in: path
           name: id
@@ -2834,7 +3080,7 @@ paths:
             format: uuid
           required: true
       tags:
-        - v1
+        - appointments
       responses:
         "204":
           description: No response body
@@ -2842,7 +3088,10 @@ paths:
     post:
       operationId: v1_slot_signature_create
       tags:
-        - v1
+        - appointments
+      summary: Generate Slot Signature
+      description: |
+          Generates signature for appointment slot access.
       security:
         - jwtAuth: []
       responses:
@@ -2852,14 +3101,20 @@ paths:
     get:
       operationId: v1_slot_update_retrieve
       tags:
-        - v1
+        - appointments
+      summary: Update Appointment Slot
+      description: |
+          Updates appointment slot information.
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_slot_update_create
       tags:
-        - v1
+        - appointments
+      summary: Update Appointment Slot
+      description: |
+          Updates appointment slot information.
       responses:
         "200":
           description: No response body
@@ -2874,7 +3129,10 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - appointments
+      summary: List Appointment Slots
+      description: |
+          Retrieves available appointment slots.
       responses:
         "200":
           content:
@@ -2884,8 +3142,10 @@ paths:
           description: ""
     post:
       operationId: v1_slots_create
+      summary: Create Appointment Slot
+      description: Create a new appointment time slot in the consultation scheduling system. Doctors or administrators can define new available slots by specifying date, time range, slot duration, and consultation type (in-person, video, or instant).
       tags:
-        - v1
+        - appointments
       requestBody:
         content:
           application/json:
@@ -2909,7 +3169,10 @@ paths:
     get:
       operationId: v1_slots_user_booked_retrieve
       tags:
-        - v1
+        - user-management
+      summary: User Management
+      description: |
+          Manages user account and profile.
       responses:
         "200":
           description: No response body
@@ -2917,7 +3180,10 @@ paths:
     get:
       operationId: v1_slots_users_retrieve
       tags:
-        - v1
+        - user-management
+      summary: User Management
+      description: |
+          Manages user account and profile.
       responses:
         "200":
           description: No response body
@@ -2925,14 +3191,20 @@ paths:
     get:
       operationId: v1_sos_retrieve
       tags:
-        - v1
+        - emergency
+      summary: Get SOS Alert
+      description: |
+          Retrieves SOS alert details.
       responses:
         "200":
           description: No response body
     post:
       operationId: v1_sos_create
       tags:
-        - v1
+        - emergency
+      summary: Create SOS Alert
+      description: |
+          Creates an emergency SOS alert.
       responses:
         "200":
           description: No response body
@@ -2946,7 +3218,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - emergency
+      summary: Send SOS Notification
+      description: |
+          Sends SOS emergency notification to contacts.
       security:
         - jwtAuth: []
       responses:
@@ -2962,7 +3237,10 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - emergency
+      summary: Get SOS Alert
+      description: |
+          Retrieves SOS alert details.
       responses:
         "200":
           description: No response body
@@ -2975,12 +3253,17 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - emergency
+      summary: Update SOS Alert
+      description: |
+          Updates SOS alert status.
       responses:
         "200":
           description: No response body
     delete:
       operationId: v1_sos_destroy
+      summary: Delete SOS Alert
+      description: Delete an existing SOS emergency alert from the system. This permanently removes the alert record, typically used when an emergency has been resolved or when the alert was created by mistake. Use with caution as this action cannot be undone.
       parameters:
         - in: path
           name: id
@@ -2988,7 +3271,7 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - emergency
       responses:
         "204":
           description: No response body
@@ -2996,7 +3279,10 @@ paths:
     get:
       operationId: v1_sos_notify_retrieve
       tags:
-        - v1
+        - emergency
+      summary: Send SOS Notification
+      description: |
+          Sends SOS emergency notification to contacts.
       security:
         - jwtAuth: []
       responses:
@@ -3006,7 +3292,10 @@ paths:
     post:
       operationId: v1_subscriber_create
       tags:
-        - v1
+        - newsletter
+      summary: Subscribe to Newsletter
+      description: |
+          Subscribes user to newsletter.
       security:
         - {}
       responses:
@@ -3022,7 +3311,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - authentication
+      summary: Update Password
+      description: |
+          Updates user password using reset token.
       requestBody:
         content:
           application/json:
@@ -3054,7 +3346,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - authentication
+      summary: Update Password
+      description: |
+          Updates user password using reset token.
       requestBody:
         content:
           application/json:
@@ -3086,7 +3381,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - authentication
+      summary: Update Password
+      description: |
+          Updates user password using reset token.
       requestBody:
         content:
           application/json:
@@ -3112,7 +3410,10 @@ paths:
     post:
       operationId: v1_update_password_create_2
       tags:
-        - v1
+        - user-management
+      summary: Change Password
+      description: |
+          Changes user password with current password verification.
       requestBody:
         content:
           application/json:
@@ -3135,7 +3436,10 @@ paths:
     put:
       operationId: v1_update_password_update_2
       tags:
-        - v1
+        - user-management
+      summary: Change Password
+      description: |
+          Changes user password with current password verification.
       requestBody:
         content:
           application/json:
@@ -3158,7 +3462,10 @@ paths:
     patch:
       operationId: v1_update_password_partial_update_2
       tags:
-        - v1
+        - user-management
+      summary: Change Password
+      description: |
+          Changes user password with current password verification.
       requestBody:
         content:
           application/json:
@@ -3181,7 +3488,10 @@ paths:
     post:
       operationId: v1_update_user_create
       tags:
-        - v1
+        - user-management
+      summary: Update User
+      description: |
+          Updates user account information.
       requestBody:
         content:
           application/json:
@@ -3203,7 +3513,10 @@ paths:
     put:
       operationId: v1_update_user_update
       tags:
-        - v1
+        - user-management
+      summary: Update User
+      description: |
+          Updates user account information.
       requestBody:
         content:
           application/json:
@@ -3225,7 +3538,10 @@ paths:
     patch:
       operationId: v1_update_user_partial_update
       tags:
-        - v1
+        - user-management
+      summary: Update User
+      description: |
+          Updates user account information.
       requestBody:
         content:
           application/json:
@@ -3248,21 +3564,30 @@ paths:
     post:
       operationId: v1_update_user_password_create
       tags:
-        - v1
+        - user-management
+      summary: Update User Password
+      description: |
+          Updates user password.
       responses:
         "200":
           description: No response body
     put:
       operationId: v1_update_user_password_update
       tags:
-        - v1
+        - user-management
+      summary: Update User Password
+      description: |
+          Updates user password.
       responses:
         "200":
           description: No response body
     patch:
       operationId: v1_update_user_password_partial_update
       tags:
-        - v1
+        - user-management
+      summary: Update User Password
+      description: |
+          Updates user password.
       responses:
         "200":
           description: No response body
@@ -3270,7 +3595,10 @@ paths:
     post:
       operationId: v1_update_user_profile_create
       tags:
-        - v1
+        - user-management
+      summary: Update User Profile
+      description: |
+          Updates user profile information.
       requestBody:
         content:
           application/json:
@@ -3293,7 +3621,10 @@ paths:
     put:
       operationId: v1_update_user_profile_update
       tags:
-        - v1
+        - user-management
+      summary: Update User Profile
+      description: |
+          Updates user profile information.
       requestBody:
         content:
           application/json:
@@ -3316,7 +3647,10 @@ paths:
     patch:
       operationId: v1_update_user_profile_partial_update
       tags:
-        - v1
+        - user-management
+      summary: Update User Profile
+      description: |
+          Updates user profile information.
       requestBody:
         content:
           application/json:
@@ -3339,7 +3673,10 @@ paths:
     get:
       operationId: v1_user_retrieve
       tags:
-        - v1
+        - user-management
+      summary: User Management
+      description: |
+          Manages user account and profile.
       responses:
         "200":
           content:
@@ -3350,7 +3687,9 @@ paths:
   /api/v1/user/doctor/:
     get:
       operationId: v1_user_doctor_list
-      description: Handles the retrieval of doctor details using a GET request.
+      summary: List Doctors
+      description: |
+          Retrieves list of doctors with their profiles. Handles the retrieval of doctor details using a GET request.
       parameters:
         - name: page
           required: false
@@ -3359,7 +3698,7 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - doctor-management
       security:
         - jwtAuth: []
       responses:
@@ -3372,7 +3711,10 @@ paths:
     post:
       operationId: v1_user_doctor_create
       tags:
-        - v1
+        - doctor-management
+      summary: Create Doctor Profile
+      description: |
+          Creates a new doctor profile.
       requestBody:
         content:
           multipart/form-data:
@@ -3401,7 +3743,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - doctor-management
+      summary: Get Doctor Profile
+      description: |
+          Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -3409,7 +3754,10 @@ paths:
     get:
       operationId: v1_user_doctor_filters_retrieve
       tags:
-        - v1
+        - doctor-management
+      summary: Get Doctor Profile
+      description: |
+          Retrieves doctor profile details.
       security:
         - jwtAuth: []
         - {}
@@ -3420,7 +3768,10 @@ paths:
     get:
       operationId: v1_user_doctor_list_overview_retrieve
       tags:
-        - v1
+        - doctor-management
+      summary: List Doctors
+      description: |
+          Retrieves list of doctors with their profiles.
       security:
         - {}
       responses:
@@ -3430,7 +3781,10 @@ paths:
     post:
       operationId: v1_user_doctor_login_create
       tags:
-        - v1
+        - doctor-management
+      summary: Create Doctor Profile
+      description: |
+          Creates a new doctor profile.
       requestBody:
         content:
           application/json:
@@ -3457,7 +3811,10 @@ paths:
     get:
       operationId: v1_user_doctor_overview_retrieve
       tags:
-        - v1
+        - doctor-management
+      summary: Get Doctor Profile
+      description: |
+          Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -3465,7 +3822,10 @@ paths:
     post:
       operationId: v1_user_doctor_update_create
       tags:
-        - v1
+        - doctor-management
+      summary: Create Doctor Profile
+      description: |
+          Creates a new doctor profile.
       requestBody:
         content:
           application/json:
@@ -3487,7 +3847,10 @@ paths:
     put:
       operationId: v1_user_doctor_update_update
       tags:
-        - v1
+        - doctor-management
+      summary: Update Doctor Profile
+      description: |
+          Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -3509,7 +3872,10 @@ paths:
     patch:
       operationId: v1_user_doctor_update_partial_update
       tags:
-        - v1
+        - doctor-management
+      summary: Update Doctor Profile
+      description: |
+          Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -3538,7 +3904,10 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - doctor-management
+      summary: Create Doctor Profile
+      description: |
+          Creates a new doctor profile.
       requestBody:
         content:
           application/json:
@@ -3568,7 +3937,10 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - doctor-management
+      summary: Update Doctor Profile
+      description: |
+          Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -3598,7 +3970,10 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - doctor-management
+      summary: Update Doctor Profile
+      description: |
+          Updates doctor profile information.
       requestBody:
         content:
           application/json:
@@ -3623,7 +3998,10 @@ paths:
     get:
       operationId: v1_user_doctors_retrieve
       tags:
-        - v1
+        - doctor-management
+      summary: Get Doctor Profile
+      description: |
+          Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -3631,7 +4009,10 @@ paths:
     get:
       operationId: v1_user_doctors_available_today_retrieve
       tags:
-        - v1
+        - doctor-management
+      summary: Get Doctor Profile
+      description: |
+          Retrieves doctor profile details.
       responses:
         "200":
           description: No response body
@@ -3645,7 +4026,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Delete Document
+      description: |
+          Deletes a user document file.
       responses:
         "204":
           description: No response body
@@ -3660,7 +4044,10 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - document-management
+      summary: List Folders
+      description: |
+          Retrieves user document folders.
       responses:
         "200":
           content:
@@ -3671,7 +4058,10 @@ paths:
     post:
       operationId: v1_user_folders_create
       tags:
-        - v1
+        - document-management
+      summary: Create Folder
+      description: |
+          Creates a new document folder.
       requestBody:
         content:
           application/json:
@@ -3707,7 +4097,10 @@ paths:
           schema:
             type: integer
       tags:
-        - v1
+        - document-management
+      summary: List Folder Files
+      description: |
+          Retrieves files in a specific folder.
       responses:
         "200":
           content:
@@ -3725,7 +4118,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Rename Folder
+      description: |
+          Renames a document folder.
       requestBody:
         content:
           application/json:
@@ -3755,7 +4151,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Rename Folder
+      description: |
+          Renames a document folder.
       requestBody:
         content:
           application/json:
@@ -3785,7 +4184,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Rename Folder
+      description: |
+          Renames a document folder.
       requestBody:
         content:
           application/json:
@@ -3816,7 +4218,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Create Folder
+      description: |
+          Creates a new document folder.
       requestBody:
         content:
           application/json:
@@ -3846,7 +4251,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Update Folder
+      description: |
+          Updates folder properties.
       requestBody:
         content:
           application/json:
@@ -3876,7 +4284,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Update Folder
+      description: |
+          Updates folder properties.
       requestBody:
         content:
           application/json:
@@ -3907,7 +4318,10 @@ paths:
             type: string
           required: true
       tags:
-        - v1
+        - document-management
+      summary: Upload to Folder
+      description: |
+          Uploads files to a document folder.
       requestBody:
         content:
           multipart/form-data:
@@ -3924,7 +4338,10 @@ paths:
     get:
       operationId: v1_user_health_profile_retrieve
       tags:
-        - v1
+        - user-management
+      summary: Manage Health Profile
+      description: |
+          Manages user health profile and medical history.
       responses:
         "200":
           content:
@@ -3935,11 +4352,11 @@ paths:
   /api/v1/user/token/refresh/:
     post:
       operationId: v1_user_token_refresh_create
-      description: |-
-        Takes a refresh type JSON web token and returns an access type JSON web
-        token if the refresh token is valid.
+      summary: Refresh Token
+      description: |
+          Refreshes authentication token. Takes a refresh type JSON web token and returns an access type JSON web token if the refresh token is valid.
       tags:
-        - v1
+        - authentication
       requestBody:
         content:
           application/json:
@@ -3962,11 +4379,11 @@ paths:
   /api/v1/user/token/verify/:
     post:
       operationId: v1_user_token_verify_create
-      description: |-
-        Takes a token and indicates if it is valid.  This view provides no
-        information about a token's fitness for a particular use.
+      summary: Verify Token
+      description: |
+          Verifies authentication token validity. Takes a token and indicates if it is valid. This view provides no information about a token's fitness for a particular use.
       tags:
-        - v1
+        - authentication
       requestBody:
         content:
           application/json:
@@ -3990,7 +4407,10 @@ paths:
     post:
       operationId: v1_verify_email_create
       tags:
-        - v1
+        - authentication
+      summary: Verify Email
+      description: |
+          Verifies user email address using verification code.
       responses:
         "200":
           description: No response body
@@ -3998,7 +4418,10 @@ paths:
     post:
       operationId: v1_verify_account_deletion_create
       tags:
-        - v1
+        - user-management
+      summary: Verify Account Deletion
+      description: |
+          Verifies account deletion request before permanent removal.
       responses:
         "200":
           description: No response body
@@ -4012,7 +4435,10 @@ paths:
             type: integer
           required: true
       tags:
-        - v1
+        - authentication
+      summary: Verify Phone
+      description: |
+          Verifies user phone number using OTP.
       security:
         - jwtAuth: []
         - {}
@@ -4023,7 +4449,10 @@ paths:
     get:
       operationId: v1_videos_retrieve
       tags:
-        - v1
+        - content
+      summary: List Health Videos
+      description: |
+          Retrieves educational health videos.
       security:
         - jwtAuth: []
       responses:

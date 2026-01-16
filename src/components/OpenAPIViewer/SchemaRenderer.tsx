@@ -155,7 +155,7 @@ export default function SchemaRenderer({
                 </div>
             )}
 
-            {isExpanded && hasItems && schema.type === 'array' && (
+            {isExpanded && hasItems && schema.type === 'array' && schema.items && (
                 <div className="border-l-2 border-gray-200 ml-2">
                     <SchemaRenderer
                         name="items"

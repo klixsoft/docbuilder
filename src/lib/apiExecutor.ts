@@ -1,5 +1,11 @@
 import type { APIRequest, APIResponse, AuthCredentials } from '@/components/OpenAPIViewer/types';
 
+const USE_PROXY = true;
+
+interface ProxyErrorResponse {
+    error?: string;
+}
+
 export async function executeAPIRequest(
     request: APIRequest,
     auth?: AuthCredentials
@@ -27,6 +33,37 @@ export async function executeAPIRequest(
             url = urlObj.toString();
         }
 
+        if (USE_PROXY) {
+            const proxyUrl = '/api/proxy';
+            const proxyBody = {
+                url,
+                method: request.method,
+                headers,
+                requestBody: request.body,
+            };
+
+            const response = await fetch(proxyUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(proxyBody),
+            });
+
+            const endTime = performance.now();
+
+            if (!response.ok) {
+                const errorData = await response.json() as ProxyErrorResponse;
+                throw new Error(errorData.error || 'Proxy request failed');
+            }
+
+            const result = await response.json() as APIResponse;
+            return {
+                ...result,
+                time: Math.round(endTime - startTime),
+            };
+        }
+
         const fetchOptions: RequestInit = {
             method: request.method,
             headers,
@@ -46,7 +83,7 @@ export async function executeAPIRequest(
         const response = await fetch(url, fetchOptions);
         const endTime = performance.now();
 
-        let data: any;
+        let data: unknown;
         const contentType = response.headers.get('content-type');
 
         try {
@@ -76,8 +113,6 @@ export async function executeAPIRequest(
             size,
         };
     } catch (error) {
-        const endTime = performance.now();
-
         if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
             throw new Error('Network error: Unable to reach the server. This might be a CORS issue or the server is unreachable.');
         }
@@ -93,7 +128,7 @@ export async function executeAPIRequest(
 export function buildRequestURL(
     baseUrl: string,
     path: string,
-    queryParams: Record<string, any>
+    queryParams: Record<string, unknown>
 ): string {
     let url = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
     url += path.startsWith('/') ? path : `/${path}`;
@@ -113,7 +148,7 @@ export function buildRequestURL(
     return url;
 }
 
-export function replacePathParams(path: string, params: Record<string, any>): string {
+export function replacePathParams(path: string, params: Record<string, unknown>): string {
     let result = path;
 
     Object.entries(params).forEach(([key, value]) => {

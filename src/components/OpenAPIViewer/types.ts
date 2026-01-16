@@ -94,7 +94,7 @@ export interface ParameterObject {
     required?: boolean;
     deprecated?: boolean;
     schema?: SchemaObject | ReferenceObject;
-    example?: any;
+    example?: unknown;
     examples?: Record<string, ExampleObject | ReferenceObject>;
 }
 
@@ -106,7 +106,7 @@ export interface RequestBodyObject {
 
 export interface MediaTypeObject {
     schema?: SchemaObject | ReferenceObject;
-    example?: any;
+    example?: unknown;
     examples?: Record<string, ExampleObject | ReferenceObject>;
     encoding?: Record<string, EncodingObject>;
 }
@@ -135,8 +135,8 @@ export interface HeaderObject extends Omit<ParameterObject, 'in' | 'name'> { }
 export interface LinkObject {
     operationRef?: string;
     operationId?: string;
-    parameters?: Record<string, any>;
-    requestBody?: any;
+    parameters?: Record<string, unknown>;
+    requestBody?: unknown;
     description?: string;
     server?: Server;
 }
@@ -158,7 +158,7 @@ export interface SchemaObject {
     format?: string;
     title?: string;
     description?: string;
-    default?: any;
+    default?: unknown;
     multipleOf?: number;
     maximum?: number;
     exclusiveMaximum?: boolean;
@@ -173,7 +173,7 @@ export interface SchemaObject {
     maxProperties?: number;
     minProperties?: number;
     required?: string[];
-    enum?: any[];
+    enum?: string[];
     properties?: Record<string, SchemaObject | ReferenceObject>;
     additionalProperties?: boolean | SchemaObject | ReferenceObject;
     items?: SchemaObject | ReferenceObject;
@@ -187,7 +187,7 @@ export interface SchemaObject {
     writeOnly?: boolean;
     xml?: XMLObject;
     externalDocs?: ExternalDocumentationObject;
-    example?: any;
+    example?: unknown;
     deprecated?: boolean;
 }
 
@@ -216,7 +216,7 @@ export interface ReferenceObject {
 export interface ExampleObject {
     summary?: string;
     description?: string;
-    value?: any;
+    value?: unknown;
     externalValue?: string;
 }
 
@@ -278,14 +278,14 @@ export interface APIRequest {
     url: string;
     method: string;
     headers: Record<string, string>;
-    body?: any;
+    body?: unknown;
 }
 
 export interface APIResponse {
     status: number;
     statusText: string;
     headers: Record<string, string>;
-    data: any;
+    data: unknown;
     time: number;
     size: number;
 }
@@ -302,11 +302,16 @@ export interface ThemeConfig {
 }
 
 export interface ParsedParameter extends ParameterObject {
-    value?: any;
+    value?: unknown;
 }
 
 export interface ParsedRequestBody {
     content: Record<string, MediaTypeObject>;
     required?: boolean;
-    value?: any;
+    value?: unknown;
+}
+
+export interface ServerObject {
+    url: string;
+    description?: string;
 }
