@@ -32,7 +32,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -173,7 +173,7 @@ jobs:
 
           # Create Dockerfile dynamically
           cat > Dockerfile <<'EOF'
-          FROM node:18-alpine
+          FROM node:20-alpine
           WORKDIR /app
 
           RUN apk add --no-cache libc6-compat curl && \
