@@ -40,17 +40,17 @@ jobs:
 
       - name: Create temporary .env.production for build
         env:
-          OPENAI_SCHEMA_FILE: ${{ vars.OPENAI_SCHEMA_FILE }}
-          AUTH_SECRET_KEY: ${{ vars.AUTH_SECRET_KEY }}
-          APP_PROTECTION_VALUES: ${{ vars.APP_PROTECTION_VALUES }}
-          THEME: ${{ vars.THEME }}
+          OPENAI_SCHEMA_FILE: api.yaml
+          AUTH_SECRET_KEY: b9e5cd63acc57ab0fe4fb30348b65046c8fe0e2865b54ce1fbc5fda58d2d5915
+          APP_PROTECTION_VALUES: admin
+          THEME: light
         run: |
           echo "🛠 Creating .env.production for build..."
           cat > .env.production <<EOF
-          OPENAI_SCHEMA_FILE=${OPENAI_SCHEMA_FILE}
-          AUTH_SECRET_KEY=${AUTH_SECRET_KEY}
-          APP_PROTECTION_VALUES=${APP_PROTECTION_VALUES}
-          THEME=${THEME}
+          OPENAI_SCHEMA_FILE=api.yaml
+          AUTH_SECRET_KEY=b9e5cd63acc57ab0fe4fb30348b65046c8fe0e2865b54ce1fbc5fda58d2d5915
+          APP_PROTECTION_VALUES=admin
+          THEME=light
           EOF
           echo "✅ .env.production created for build"
           # Mask all secrets in logs
@@ -58,10 +58,10 @@ jobs:
 
       - name: Build Next.js standalone app
         env:
-          OPENAI_SCHEMA_FILE: ${{ vars.OPENAI_SCHEMA_FILE }}
-          AUTH_SECRET_KEY: ${{ vars.AUTH_SECRET_KEY }}   
-          APP_PROTECTION_VALUES: ${{ vars.APP_PROTECTION_VALUES }}
-          THEME: ${{ vars.THEME }}
+          OPENAI_SCHEMA_FILE: api.yaml
+          AUTH_SECRET_KEY: b9e5cd63acc57ab0fe4fb30348b65046c8fe0e2865b54ce1fbc5fda58d2d5915
+          APP_PROTECTION_VALUES: admin
+          THEME: light
         run: |
           export NODE_ENV=production
           npm run build
