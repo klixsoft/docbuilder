@@ -9,7 +9,7 @@ export const services: ServiceConfig[] = [
     {
         id: 'default',
         name: 'Main API',
-        schemaUrl: process.env.OPENAI_SCHEMA_FILE || 'api.yaml',
+        schemaUrl: 'api.yaml',
         description: 'The primary API documentation',
     },
     {

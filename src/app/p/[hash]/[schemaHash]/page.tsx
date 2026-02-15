@@ -52,22 +52,19 @@ export async function generateMetadata({
 
     if (currentSchema.content) {
         try {
-            // Try parsing as JSON first
             let parsed: OpenAPISpec | undefined;
             try {
                 parsed = JSON.parse(currentSchema.content) as OpenAPISpec;
             } catch {
-                // Fallback to YAML
                 try {
                     parsed = jsYaml.load(currentSchema.content) as OpenAPISpec;
                 } catch {
-                    // Ignore parsing errors
+
                 }
             }
 
             if (parsed && typeof parsed === 'object') {
                 if (parsed.info?.description) {
-                    // Truncate description for SEO
                     description = parsed.info.description.slice(0, 160);
                 }
             }

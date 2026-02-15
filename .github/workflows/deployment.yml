@@ -40,30 +40,37 @@ jobs:
 
       - name: Create temporary .env.production for build
         env:
-          OPENAI_SCHEMA_FILE: api.yaml
-          AUTH_SECRET_KEY: b9e5cd63acc57ab0fe4fb30348b65046c8fe0e2865b54ce1fbc5fda58d2d5915
-          APP_PROTECTION_VALUES: admin
-          THEME: light
+          OPENAI_SCHEMA_FILE: ${{ secrets.OPENAI_SCHEMA_FILE || 'api.yaml' }}
+          AUTH_SECRET_KEY: ${{ secrets.AUTH_SECRET_KEY }}
+          APP_PROTECTION_VALUES: ${{ secrets.APP_PROTECTION_VALUES || 'admin' }}
+          THEME: ${{ vars.THEME || 'light' }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           echo "🛠 Creating .env.production for build..."
           cat > .env.production <<EOF
-          OPENAI_SCHEMA_FILE=api.yaml
-          AUTH_SECRET_KEY=b9e5cd63acc57ab0fe4fb30348b65046c8fe0e2865b54ce1fbc5fda58d2d5915
-          APP_PROTECTION_VALUES=admin
-          THEME=light
+          OPENAI_SCHEMA_FILE=$OPENAI_SCHEMA_FILE
+          AUTH_SECRET_KEY=$AUTH_SECRET_KEY
+          APP_PROTECTION_VALUES=$APP_PROTECTION_VALUES
+          THEME=$THEME
+          DATABASE_URL=$DATABASE_URL
           EOF
           echo "✅ .env.production created for build"
           # Mask all secrets in logs
-          cat .env.production | sed -E 's/(SECRET|PASS)=.*/\1=*****/g'
+          cat .env.production | sed -E 's/(SECRET|PASS|KEY|URL)=.*/\1=*****/g'
 
       - name: Build Next.js standalone app
         env:
-          OPENAI_SCHEMA_FILE: api.yaml
-          AUTH_SECRET_KEY: b9e5cd63acc57ab0fe4fb30348b65046c8fe0e2865b54ce1fbc5fda58d2d5915
-          APP_PROTECTION_VALUES: admin
-          THEME: light
+          OPENAI_SCHEMA_FILE: ${{ secrets.OPENAI_SCHEMA_FILE || 'api.yaml' }}
+          AUTH_SECRET_KEY: ${{ secrets.AUTH_SECRET_KEY }}
+          APP_PROTECTION_VALUES: ${{ secrets.APP_PROTECTION_VALUES || 'admin' }}
+          THEME: ${{ vars.THEME || 'light' }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           export NODE_ENV=production
+          
+          # Prisma Generate is crucial for standalone builds to have the client
+          npx prisma generate
+
           npm run build
 
           # Verify standalone was created
@@ -90,6 +97,10 @@ jobs:
           cp -r .next/server .next/standalone/.next/ 2>/dev/null || echo "⚠️ No server folder"
           cp .next/package.json .next/standalone/.next/ 2>/dev/null || echo "⚠️ No package.json"
           cp .next/BUILD_ID .next/standalone/.next/ 2>/dev/null || echo "⚠️ No BUILD_ID"
+          
+          # Copy Prisma schema and migrations (Required for some deployment setups)
+          echo "📦 Copying Prisma folder..."
+          cp -r prisma .next/standalone/ || echo "⚠️ No prisma folder"
 
           echo "✅ Standalone output prepared"
           echo "Final standalone structure:"
@@ -170,13 +181,27 @@ jobs:
           echo ""
           echo "📂 .next folder contents:"
           ls -la .next/
+          
+          # Verify .env.production exists (it should be in the artifact)
+          if [ -f ".env.production" ]; then
+            echo "✅ .env.production found"
+          else
+            echo "⚠️ .env.production NOT found (secrets might be missing at runtime)"
+          fi
+          
+          # Prisma check
+          if [ -d "prisma" ]; then
+            echo "✅ Prisma folder found"
+          else
+             echo "⚠️ Prisma folder NOT found"
+          fi
 
           # Create Dockerfile dynamically
           cat > Dockerfile <<'EOF'
           FROM node:20-alpine
           WORKDIR /app
 
-          RUN apk add --no-cache libc6-compat curl && \
+          RUN apk add --no-cache libc6-compat curl openssl && \
               addgroup -S nodejs && \
               adduser -S nextjs -G nodejs
 
