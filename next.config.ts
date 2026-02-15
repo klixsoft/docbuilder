@@ -12,12 +12,6 @@ const nextConfig: NextConfig = {
                 pathname: '/**',
             }
         ]
-    },
-    webpack: (config, { isServer, dev }) => {
-        if (isServer && !dev) {
-            config.resolve.alias['@prisma/client'] = '@prisma/client/wasm';
-        }
-        return config;
     }
 };
 
