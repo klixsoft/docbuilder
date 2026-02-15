@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Play, Loader, Copy, Plus, Trash2, Upload } from 'lucide-react';
+import { CopyButton } from "@/components/ui/CopyButton";
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import python from 'react-syntax-highlighter/dist/esm/languages/hljs/python';
 import bash from 'react-syntax-highlighter/dist/esm/languages/hljs/bash';
 import javascript from 'react-syntax-highlighter/dist/esm/languages/hljs/javascript';
+import typescript from 'react-syntax-highlighter/dist/esm/languages/hljs/typescript';
 import json from 'react-syntax-highlighter/dist/esm/languages/hljs/json';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
@@ -20,6 +22,7 @@ SyntaxHighlighter.registerLanguage('python', python);
 SyntaxHighlighter.registerLanguage('bash', bash);
 SyntaxHighlighter.registerLanguage('javascript', javascript);
 SyntaxHighlighter.registerLanguage('json', json);
+SyntaxHighlighter.registerLanguage('typescript', typescript);
 
 interface FormDataField {
     key: string;
@@ -108,7 +111,10 @@ const CodeExecution: React.FC<CodeExecutionProps> = ({
 
     useEffect(() => {
         if (isOpen) {
-            resetState();
+            const timer = setTimeout(() => {
+                resetState();
+            }, 0);
+            return () => clearTimeout(timer);
         }
     }, [isOpen, resetState]);
 
@@ -600,8 +606,9 @@ const CodeExecution: React.FC<CodeExecutionProps> = ({
 
                             {response && (
                                 <Tabs defaultValue="response" className="w-full mt-4">
-                                    <TabsList className="grid grid-cols-3 w-full">
+                                    <TabsList className="grid grid-cols-4 w-full">
                                         <TabsTrigger value="response">Response</TabsTrigger>
+                                        <TabsTrigger value="typescript">TypeScript</TabsTrigger>
                                         <TabsTrigger value="request">Request Headers</TabsTrigger>
                                         <TabsTrigger value="response-headers">Response Headers</TabsTrigger>
                                     </TabsList>
@@ -642,6 +649,40 @@ const CodeExecution: React.FC<CodeExecutionProps> = ({
                                         </div>
                                     </TabsContent>
 
+                                    <TabsContent value="typescript">
+                                        <div className="border rounded-lg overflow-hidden">
+                                            <div className="bg-muted px-4 py-3 border-b">
+                                                <h4 className="font-semibold">TypeScript Interface</h4>
+                                            </div>
+                                            {(() => {
+                                                const tsContent = response.data ? (
+                                                    // eslint-disable-next-line @typescript-eslint/no-var-requires
+                                                    require('@/lib/jsonToTs').jsonToTs(response.data, 'Response')
+                                                ) : '// No data';
+
+                                                return (
+                                                    <div className="relative group">
+                                                        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <CopyButton text={tsContent} />
+                                                        </div>
+                                                        <SyntaxHighlighter
+                                                            language="typescript"
+                                                            style={syntaxTheme}
+                                                            customStyle={{
+                                                                borderRadius: "0.5rem",
+                                                                fontSize: "0.75rem",
+                                                                padding: "1rem",
+                                                                marginTop: 0,
+                                                            }}
+                                                        >
+                                                            {tsContent}
+                                                        </SyntaxHighlighter>
+                                                    </div>
+                                                );
+                                            })()}
+                                        </div>
+                                    </TabsContent>
+
                                     <TabsContent value="response">
                                         <div className="border rounded-lg overflow-hidden">
                                             <div className="bg-muted px-4 py-3 border-b">
@@ -658,18 +699,47 @@ const CodeExecution: React.FC<CodeExecutionProps> = ({
                                                     </div>
                                                 </div>
                                             </div>
-                                            <SyntaxHighlighter
-                                                language="json"
-                                                style={syntaxTheme}
-                                                customStyle={{
-                                                    borderRadius: "0.5rem",
-                                                    fontSize: "0.75rem",
-                                                    padding: "1rem",
-                                                    marginTop: 0,
-                                                }}
-                                            >
-                                                {JSON.stringify(response.data, null, 2)}
-                                            </SyntaxHighlighter>
+                                            {(() => {
+                                                const contentType = Object.entries(response.headers || {}).find(([k]) => k.toLowerCase() === 'content-type')?.[1] || '';
+
+                                                if (contentType.toLowerCase().includes('text/html')) {
+                                                    return (
+                                                        <div className="w-full h-96 bg-white border-b-0">
+                                                            <iframe
+                                                                srcDoc={response.data as string}
+                                                                className="w-full h-full border-none"
+                                                                sandbox="allow-scripts"
+                                                                title="Response Preview"
+                                                            />
+                                                        </div>
+                                                    );
+                                                }
+
+                                                const isJson = contentType.includes('application/json') || typeof response.data === 'object';
+                                                const content = typeof response.data === 'object'
+                                                    ? JSON.stringify(response.data, null, 2)
+                                                    : String(response.data);
+
+                                                return (
+                                                    <div className="relative group">
+                                                        <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                            <CopyButton text={content} />
+                                                        </div>
+                                                        <SyntaxHighlighter
+                                                            language={isJson ? "json" : "text"}
+                                                            style={syntaxTheme}
+                                                            customStyle={{
+                                                                borderRadius: "0.5rem",
+                                                                fontSize: "0.75rem",
+                                                                padding: "1rem",
+                                                                marginTop: 0,
+                                                            }}
+                                                        >
+                                                            {content}
+                                                        </SyntaxHighlighter>
+                                                    </div>
+                                                );
+                                            })()}
                                         </div>
                                     </TabsContent>
                                 </Tabs>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Sidebar,
     SidebarContent,
@@ -22,6 +22,11 @@ interface AppSidebarProps {
     info: InfoObject;
     securitySchemes?: Record<string, SecuritySchemeObject>;
     enabletheme: boolean;
+    allowedThemes?: string[];
+    schemas?: import('./types').SchemaVersion[];
+    currentSchemaId?: string;
+    projectHash?: string;
+    projectName?: string;
 }
 
 export default function AppSidebar({
@@ -31,8 +36,26 @@ export default function AppSidebar({
     servers,
     info,
     securitySchemes,
-    enabletheme
+    enabletheme,
+    allowedThemes,
+    schemas,
+    currentSchemaId,
+    projectHash,
+    projectName
 }: AppSidebarProps) {
+
+    useEffect(() => {
+        if (selectedEndpoint) {
+            const timer = setTimeout(() => {
+                const element = document.getElementById(`sidebar-item-${selectedEndpoint}`);
+                if (element) {
+                    element.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                }
+            }, 100);
+            return () => clearTimeout(timer);
+        }
+    }, [selectedEndpoint]);
+
     return (
         <Sidebar>
             <SidebarHeader>
@@ -41,6 +64,10 @@ export default function AppSidebar({
                     servers={servers}
                     securitySchemes={securitySchemes}
                     enabletheme={enabletheme}
+                    schemas={schemas}
+                    currentSchemaId={currentSchemaId}
+                    projectHash={projectHash}
+                    projectName={projectName}
                 />
             </SidebarHeader>
 
@@ -60,6 +87,7 @@ export default function AppSidebar({
                                     return (
                                         <SidebarMenuItem key={endpointId}>
                                             <SidebarMenuButton
+                                                id={`sidebar-item-${endpointId}`}
                                                 isActive={isActive}
                                                 onClick={() => onSelectEndpoint(endpoint.path, endpoint.method)}
                                                 className="h-auto py-2"

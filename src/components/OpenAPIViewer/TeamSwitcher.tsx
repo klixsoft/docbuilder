@@ -31,23 +31,30 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTheme } from 'next-themes';
-import type { InfoObject, SecuritySchemeObject, Server } from './types';
+import type { InfoObject, SecuritySchemeObject, Server, SchemaVersion } from './types';
 import { useOpenAPI } from '@/context/OpenAIContext';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface TeamSwitcherProps {
     info: InfoObject;
     servers: Server[] | undefined;
     securitySchemes?: Record<string, SecuritySchemeObject>;
     enabletheme: boolean;
+    schemas?: SchemaVersion[];
+    currentSchemaId?: string;
+    projectHash?: string;
+    projectName?: string;
 }
 
-export default function TeamSwitcher({ info, servers, securitySchemes, enabletheme }: TeamSwitcherProps) {
+export default function TeamSwitcher({ info, servers, securitySchemes, enabletheme, schemas, currentSchemaId, projectHash, projectName }: TeamSwitcherProps) {
     const { theme, setTheme } = useTheme();
     const { selectedServer, setSelectedServer, securityConfig, updateSecurityValue } = useOpenAPI();
     const [settingsOpen, setSettingsOpen] = useState(false);
 
-    const firstLetter = info.title?.charAt(0).toUpperCase() || 'A';
+    const currentSchema = schemas?.find((s) => s.id === currentSchemaId);
+    const displayTitle = currentSchema?.name || projectName || info.title;
+    const firstLetter = displayTitle?.charAt(0).toUpperCase() || 'A';
 
     const handleServerChange = (serverUrl: string) => {
         const server = servers?.find((s) => s.url === serverUrl);
@@ -163,7 +170,7 @@ export default function TeamSwitcher({ info, servers, securitySchemes, enablethe
                                     <span className="text-sm font-semibold">{firstLetter}</span>
                                 </div>
                                 <div className="grid flex-1 text-left text-sm leading-tight">
-                                    <span className="truncate font-semibold">{info.title}</span>
+                                    <span className="truncate font-semibold">{displayTitle}</span>
                                     <span className="truncate text-xs text-muted-foreground">
                                         v{info.version}
                                     </span>
@@ -177,15 +184,47 @@ export default function TeamSwitcher({ info, servers, securitySchemes, enablethe
                             side="bottom"
                             sideOffset={4}
                         >
+
                             <DropdownMenuLabel className="text-xs text-muted-foreground">
-                                API Information
+                                API Versions
                             </DropdownMenuLabel>
-                            <DropdownMenuItem className="gap-2 p-2" disabled>
-                                <div className="flex size-6 items-center justify-center rounded-sm border bg-background">
-                                    <span className="text-xs font-semibold">{firstLetter}</span>
-                                </div>
-                                <div className="font-medium text-muted-foreground">{info.title}</div>
-                            </DropdownMenuItem>
+                            {schemas && schemas.length > 0 ? (
+                                schemas.map((schema) => (
+                                    <DropdownMenuItem key={schema.id} asChild>
+                                        <Link
+                                            href={projectHash ? `/p/${projectHash}/${schema.hash}` : `?s=${schema.id}`}
+                                            className={cn(
+                                                "gap-2 p-2 cursor-pointer w-full flex items-center",
+                                                currentSchemaId === schema.id ? "bg-accent" : ""
+                                            )}
+                                        >
+                                            <div className={cn(
+                                                "flex size-6 items-center justify-center rounded-sm border",
+                                                currentSchemaId === schema.id ? "bg-primary text-primary-foreground" : "bg-background"
+                                            )}>
+                                                <span className="text-xs font-semibold">v</span>
+                                            </div>
+                                            <div className={cn(
+                                                "font-medium flex flex-col",
+                                                currentSchemaId === schema.id ? "text-foreground" : "text-muted-foreground"
+                                            )}>
+                                                <span>{schema.name}</span>
+                                                {schema.version && <span className="text-[10px] opacity-70">v{schema.version}</span>}
+                                            </div>
+                                            {currentSchemaId === schema.id && (
+                                                <span className="ml-auto text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded">Current</span>
+                                            )}
+                                        </Link>
+                                    </DropdownMenuItem>
+                                ))
+                            ) : (
+                                <DropdownMenuItem className="gap-2 p-2" disabled>
+                                    <div className="flex size-6 items-center justify-center rounded-sm border bg-background">
+                                        <span className="text-xs font-semibold">{firstLetter}</span>
+                                    </div>
+                                    <div className="font-medium text-muted-foreground">{info.title}</div>
+                                </DropdownMenuItem>
+                            )}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                                 className="gap-2 p-2"
@@ -231,7 +270,7 @@ export default function TeamSwitcher({ info, servers, securitySchemes, enablethe
                                         value={selectedServer?.url}
                                         onValueChange={handleServerChange}
                                     >
-                                        <SelectTrigger id="server" className="w-full !h-14">
+                                        <SelectTrigger id="server" className="w-full h-14!">
                                             <SelectValue placeholder="Select a server" />
                                         </SelectTrigger>
                                         <SelectContent>

@@ -10,19 +10,29 @@ import type {
     AuthCredentials,
     APIResponse,
     HttpMethod,
-    SchemaObject
+    SchemaObject,
+    OpenAPISpec
 } from './types';
+
 import { dereferenceSchema } from '@/lib/ymlParser';
-import CodeExecution from './CodeExecution';
 import { toast } from 'sonner';
+import dynamic from 'next/dynamic';
+
+const CodeExecution = dynamic(() => import('./CodeExecution'), {
+    loading: () => <div className="p-4 flex justify-center"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div></div>,
+    ssr: false
+});
 
 interface APIEndpointProps {
     path: string;
     method: HttpMethod;
+    summary?: string;
+    onClick?: () => void;
     operation: OperationObject;
     servers: ServerObject[];
-    spec: any;
+    spec: OpenAPISpec;
 }
+
 
 export default function APIEndpoint({ path, method, operation, servers, spec }: APIEndpointProps) {
     const [paramValues, setParamValues] = useState<Record<string, unknown>>({});
@@ -278,7 +288,7 @@ export default function APIEndpoint({ path, method, operation, servers, spec }: 
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-black dark:to-black">
+        <div className="min-h-screen bg-linear-to-b from-gray-50 to-white dark:from-black dark:to-black">
             <div className="border-b bg-white/80 dark:bg-black/80 backdrop-blur-sm sticky top-0 z-10 flex items-center justify-between border-gray-200 dark:border-neutral-800">
                 <div className="px-6 py-6">
                     <div className="flex items-center justify-between mb-3">

@@ -9,8 +9,8 @@ import ContentArea from './ContentArea';
 import type { OpenAPISpec, EndpointGroup, HttpMethod } from './types';
 import { OpenAPIProvider, useOpenAPI } from '@/context/OpenAIContext';
 import { ProtectionGate } from './ProtectionGate';
-import { checkAccess } from '@/app/actions/auth';
 import Footer from './Footer';
+import { checkAccess } from '@/app/actions/auth';
 
 interface AuthField {
     type: string;
@@ -28,9 +28,14 @@ interface OpenAPIViewerContentProps {
     authentication?: AuthenticationConfig;
     company: string | React.ReactNode;
     theme: 'light' | 'dark' | 'system';
+    allowedThemes?: string[];
+    schemas?: import('./types').SchemaVersion[];
+    currentSchemaId?: string;
+    projectHash?: string;
+    projectName?: string;
 }
 
-function OpenAPIViewerContentInner({ spec, authentication, company, theme }: OpenAPIViewerContentProps) {
+function OpenAPIViewerContentInner({ spec, authentication, company, theme, allowedThemes, schemas, currentSchemaId, projectHash, projectName }: OpenAPIViewerContentProps) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [checkingAuth, setCheckingAuth] = useState(true);
     const [selectedPath, setSelectedPath] = useState<string | null>(null);
@@ -121,6 +126,16 @@ function OpenAPIViewerContentInner({ spec, authentication, company, theme }: Ope
         setSelectedMethod(method as HttpMethod);
     };
 
+    useEffect(() => {
+        if (selectedPath && selectedMethod) {
+            const operation = spec.paths[selectedPath]?.[selectedMethod as HttpMethod];
+            const summary = operation?.summary || `${selectedMethod.toUpperCase()} ${selectedPath}`;
+            document.title = `${summary} - ${spec.info.title}`;
+        } else {
+            document.title = `${spec.info.title} - API Docs`;
+        }
+    }, [selectedPath, selectedMethod, spec]);
+
     if (checkingAuth) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-background">
@@ -155,15 +170,25 @@ function OpenAPIViewerContentInner({ spec, authentication, company, theme }: Ope
                 servers={spec.servers}
                 info={spec.info}
                 securitySchemes={spec.components?.securitySchemes}
-                enabletheme={theme == 'system'}
+                enabletheme={allowedThemes ? allowedThemes.length > 1 : true}
+                allowedThemes={allowedThemes}
+                schemas={schemas}
+                currentSchemaId={currentSchemaId}
+                projectHash={projectHash}
+                projectName={projectName}
             />
+
             <SidebarInset>
                 <Header
                     info={spec.info}
                     groups={groups}
                     onSelectEndpoint={handleSelectEndpoint}
                     theme={theme}
+                    allowedThemes={allowedThemes}
+                    projectHash={projectHash || ''}
+                    schemaHash={schemas?.find(s => s.id === currentSchemaId)?.hash || ''}
                 />
+
                 <main className="flex-1 overflow-y-auto">
                     <ContentArea
                         spec={spec}
@@ -173,7 +198,6 @@ function OpenAPIViewerContentInner({ spec, authentication, company, theme }: Ope
                 </main>
                 <Footer
                     info={spec.info}
-                    company={company}
                 />
             </SidebarInset>
         </SidebarProvider>

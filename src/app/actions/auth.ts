@@ -1,82 +1,115 @@
 'use server';
 
-import { cookies } from 'next/headers';
-import crypto from 'crypto';
+import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
+import { z } from 'zod';
+import { getSession } from "@/lib/session";
+import { cookies } from "next/headers";
 
-const SECRET_KEY = process.env.AUTH_SECRET_KEY || 'your-secret-key-change-in-production';
+const userSchema = z.object({
+    name: z.string().min(2),
+    email: z.string().email(),
+    password: z.string().min(6),
+    role: z.enum(['ADMIN', 'USER']),
+    projectsLimit: z.number().min(1).max(100),
+});
 
-function generateSignature(value: string): string {
-    return crypto
-        .createHmac('sha256', SECRET_KEY)
-        .update(value)
-        .digest('hex');
-}
+export async function checkAccess(hash?: string) {
+    const session = await getSession();
+    if (session.isLoggedIn) return true;
 
-function createSignedValue(value: string): string {
-    const signature = generateSignature(value);
-    return `${value}.${signature}`;
-}
-
-function verifySignedValue(signedValue: string): string | null {
-    const [value, signature] = signedValue.split('.');
-    if (!value || !signature) return null;
-
-    const expectedSignature = generateSignature(value);
-
-    if (crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
-        return value;
-    }
-
-    return null;
-}
-
-export async function validateAccess(submittedValues: string[]) {
-    const envString = process.env.APP_PROTECTION_VALUES || "";
-    const correctValues = envString.split(',').map(v => v.trim());
-
-    const isValid = correctValues.length === submittedValues.length &&
-        correctValues.every((val, index) => val === submittedValues[index]);
-
-    if (isValid) {
-        const timestamp = Date.now().toString();
-        const signedValue = createSignedValue(timestamp);
-
-        (await cookies()).set('app_access_granted', signedValue, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 60 * 60 * 24 * 7,
-            path: '/',
+    if (hash) {
+        const project = await prisma.project.findUnique({
+            where: { hash },
+            select: { viewPassword: true }
         });
 
-        return { success: true };
-    }
+        if (!project?.viewPassword) return true;
 
-    return { success: false, message: 'Invalid credentials provided.' };
-}
-
-export async function checkAccess(): Promise<boolean> {
-    try {
         const cookieStore = await cookies();
-        const accessCookie = cookieStore.get('app_access_granted');
-
-        if (!accessCookie?.value) return false;
-
-        const timestamp = verifySignedValue(accessCookie.value);
-
-        if (!timestamp) return false;
-
-        const cookieAge = Date.now() - parseInt(timestamp);
-        const maxAge = 60 * 60 * 24 * 7 * 1000;
-
-        return cookieAge < maxAge;
-    } catch (err) {
-        console.error('Error checking access:', err);
-        return false;
+        const authCookie = cookieStore.get(`auth_${hash}`)?.value;
+        return authCookie === project.viewPassword;
     }
+
+    return true;
 }
 
-export async function clearAccess() {
-    (await cookies()).delete('app_access_granted');
-    return { success: true };
+export async function validateAccess(values: string[], hash?: string) {
+    const userInput = values[0];
+
+    if (hash) {
+        const project = await prisma.project.findUnique({
+            where: { hash },
+            select: { viewPassword: true }
+        });
+
+        if (project?.viewPassword === userInput) {
+            const cookieStore = await cookies();
+            cookieStore.set(`auth_${hash}`, userInput, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                maxAge: 60 * 60 * 24 * 7
+            });
+            return { success: true };
+        }
+    }
+
+    return { success: false };
+}
+
+
+export async function createUser(formData: FormData) {
+    const session = await getSession();
+    if (!session.isLoggedIn || session.role !== 'ADMIN') {
+        return { error: 'Unauthorized' };
+    }
+
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    const role = formData.get('role') as 'ADMIN' | 'USER';
+    const projectsLimitStr = formData.get('projectsLimit') as string;
+    const projectsLimit = parseInt(projectsLimitStr) || 3;
+
+    const validatedFields = userSchema.safeParse({
+        name,
+        email,
+        password,
+        role,
+        projectsLimit,
+    });
+
+    if (!validatedFields.success) {
+        return { error: 'Invalid fields' };
+    }
+
+    try {
+        const existingUser = await prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (existingUser) {
+            return { error: 'Email already exists' };
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        await prisma.user.create({
+            data: {
+                name,
+                email,
+                password: hashedPassword,
+                role,
+                projectsLimit,
+            } as unknown as { name: string | null; email: string; password: string; role: 'ADMIN' | 'USER'; projectsLimit: number },
+        });
+
+
+
+
+        return { success: true };
+    } catch (error) {
+        console.error('Create user error:', error);
+        return { error: 'Something went wrong' };
+    }
 }

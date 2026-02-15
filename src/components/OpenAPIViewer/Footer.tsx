@@ -3,10 +3,9 @@ import { InfoObject } from './types';
 
 interface FooterProps {
     info: InfoObject;
-    company: string | React.ReactNode;
 }
 
-export default function Footer({ info, company }: FooterProps) {
+export default function Footer({ info }: FooterProps) {
     const currentYear = new Date().getFullYear();
 
     return (
@@ -16,7 +15,7 @@ export default function Footer({ info, company }: FooterProps) {
                     v{info.version}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                    © {currentYear} {info.title}. All rights reserved. {company}
+                    © {currentYear} {info.title}. All rights reserved.
                 </p>
             </div>
         </footer>

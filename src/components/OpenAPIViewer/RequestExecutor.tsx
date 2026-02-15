@@ -27,7 +27,7 @@ export default function RequestExecutor({
     servers,
     securitySchemes,
 }: RequestExecutorProps) {
-    const [paramValues, setParamValues] = useState<Record<string, any>>({});
+    const [paramValues, setParamValues] = useState<Record<string, unknown>>({});
     const [requestBody, setRequestBody] = useState<string>('{}');
     const [selectedServer, setSelectedServer] = useState(0);
     const [credentials, setCredentials] = useState<AuthCredentials | null>(null);
@@ -44,7 +44,7 @@ export default function RequestExecutor({
     const requiredSecurity = operation.security?.[0] ? Object.keys(operation.security[0]) : [];
 
     useEffect(() => {
-        const initialValues: Record<string, any> = {};
+        const initialValues: Record<string, unknown> = {};
         parameters.forEach(param => {
             if (param.schema && '$ref' in param.schema === false) {
                 if (param.schema.default !== undefined) {
@@ -78,8 +78,8 @@ export default function RequestExecutor({
                 throw new Error('No server URL configured');
             }
 
-            const pathParamValues: Record<string, any> = {};
-            const queryParamValues: Record<string, any> = {};
+            const pathParamValues: Record<string, unknown> = {};
+            const queryParamValues: Record<string, unknown> = {};
             const headerValues: Record<string, string> = {};
 
             pathParams.forEach(param => {
@@ -189,7 +189,7 @@ export default function RequestExecutor({
                                     </label>
                                     <input
                                         type="text"
-                                        value={paramValues[param.name] || ''}
+                                        value={(paramValues[param.name] as string | number) || ''}
                                         onChange={(e) => setParamValues(prev => ({ ...prev, [param.name]: e.target.value }))}
                                         placeholder={param.description || param.name}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -215,7 +215,7 @@ export default function RequestExecutor({
                                     </label>
                                     <input
                                         type="text"
-                                        value={paramValues[param.name] || ''}
+                                        value={(paramValues[param.name] as string | number) || ''}
                                         onChange={(e) => setParamValues(prev => ({ ...prev, [param.name]: e.target.value }))}
                                         placeholder={param.description || param.name}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -241,7 +241,7 @@ export default function RequestExecutor({
                                     </label>
                                     <input
                                         type="text"
-                                        value={paramValues[param.name] || ''}
+                                        value={(paramValues[param.name] as string | number) || ''}
                                         onChange={(e) => setParamValues(prev => ({ ...prev, [param.name]: e.target.value }))}
                                         placeholder={param.description || param.name}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"

@@ -1,8 +1,25 @@
 export interface OpenAPIViewerProps {
-    source: string;
+    source?: string;
+    spec?: OpenAPISpec;
+    projectHash?: string;
     authentication?: ProtectionGateProps
     company: string | React.ReactNode;
     theme: 'light' | 'dark' | 'system';
+    allowedThemes?: string[];
+    schemas?: SchemaVersion[];
+    currentSchemaId?: string;
+    projectName?: string;
+}
+
+export interface SchemaVersion {
+    id: string;
+    hash: string;
+    name: string;
+    content: string | null;
+    url: string | null;
+    version?: string;
+    updatedAt: Date;
+    createdAt: Date;
 }
 
 interface AuthField {
@@ -132,7 +149,7 @@ export interface ResponseObject {
     links?: Record<string, LinkObject | ReferenceObject>;
 }
 
-export interface HeaderObject extends Omit<ParameterObject, 'in' | 'name'> { }
+export type HeaderObject = Omit<ParameterObject, 'in' | 'name'>;
 
 export interface LinkObject {
     operationRef?: string;
