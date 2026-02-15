@@ -5,6 +5,7 @@ import { OpenAPISpec, SchemaVersion } from "@/components/OpenAPIViewer/types";
 import jsYaml from 'js-yaml';
 import { Metadata } from 'next';
 import SchemaViewer from "@/components/OpenAPIViewer/SchemaViewer";
+import { Schema as PrismaSchema } from "@prisma/client";
 
 async function getProjectData(hash: string) {
     return await prisma.project.findUnique({
@@ -28,7 +29,7 @@ export async function generateMetadata({
     const project = await getProjectData(hash);
 
     if (!project) return { title: "Project Not Found" };
-    const currentSchema = project.schemas.find((s) => s.hash === schemaHash);
+    const currentSchema = project.schemas.find((s: PrismaSchema) => s.hash === schemaHash);
     if (!currentSchema) return { title: "Schema Not Found" };
 
     return {
@@ -53,7 +54,7 @@ export default async function PublicSchemaPage({
         notFound();
     }
 
-    const currentSchema = project.schemas.find((s) => s.hash === schemaHash);
+    const currentSchema = project.schemas.find((s: PrismaSchema) => s.hash === schemaHash);
 
     if (!currentSchema) {
         return (
@@ -116,7 +117,7 @@ export default async function PublicSchemaPage({
         );
     }
 
-    const mappedSchemas: SchemaVersion[] = project.schemas.map((s) => {
+    const mappedSchemas: SchemaVersion[] = project.schemas.map((s: PrismaSchema) => {
         let version: string | undefined;
         if (s.content) {
             try {

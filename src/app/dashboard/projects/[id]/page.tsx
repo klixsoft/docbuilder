@@ -25,6 +25,7 @@ import yaml from 'js-yaml';
 import { OpenAPISpec } from "@/components/OpenAPIViewer/types";
 import { EditSchemaDialog } from "@/components/dashboard/projects/EditSchemaDialog";
 import { DeleteSchemaDialog } from "@/components/dashboard/projects/DeleteSchemaDialog";
+import { Schema as PrismaSchema } from "@prisma/client";
 
 export default async function ProjectDetailsPage({ params }: { params: Promise<{ id: string }>; }) {
     const session = await getSession();
@@ -51,7 +52,7 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
     const productionUrls = new Set<string>();
     const baseUrls = new Set<string>();
 
-    project.schemas.forEach(schema => {
+    project.schemas.forEach((schema: PrismaSchema) => {
         try {
             if (schema.content) {
                 const parsed = yaml.load(schema.content) as OpenAPISpec;
@@ -208,7 +209,7 @@ export default async function ProjectDetailsPage({ params }: { params: Promise<{
                         </TableHeader>
                         <TableBody>
                             {project.schemas.length > 0 ? (
-                                project.schemas.map((schema) => {
+                                project.schemas.map((schema: PrismaSchema) => {
                                     const s = schema as unknown as {
                                         id: string;
                                         name: string;

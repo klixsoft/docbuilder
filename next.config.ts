@@ -1,10 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    /* config options here */
     reactCompiler: true,
-    output: "standalone",
     images: {
+        unoptimized: true,
         remotePatterns: [
             {
                 protocol: 'https',
@@ -13,6 +12,12 @@ const nextConfig: NextConfig = {
                 pathname: '/**',
             }
         ]
+    },
+    webpack: (config, { isServer, dev }) => {
+        if (isServer && !dev) {
+            config.resolve.alias['@prisma/client'] = '@prisma/client/wasm';
+        }
+        return config;
     }
 };
 

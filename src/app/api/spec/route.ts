@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as yaml from 'js-yaml';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
 
 export async function GET(request: NextRequest) {
     try {
@@ -24,8 +22,14 @@ export async function GET(request: NextRequest) {
             }
             content = await response.text();
         } else {
-            const filePath = join(process.cwd(), 'public', source.replace(/^\//, ''));
-            content = await readFile(filePath, 'utf-8');
+            const baseUrl = request.nextUrl.origin;
+            const url = new URL(source.startsWith('/') ? source : `/${source}`, baseUrl).toString();
+
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Failed to fetch local spec: ${response.statusText}`);
+            }
+            content = await response.text();
         }
 
         const parsed = yaml.load(content);

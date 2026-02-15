@@ -4,6 +4,7 @@ import PublicProjectViewer from "@/components/public/PublicProjectViewer";
 import { ShieldAlert } from "lucide-react";
 import { OpenAPISpec, SchemaVersion } from "@/components/OpenAPIViewer/types";
 import jsYaml from 'js-yaml';
+import { Schema as PrismaSchema } from "@prisma/client";
 
 import { Metadata } from "next";
 
@@ -39,7 +40,7 @@ export async function generateMetadata({
         };
     }
 
-    const currentSchema = project.schemas.find((s) => s.hash === schemaHash);
+    const currentSchema = project.schemas.find((s: PrismaSchema) => s.hash === schemaHash);
 
     if (!currentSchema) {
         return {
@@ -105,7 +106,7 @@ export default async function PublicVersionedProjectPage({
         notFound();
     }
 
-    const currentSchema = project.schemas.find((s) => s.hash === schemaHash);
+    const currentSchema = project.schemas.find((s: PrismaSchema) => s.hash === schemaHash);
 
     if (!currentSchema) {
         return (
@@ -117,7 +118,7 @@ export default async function PublicVersionedProjectPage({
         );
     }
 
-    const mappedSchemas: SchemaVersion[] = project.schemas.map((s) => {
+    const mappedSchemas: SchemaVersion[] = project.schemas.map((s: PrismaSchema) => {
         let version: string | undefined;
         if (s.content) {
             try {

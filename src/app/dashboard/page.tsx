@@ -2,6 +2,7 @@ import { getSession } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FolderKanban, Users, ShieldCheck, Clock } from "lucide-react";
+import { Project, User } from "@prisma/client";
 
 export default async function DashboardPage() {
     const session = await getSession();
@@ -68,7 +69,7 @@ export default async function DashboardPage() {
                     <CardContent>
                         <div className="space-y-8">
                             {recentProjects.length > 0 ? (
-                                recentProjects.map((project) => (
+                                recentProjects.map((project: Project & { user: User }) => (
                                     <div key={project.id} className="flex items-center">
                                         <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center text-primary font-bold">
                                             {project.name.charAt(0)}

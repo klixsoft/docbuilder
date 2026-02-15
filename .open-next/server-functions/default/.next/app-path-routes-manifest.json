@@ -1,0 +1,20 @@
+{
+  "/api/auth/logout/route": "/api/auth/logout",
+  "/api/auth/login/route": "/api/auth/login",
+  "/_not-found/page": "/_not-found",
+  "/api/auth/session/route": "/api/auth/session",
+  "/api/proxy/route": "/api/proxy",
+  "/favicon.ico/route": "/favicon.ico",
+  "/api/spec/route": "/api/spec",
+  "/_global-error/page": "/_global-error",
+  "/[service]/page": "/[service]",
+  "/login/page": "/login",
+  "/p/[hash]/page": "/p/[hash]",
+  "/p/[hash]/[schemaHash]/page": "/p/[hash]/[schemaHash]",
+  "/p/[hash]/[schemaHash]/schema/page": "/p/[hash]/[schemaHash]/schema",
+  "/page": "/",
+  "/dashboard/page": "/dashboard",
+  "/dashboard/users/page": "/dashboard/users",
+  "/dashboard/projects/[id]/page": "/dashboard/projects/[id]",
+  "/dashboard/projects/page": "/dashboard/projects"
+}

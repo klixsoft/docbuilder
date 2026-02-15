@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { User } from "@prisma/client";
 import {
     Table,
     TableBody,
@@ -50,7 +51,7 @@ export default async function UsersPage() {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {users.map((user) => (
+                        {users.map((user: User & { _count: { projects: number } }) => (
                             <TableRow key={user.id}>
                                 <TableCell>
                                     <div className="flex flex-col">

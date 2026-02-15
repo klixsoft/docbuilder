@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/session";
 import { redirect } from "next/navigation";
+import { Project } from "@prisma/client";
 import {
     Table,
     TableBody,
@@ -64,7 +65,7 @@ export default async function ProjectsPage() {
                     </TableHeader>
                     <TableBody>
                         {projects.length > 0 ? (
-                            projects.map((project) => (
+                            projects.map((project: Project & { user: { name: string | null; email: string }; _count: { schemas: number } }) => (
                                 <TableRow key={project.id} className="group hover:bg-muted/10 transition-colors">
                                     <TableCell className="px-6 py-4">
                                         <Link href={`/dashboard/projects/${project.id}`} className="flex flex-col group/link">

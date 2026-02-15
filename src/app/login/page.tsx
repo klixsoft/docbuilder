@@ -52,11 +52,10 @@ export default function LoginPage() {
         <div className="flex items-center justify-center min-h-screen bg-muted/40 px-4">
             <Card className="w-full max-w-md shadow-xl border-border/40">
                 <CardHeader className="space-y-4 text-center">
-                    <div className="flex justify-center mb-2">
-                        <Logo size="lg" />
+                    <div className="flex justify-center mb-6">
+                        <Logo size="md" />
                     </div>
                     <div className="space-y-1">
-                        <CardTitle className="text-2xl font-bold tracking-tight">Welcome back</CardTitle>
                         <CardDescription>
                             Enter your credentials to access your workspace
                         </CardDescription>
