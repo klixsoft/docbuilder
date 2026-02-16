@@ -1,0 +1,170 @@
+{
+  "node": {
+    "600bccf876d43086dc553586a2b3d2977e890e9cfb": {
+      "workers": {
+        "app/[service]/page": {
+          "moduleId": 66078,
+          "async": false,
+          "exportedName": "validateAccess",
+          "filename": "src/app/actions/auth.ts"
+        },
+        "app/p/[hash]/[schemaHash]/page": {
+          "moduleId": 5810,
+          "async": false,
+          "exportedName": "validateAccess",
+          "filename": "src/app/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/[service]/page": "action-browser",
+        "app/p/[hash]/[schemaHash]/page": "action-browser"
+      },
+      "filename": "src/app/actions/auth.ts",
+      "exportedName": "validateAccess"
+    },
+    "40844d24a096f1082a0b54f814e0e77092914b151a": {
+      "workers": {
+        "app/[service]/page": {
+          "moduleId": 66078,
+          "async": false,
+          "exportedName": "checkAccess",
+          "filename": "src/app/actions/auth.ts"
+        },
+        "app/p/[hash]/[schemaHash]/page": {
+          "moduleId": 5810,
+          "async": false,
+          "exportedName": "checkAccess",
+          "filename": "src/app/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/[service]/page": "action-browser",
+        "app/p/[hash]/[schemaHash]/page": "action-browser"
+      },
+      "filename": "src/app/actions/auth.ts",
+      "exportedName": "checkAccess"
+    },
+    "400e6c98d0db5b47e7d5328481cee23761bc7edcc7": {
+      "workers": {
+        "app/dashboard/projects/page": {
+          "moduleId": 8516,
+          "async": false,
+          "exportedName": "createProject",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/page": "action-browser"
+      },
+      "filename": "src/app/actions/project.ts",
+      "exportedName": "createProject"
+    },
+    "4018e55204fe2b573f618130095e53667ed96afb7c": {
+      "workers": {
+        "app/dashboard/projects/page": {
+          "moduleId": 8516,
+          "async": false,
+          "exportedName": "deleteProject",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/page": "action-browser"
+      },
+      "filename": "src/app/actions/project.ts",
+      "exportedName": "deleteProject"
+    },
+    "4062972ebfeefd381a052b721e1a980b072acfa5b8": {
+      "workers": {
+        "app/dashboard/projects/page": {
+          "moduleId": 8516,
+          "async": false,
+          "exportedName": "updateProject",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/page": "action-browser"
+      },
+      "filename": "src/app/actions/project.ts",
+      "exportedName": "updateProject"
+    },
+    "40a8786ec690ca4661ea0546d8cbfababd24ba0446": {
+      "workers": {
+        "app/dashboard/projects/[id]/page": {
+          "moduleId": 98827,
+          "async": false,
+          "exportedName": "addSchema",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/[id]/page": "action-browser"
+      },
+      "filename": "src/app/actions/project.ts",
+      "exportedName": "addSchema"
+    },
+    "40d4262f2cab199340a75ff6238764859e20d362b5": {
+      "workers": {
+        "app/dashboard/projects/[id]/page": {
+          "moduleId": 98827,
+          "async": false,
+          "exportedName": "updateSchema",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/[id]/page": "action-browser"
+      },
+      "filename": "src/app/actions/project.ts",
+      "exportedName": "updateSchema"
+    },
+    "40acb5372f649163f492bcc7e63475ef4347a028af": {
+      "workers": {
+        "app/dashboard/projects/[id]/page": {
+          "moduleId": 98827,
+          "async": false,
+          "exportedName": "deleteSchema",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/[id]/page": "action-browser"
+      },
+      "filename": "src/app/actions/project.ts",
+      "exportedName": "deleteSchema"
+    },
+    "40dcd95d25190d25e1b0d6ad7ccc3889069da80b2d": {
+      "workers": {
+        "app/dashboard/users/page": {
+          "moduleId": 69486,
+          "async": false,
+          "exportedName": "createUser",
+          "filename": "src/app/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/users/page": "action-browser"
+      },
+      "filename": "src/app/actions/auth.ts",
+      "exportedName": "createUser"
+    },
+    "608e7f8ee7263a1aee4d613623d35f95a1b38b8b9c": {
+      "workers": {
+        "app/p/[hash]/[schemaHash]/page": {
+          "moduleId": 5810,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "src/components/public/PublicProjectViewer.tsx"
+        }
+      },
+      "layer": {
+        "app/p/[hash]/[schemaHash]/page": "rsc"
+      },
+      "filename": "src/components/public/PublicProjectViewer.tsx",
+      "exportedName": "$$RSC_SERVER_ACTION_0"
+    }
+  },
+  "edge": {},
+  "encryptionKey": "0K2i5HHpc5n+mjqm/86VfPW3jeJ2fnPh9F4yM6TbdR4="
+}

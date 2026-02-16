@@ -1,0 +1,50 @@
+{
+  "node": {
+    "400e6c98d0db5b47e7d5328481cee23761bc7edcc7": {
+      "workers": {
+        "app/dashboard/projects/page": {
+          "moduleId": 8516,
+          "async": false,
+          "exportedName": "createProject",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/page": "action-browser"
+      },
+      "exportedName": "createProject",
+      "filename": "src/app/actions/project.ts"
+    },
+    "4018e55204fe2b573f618130095e53667ed96afb7c": {
+      "workers": {
+        "app/dashboard/projects/page": {
+          "moduleId": 8516,
+          "async": false,
+          "exportedName": "deleteProject",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/page": "action-browser"
+      },
+      "exportedName": "deleteProject",
+      "filename": "src/app/actions/project.ts"
+    },
+    "4062972ebfeefd381a052b721e1a980b072acfa5b8": {
+      "workers": {
+        "app/dashboard/projects/page": {
+          "moduleId": 8516,
+          "async": false,
+          "exportedName": "updateProject",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/page": "action-browser"
+      },
+      "exportedName": "updateProject",
+      "filename": "src/app/actions/project.ts"
+    }
+  },
+  "edge": {}
+}

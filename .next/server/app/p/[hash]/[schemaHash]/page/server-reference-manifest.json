@@ -1,0 +1,50 @@
+{
+  "node": {
+    "608e7f8ee7263a1aee4d613623d35f95a1b38b8b9c": {
+      "workers": {
+        "app/p/[hash]/[schemaHash]/page": {
+          "moduleId": 5810,
+          "async": false,
+          "exportedName": "$$RSC_SERVER_ACTION_0",
+          "filename": "src/components/public/PublicProjectViewer.tsx"
+        }
+      },
+      "layer": {
+        "app/p/[hash]/[schemaHash]/page": "rsc"
+      },
+      "exportedName": "$$RSC_SERVER_ACTION_0",
+      "filename": "src/components/public/PublicProjectViewer.tsx"
+    },
+    "600bccf876d43086dc553586a2b3d2977e890e9cfb": {
+      "workers": {
+        "app/p/[hash]/[schemaHash]/page": {
+          "moduleId": 5810,
+          "async": false,
+          "exportedName": "validateAccess",
+          "filename": "src/app/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/p/[hash]/[schemaHash]/page": "action-browser"
+      },
+      "exportedName": "validateAccess",
+      "filename": "src/app/actions/auth.ts"
+    },
+    "40844d24a096f1082a0b54f814e0e77092914b151a": {
+      "workers": {
+        "app/p/[hash]/[schemaHash]/page": {
+          "moduleId": 5810,
+          "async": false,
+          "exportedName": "checkAccess",
+          "filename": "src/app/actions/auth.ts"
+        }
+      },
+      "layer": {
+        "app/p/[hash]/[schemaHash]/page": "action-browser"
+      },
+      "exportedName": "checkAccess",
+      "filename": "src/app/actions/auth.ts"
+    }
+  },
+  "edge": {}
+}

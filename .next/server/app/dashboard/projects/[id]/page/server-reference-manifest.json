@@ -1,0 +1,50 @@
+{
+  "node": {
+    "40a8786ec690ca4661ea0546d8cbfababd24ba0446": {
+      "workers": {
+        "app/dashboard/projects/[id]/page": {
+          "moduleId": 98827,
+          "async": false,
+          "exportedName": "addSchema",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/[id]/page": "action-browser"
+      },
+      "exportedName": "addSchema",
+      "filename": "src/app/actions/project.ts"
+    },
+    "40d4262f2cab199340a75ff6238764859e20d362b5": {
+      "workers": {
+        "app/dashboard/projects/[id]/page": {
+          "moduleId": 98827,
+          "async": false,
+          "exportedName": "updateSchema",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/[id]/page": "action-browser"
+      },
+      "exportedName": "updateSchema",
+      "filename": "src/app/actions/project.ts"
+    },
+    "40acb5372f649163f492bcc7e63475ef4347a028af": {
+      "workers": {
+        "app/dashboard/projects/[id]/page": {
+          "moduleId": 98827,
+          "async": false,
+          "exportedName": "deleteSchema",
+          "filename": "src/app/actions/project.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/projects/[id]/page": "action-browser"
+      },
+      "exportedName": "deleteSchema",
+      "filename": "src/app/actions/project.ts"
+    }
+  },
+  "edge": {}
+}
